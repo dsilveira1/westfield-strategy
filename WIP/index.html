@@ -1,1 +1,470 @@
-<!-- placeholder -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIP vs Claude Intelligence Layer — Westfield Capital</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap');
+
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #162236;
+    --navy-light: #1E3050;
+    --teal: #1A9E8F;
+    --teal-light: #22C4B2;
+    --teal-dim: rgba(26,158,143,0.12);
+    --gold: #C9A84C;
+    --gold-dim: rgba(201,168,76,0.1);
+    --white: #F4F6F8;
+    --white-dim: rgba(244,246,248,0.5);
+    --white-faint: rgba(244,246,248,0.06);
+    --red: #E05252;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* progress */
+  .progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--teal); z-index: 100; box-shadow: 0 0 8px var(--teal); transition: width 0.1s; }
+
+  /* nav */
+  nav {
+    position: relative; z-index: 1;
+    padding: 32px 10vw;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    opacity: 0; animation: fadeDown 0.6s ease forwards 0.1s;
+  }
+
+  .nav-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; }
+  .nav-logo span { color: var(--teal); }
+  .nav-back { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); text-decoration: none; }
+  .nav-back:hover { color: var(--teal-light); }
+
+  /* hero */
+  .hero {
+    position: relative; z-index: 1;
+    padding: 80px 10vw 60px;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute; top: -20%; right: -10%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(26,158,143,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-family: var(--serif); font-size: clamp(44px, 6vw, 88px);
+    font-weight: 300; line-height: 1.05; letter-spacing: -0.02em;
+    max-width: 760px;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s;
+  }
+
+  .hero-title em { font-style: italic; color: var(--teal-light); }
+
+  .hero-sub {
+    margin-top: 28px; font-size: 16px; color: var(--white-dim);
+    max-width: 520px; line-height: 1.85;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s;
+  }
+
+  /* sections */
+  section { position: relative; z-index: 1; padding: 80px 10vw; }
+
+  .section-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 48px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--teal); opacity: 0.4; }
+
+  .section-title {
+    font-family: var(--serif); font-size: clamp(30px, 4vw, 52px);
+    font-weight: 300; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 20px;
+  }
+  .section-title em { font-style: italic; color: var(--teal-light); }
+
+  .divider { width: 80vw; margin: 0 10vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,158,143,0.25), transparent); }
+
+  /* thesis block */
+  .thesis {
+    background: var(--gold-dim);
+    border-left: 3px solid var(--gold);
+    padding: 40px 48px; margin-top: 48px;
+  }
+
+  .thesis-text {
+    font-family: var(--serif); font-size: clamp(20px, 2.5vw, 30px);
+    font-style: italic; font-weight: 300; line-height: 1.4; color: var(--white); margin-bottom: 16px;
+  }
+
+  .thesis-source { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+
+  /* timeline comparison */
+  .timeline {
+    display: grid; grid-template-columns: 1fr 60px 1fr;
+    gap: 0; margin-top: 48px; align-items: start;
+  }
+
+  @media (max-width: 768px) { .timeline { grid-template-columns: 1fr; } .timeline-divider { display: none; } }
+
+  .timeline-col { display: flex; flex-direction: column; gap: 2px; }
+
+  .timeline-header {
+    padding: 24px 28px; margin-bottom: 2px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  }
+
+  .timeline-header.wip { background: rgba(201,168,76,0.1); color: var(--gold); border-top: 2px solid var(--gold); }
+  .timeline-header.claude { background: var(--teal-dim); color: var(--teal); border-top: 2px solid var(--teal); }
+
+  .timeline-item {
+    background: var(--navy-mid); padding: 24px 28px;
+    border-left: 3px solid transparent;
+    transition: background 0.3s ease;
+  }
+
+  .timeline-item:hover { background: var(--navy-light); }
+  .timeline-col.wip-col .timeline-item { border-left-color: rgba(201,168,76,0.3); }
+  .timeline-col.claude-col .timeline-item { border-left-color: rgba(26,158,143,0.3); }
+
+  .item-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .wip-col .item-label { color: var(--gold); }
+  .claude-col .item-label { color: var(--teal); }
+
+  .item-title { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+  .item-desc { font-size: 12px; color: var(--white-dim); line-height: 1.6; }
+
+  .timeline-divider {
+    display: flex; align-items: stretch; justify-content: center;
+    padding-top: 72px;
+  }
+
+  .divider-line {
+    width: 1px; background: linear-gradient(180deg, transparent, rgba(26,158,143,0.3) 20%, rgba(26,158,143,0.3) 80%, transparent);
+    position: relative;
+  }
+
+  .divider-vs {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--serif); font-size: 18px; font-style: italic;
+    color: var(--teal); background: var(--navy);
+    padding: 8px 0; white-space: nowrap;
+  }
+
+  /* insight grid */
+  .insight-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px; margin-top: 48px;
+  }
+
+  .insight-card {
+    background: var(--navy-mid); padding: 36px 32px;
+    position: relative; overflow: hidden;
+    transition: background 0.3s ease;
+  }
+
+  .insight-card:hover { background: var(--navy-light); }
+
+  .insight-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--teal);
+  }
+
+  .insight-icon { font-size: 28px; margin-bottom: 16px; display: block; }
+  .insight-title { font-family: var(--serif); font-size: 20px; font-weight: 400; margin-bottom: 10px; }
+  .insight-desc { font-size: 13px; color: var(--white-dim); line-height: 1.7; }
+
+  /* verdict */
+  .verdict {
+    background: var(--teal-dim); border: 1px solid rgba(26,158,143,0.25);
+    padding: 48px; margin-top: 48px;
+  }
+
+  .verdict-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; }
+  .verdict-text { font-family: var(--serif); font-size: clamp(22px, 3vw, 36px); font-weight: 300; line-height: 1.35; color: var(--white); }
+  .verdict-text strong { font-weight: 600; color: var(--teal-light); font-style: italic; }
+
+  /* path forward */
+  .path-list { display: flex; flex-direction: column; gap: 2px; margin-top: 48px; }
+
+  .path-item { display: grid; grid-template-columns: 56px 1fr; background: var(--navy-mid); overflow: hidden; }
+  .path-num { background: var(--teal-dim); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 28px; font-weight: 300; color: var(--teal); border-right: 1px solid rgba(26,158,143,0.2); }
+  .path-content { padding: 24px 28px; }
+  .path-title { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+  .path-desc { font-size: 12px; color: var(--white-dim); line-height: 1.6; }
+
+  footer {
+    position: relative; z-index: 1;
+    padding: 48px 10vw; border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+
+  .footer-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; }
+  .footer-logo span { color: var(--teal); }
+  .footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-dim); }
+
+  /* fade-in */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav>
+  <div class="nav-logo">Westfield <span>Capital</span></div>
+  <a class="nav-back" href="../index.html">← Back to index</a>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">Westfield Capital · Technology Strategy · WIP Initiative</p>
+  <h1 class="hero-title">WIP 2.0 vs<br>the <em>Intelligence</em><br>Layer</h1>
+  <p class="hero-sub">How Claude changes the approach to WIP and other products — the shift from reporting to reasoning, and what it means for everything we were building.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- THESIS -->
+<section>
+  <p class="section-label fade-in">01 · The Core Tension</p>
+  <h2 class="section-title fade-in">The mandate changed<br>while the project was <em>in flight</em></h2>
+  <div class="thesis fade-in">
+    <p class="thesis-text">"WIP 2.0 was the right answer to the question Westfield was asking 18 months ago. How WIP 2.0 feels legacy before it launches."</p>
+    <p class="thesis-source">Dee Silveira · CTO, Westfield Capital Management · March 2026</p>
+  </div>
+  <p class="fade-in" style="margin-top: 32px; color: var(--white-dim); font-size: 15px; max-width: 580px; line-height: 1.85;">
+    This isn't a failure of the WIP 2.0 project. It's a signal that the intelligence layer changes the fundamental question. WIP 2.0 was designed to answer: <em style="color: var(--white);">"How do we report better?"</em> Claude answers: <em style="color: var(--teal-light);">"How do we reason together?"</em>
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMPARISON TIMELINE -->
+<section>
+  <p class="section-label fade-in">02 · Side by Side</p>
+  <h2 class="section-title fade-in">What each approach<br><em>actually delivers</em></h2>
+
+  <div class="timeline fade-in">
+    <div class="timeline-col wip-col">
+      <div class="timeline-header wip">WIP 2.0 — The Reporting Layer</div>
+      <div class="timeline-item">
+        <div class="item-label">Core question</div>
+        <div class="item-title">How do we show what happened?</div>
+        <div class="item-desc">Better dashboards, cleaner data presentation, improved Sigma visualizations of portfolio activity.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">User interaction</div>
+        <div class="item-title">View pre-built reports</div>
+        <div class="item-desc">Analysts navigate to fixed views. Answers are designed in advance by whoever built the dashboard.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">Data freshness</div>
+        <div class="item-title">Scheduled refresh cycles</div>
+        <div class="item-desc">Reports update on a cadence. Users work with data as of the last refresh — not necessarily now.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">Insight generation</div>
+        <div class="item-title">Human interprets the chart</div>
+        <div class="item-desc">The system surfaces data. The analyst decides what it means and writes their own commentary.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">Personalization</div>
+        <div class="item-title">Filtered views per user</div>
+        <div class="item-desc">Some role-based filtering. Fundamentally the same report for everyone with slight variations.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">Output format</div>
+        <div class="item-title">Dashboard or exported PDF</div>
+        <div class="item-desc">Static snapshots. Requires human effort to turn into a client-ready communication.</div>
+      </div>
+    </div>
+
+    <div class="timeline-divider">
+      <div class="divider-line">
+        <span class="divider-vs">vs</span>
+      </div>
+    </div>
+
+    <div class="timeline-col claude-col">
+      <div class="timeline-header claude">Claude Intelligence Layer — The Reasoning Layer</div>
+      <div class="timeline-item">
+        <div class="item-label">Core question</div>
+        <div class="item-title">What does this mean, and what should we do?</div>
+        <div class="item-desc">Natural language queries against live data. Surfaces patterns, anomalies, and implications — not just numbers.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">User interaction</div>
+        <div class="item-title">Ask any question in plain language</div>
+        <div class="item-desc">"Why did attribution shift this week?" "How does this compare to our thesis?" No pre-built view required.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">Data freshness</div>
+        <div class="item-title">Live query via MCP to Snowflake</div>
+        <div class="item-desc">Every response reflects current data. The answer is always as fresh as the underlying source.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">Insight generation</div>
+        <div class="item-title">Claude synthesizes and explains</div>
+        <div class="item-desc">The system generates the narrative, not just the chart. Attribution commentary written automatically.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">Personalization</div>
+        <div class="item-title">Fully contextual per request</div>
+        <div class="item-desc">Every output is generated fresh for the specific question, client, or context — zero marginal cost per variation.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="item-label">Output format</div>
+        <div class="item-title">HTML, prose, or structured data</div>
+        <div class="item-desc">Client-ready output generated directly. Presentation layer and analysis layer unified in one step.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- KEY INSIGHTS -->
+<section>
+  <p class="section-label fade-in">03 · What This Changes</p>
+  <h2 class="section-title fade-in">Not a better dashboard.<br>A <em>different category</em>.</h2>
+
+  <div class="insight-grid fade-in">
+    <div class="insight-card">
+      <span class="insight-icon">🔄</span>
+      <div class="insight-title">Reporting → Reasoning</div>
+      <div class="insight-desc">WIP 2.0 makes it faster to see the data. Claude makes it possible to understand it. These are different products serving different cognitive needs.</div>
+    </div>
+    <div class="insight-card">
+      <span class="insight-icon">📐</span>
+      <div class="insight-title">Fixed views → Fluid queries</div>
+      <div class="insight-desc">Every WIP dashboard represents a decision made in advance about what matters. Claude lets the question drive the answer — not the other way around.</div>
+    </div>
+    <div class="insight-card">
+      <span class="insight-icon">✍️</span>
+      <div class="insight-title">Charts → Commentary</div>
+      <div class="insight-desc">The bottleneck was never producing the chart. It was writing the attribution sentence below it. Claude eliminates that bottleneck entirely.</div>
+    </div>
+    <div class="insight-card">
+      <span class="insight-icon">🎯</span>
+      <div class="insight-title">One report → Infinite variations</div>
+      <div class="insight-desc">WIP serves the firm. Claude serves each relationship — client, PM, IC, board — with a contextually appropriate response at zero marginal cost.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- VERDICT -->
+<section>
+  <p class="section-label fade-in">04 · The Strategic Call</p>
+  <h2 class="section-title fade-in">What happens to <em>WIP 2.0</em>?</h2>
+
+  <div class="verdict fade-in">
+    <p class="verdict-label">Strategic verdict</p>
+    <p class="verdict-text">
+      WIP 2.0 and Claude are not competitors — they operate at different layers. WIP 2.0 remains the <strong>operational data foundation</strong>. Claude becomes the <strong>intelligence layer on top of it</strong>. The question is sequencing, not replacement.
+    </p>
+  </div>
+
+  <div class="path-list fade-in" style="margin-top: 32px;">
+    <div class="path-item">
+      <div class="path-num">A</div>
+      <div class="path-content">
+        <div class="path-title">Pause WIP 2.0 — Complete Claude+MCP first</div>
+        <div class="path-desc">Sprint through the intelligence layer. Use Claude's output to re-examine what WIP 2.0 actually needs to be — potentially a much simpler data layer feeding Claude rather than a full reporting product.</div>
+      </div>
+    </div>
+    <div class="path-item">
+      <div class="path-num">B</div>
+      <div class="path-content">
+        <div class="path-title">Reframe WIP 2.0 as the data layer</div>
+        <div class="path-desc">Scope WIP 2.0 down to what Claude needs: clean, structured, reliable data in Snowflake. Remove the presentation layer ambitions — Claude handles that now.</div>
+      </div>
+    </div>
+    <div class="path-item">
+      <div class="path-num">C</div>
+      <div class="path-content">
+        <div class="path-title">Complete WIP 2.0 as scoped — Integrate Claude as Phase 2</div>
+        <div class="path-desc">Deliver on current commitments, then layer Claude on top in Q3-Q4. Slower path to full intelligence capability, but maintains delivery predictability.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section style="padding-bottom: 80px;">
+  <p class="section-label fade-in">05 · The Sigma Question</p>
+  <h2 class="section-title fade-in">Where does <em>Sigma</em> fit?</h2>
+  <p class="fade-in" style="color: var(--white-dim); font-size: 15px; max-width: 620px; line-height: 1.85; margin-bottom: 32px;">
+    Sigma was the visualization layer for WIP 2.0. With Claude generating narrative output directly, the role of a BI visualization tool shifts. Sigma becomes most valuable as an ad-hoc exploration tool for analysts — not as the primary client-facing output mechanism.
+  </p>
+  <div class="insight-grid fade-in" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+    <div class="insight-card" style="--teal: #C9A84C;">
+      <div class="item-label" style="color: var(--gold); font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px;">Sigma keeps</div>
+      <div class="insight-desc">Ad-hoc analyst exploration, complex custom visualizations, data discovery, pivot analysis that falls outside Claude's scope.</div>
+    </div>
+    <div class="insight-card">
+      <div class="item-label" style="color: var(--teal); font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px;">Claude replaces</div>
+      <div class="insight-desc">Standard client reports, attribution commentary, scheduled outputs, any visualization that can be described in prose or rendered in HTML.</div>
+    </div>
+    <div class="insight-card">
+      <div class="item-label" style="color: var(--teal); font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px;">Both together</div>
+      <div class="insight-desc">Analyst uses Sigma to explore, finds a pattern, asks Claude to write the client communication. The tools complement rather than compete.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Westfield <span>Capital</span></div>
+  <div class="footer-note">Technology Strategy · WIP Initiative · March 2026</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    document.getElementById('progress').style.width = (p * 100) + '%';
+  });
+  const obs = new IntersectionObserver(e => e.forEach(el => { if(el.isIntersecting) { el.target.classList.add('visible'); obs.unobserve(el.target); } }), { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
