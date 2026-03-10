@@ -15,9 +15,9 @@
     --teal-light: #22C4B2;
     --teal-dim: rgba(26,158,143,0.12);
     --gold: #C9A84C;
+    --gold-dim: rgba(201,168,76,0.1);
     --white: #F4F6F8;
     --white-dim: rgba(244,246,248,0.5);
-    --white-faint: rgba(244,246,248,0.06);
     --serif: 'Cormorant Garamond', Georgia, serif;
     --sans: 'DM Sans', sans-serif;
     --mono: 'DM Mono', monospace;
@@ -30,413 +30,243 @@
     color: var(--white);
     font-family: var(--sans);
     font-weight: 300;
+    line-height: 1.7;
     min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* noise overlay */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
+    pointer-events: none; z-index: 0; opacity: 0.4;
   }
 
-  /* ambient glow */
-  body::after {
-    content: '';
-    position: fixed;
-    top: -30%;
-    right: -20%;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(26,158,143,0.1) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
+  nav {
+    position: relative; z-index: 1;
+    padding: 32px 10vw;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    opacity: 0; animation: fadeDown 0.6s ease forwards 0.1s;
   }
+  .nav-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; letter-spacing: 0.01em; }
+  .nav-logo span { color: var(--teal); }
+  .nav-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-dim); }
 
-  /* ── HEADER ── */
-  header {
-    position: relative;
-    z-index: 1;
-    padding: 48px 10vw 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    opacity: 0;
-    animation: fadeDown 0.7s ease forwards 0.1s;
-  }
-
-  .logo {
-    font-family: var(--serif);
-    font-size: 20px;
-    font-weight: 300;
-    letter-spacing: 0.04em;
-    color: var(--white);
-  }
-
-  .logo span { color: var(--teal); }
-
-  .header-meta {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--white-dim);
-    text-align: right;
-    line-height: 1.8;
-  }
-
-  /* ── HERO ── */
   .hero {
-    position: relative;
-    z-index: 1;
-    padding: 80px 10vw 60px;
+    position: relative; z-index: 1;
+    padding: 80px 10vw 64px;
+  }
+  .hero::after {
+    content: ''; position: absolute; top: -10%; right: -5%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(26,158,143,0.1) 0%, transparent 70%);
+    pointer-events: none;
   }
 
   .hero-eyebrow {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.7s ease forwards 0.2s;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s;
   }
 
   .hero-title {
-    font-family: var(--serif);
-    font-size: clamp(40px, 6vw, 80px);
-    font-weight: 300;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
+    font-family: var(--serif); font-size: clamp(48px, 7vw, 96px);
+    font-weight: 300; line-height: 1.0; letter-spacing: -0.02em;
     max-width: 700px;
-    opacity: 0;
-    animation: fadeUp 0.7s ease forwards 0.35s;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s;
+  }
+  .hero-title em { font-style: italic; color: var(--teal-light); }
+
+  .hero-sub {
+    margin-top: 28px; font-size: 16px; color: var(--white-dim);
+    max-width: 480px; line-height: 1.85;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s;
   }
 
-  .hero-title em {
-    font-style: italic;
-    color: var(--teal-light);
+  .hero-meta {
+    margin-top: 48px; display: flex; gap: 40px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s;
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
+  .meta-value { font-size: 14px; color: var(--white-dim); }
+
+  /* grid */
+  .grid-section {
+    position: relative; z-index: 1;
+    padding: 0 10vw 80px;
   }
 
-  .hero-rule {
-    width: 60px;
-    height: 1px;
-    background: var(--teal);
-    opacity: 0.5;
-    margin: 36px 0;
-    opacity: 0;
-    animation: fadeUp 0.7s ease forwards 0.5s;
-  }
-
-  .hero-desc {
-    font-size: 15px;
-    color: var(--white-dim);
-    max-width: 480px;
-    line-height: 1.85;
-    opacity: 0;
-    animation: fadeUp 0.7s ease forwards 0.6s;
-  }
-
-  /* ── GRID ── */
   .grid-label {
-    position: relative;
-    z-index: 1;
-    padding: 0 10vw;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    opacity: 0;
-    animation: fadeUp 0.7s ease forwards 0.7s;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--teal);
+    margin-bottom: 32px; display: flex; align-items: center; gap: 16px;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.75s;
   }
-
-  .grid-label::after {
-    content: '';
-    flex: 1;
-    max-width: 40px;
-    height: 1px;
-    background: var(--teal);
-    opacity: 0.4;
-  }
+  .grid-label::after { content: ''; flex: 1; height: 1px; background: rgba(26,158,143,0.2); }
 
   .card-grid {
-    position: relative;
-    z-index: 1;
-    padding: 0 10vw 100px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2px;
   }
 
-  /* ── CARD ── */
   .card {
     background: var(--navy-mid);
     padding: 40px 36px;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    transition: background 0.3s ease, transform 0.3s ease;
-    border-top: 1px solid rgba(255,255,255,0.04);
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    transition: background 0.3s ease;
+    opacity: 0; animation: fadeUp 0.7s ease forwards;
   }
 
-  .card:nth-child(1) { animation-delay: 0.75s; }
-  .card:nth-child(2) { animation-delay: 0.85s; }
-  .card:nth-child(3) { animation-delay: 0.95s; }
-  .card:nth-child(4) { animation-delay: 1.05s; }
-  .card:nth-child(5) { animation-delay: 1.15s; }
+  .card:hover { background: var(--navy-light); }
 
   .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 3px;
-    background: linear-gradient(90deg, var(--teal), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--teal);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s ease;
   }
+  .card:hover::before { transform: scaleX(1); }
 
   .card::after {
-    content: '';
-    position: absolute;
-    bottom: -40px; right: -40px;
-    width: 120px; height: 120px;
-    background: radial-gradient(circle, var(--teal-dim), transparent);
-    transition: opacity 0.3s ease;
-    opacity: 0;
+    content: '→';
+    position: absolute; bottom: 36px; right: 36px;
+    font-family: var(--serif); font-size: 24px; color: var(--teal);
+    opacity: 0; transform: translateX(-8px);
+    transition: opacity 0.3s, transform 0.3s;
   }
+  .card:hover::after { opacity: 1; transform: translateX(0); }
 
-  .card:hover {
-    background: var(--navy-light);
-    transform: translateY(-2px);
+  .card-num {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 24px;
   }
-
-  .card:hover::before { opacity: 1; }
-  .card:hover::after { opacity: 1; }
-
-  .card-status {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .status-live .status-dot { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
-  .status-live { color: var(--teal); }
-
-  .status-wip .status-dot { background: var(--gold); }
-  .status-wip { color: var(--gold); }
-
-  .status-planned .status-dot { background: var(--white-dim); }
-  .status-planned { color: var(--white-dim); }
-
-  .card-number {
-    font-family: var(--serif);
-    font-size: 52px;
-    font-weight: 300;
-    color: rgba(26,158,143,0.12);
-    line-height: 1;
-    margin-bottom: 16px;
-    transition: color 0.3s ease;
-  }
-
-  .card:hover .card-number { color: rgba(26,158,143,0.22); }
 
   .card-title {
-    font-family: var(--serif);
-    font-size: 24px;
-    font-weight: 400;
-    color: var(--white);
-    line-height: 1.2;
-    margin-bottom: 12px;
+    font-family: var(--serif); font-size: 28px; font-weight: 300;
+    line-height: 1.15; margin-bottom: 14px; max-width: 260px;
   }
+  .card-title em { font-style: italic; color: var(--teal-light); }
 
   .card-desc {
-    font-size: 13px;
-    color: var(--white-dim);
-    line-height: 1.7;
-    flex: 1;
-    margin-bottom: 28px;
+    font-size: 13px; color: var(--white-dim); line-height: 1.7;
+    flex: 1; margin-bottom: 32px;
   }
 
-  .card-link {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--teal);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: gap 0.2s ease;
+  .card-status {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+    text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+    margin-top: auto;
   }
+  .card-status::before { content: '●'; font-size: 7px; }
+  .card-status.live { color: var(--teal); }
+  .card-status.progress { color: var(--gold); }
+  .card-status.new { color: var(--teal-light); }
 
-  .card:hover .card-link { gap: 12px; }
-
-  .card-link-disabled {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(244,246,248,0.2);
-  }
-
-  /* placeholder card */
   .card-placeholder {
-    background: var(--white-faint);
+    background: var(--navy-mid); padding: 40px 36px;
     border: 1px dashed rgba(255,255,255,0.08);
-    padding: 40px 36px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 12px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 1.2s;
+    display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 1.1s;
+    min-height: 260px;
   }
-
-  .placeholder-icon {
-    font-size: 28px;
-    opacity: 0.3;
-  }
-
   .placeholder-text {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(244,246,248,0.2);
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(255,255,255,0.15);
   }
 
-  /* ── FOOTER ── */
+  .divider { width: 80vw; margin: 0 10vw 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,158,143,0.2), transparent); }
+
   footer {
-    position: relative;
-    z-index: 1;
-    padding: 32px 10vw;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
+    position: relative; z-index: 1;
+    padding: 48px 10vw; border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    margin-top: 0;
   }
+  .footer-logo { font-family: var(--serif); font-size: 18px; }
+  .footer-logo span { color: var(--teal); }
+  .footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-dim); }
 
-  .footer-note {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(244,246,248,0.2);
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Westfield <span>Capital</span></div>
-  <div class="header-meta">
-    Technology Strategy<br>
-    dsilveira1 · 2026
-  </div>
-</header>
+<nav>
+  <div class="nav-logo">Westfield <span>Capital</span></div>
+  <div class="nav-tag">Technology Strategy</div>
+</nav>
 
 <div class="hero">
-  <p class="hero-eyebrow">Strategic Initiatives · Technology</p>
-  <h1 class="hero-title">Everything<br>in one <em>place</em></h1>
-  <div class="hero-rule"></div>
-  <p class="hero-desc">
-    A single index for Westfield's technology strategy work — 
-    presentations, architecture docs, and initiative briefs. 
-    Add folders as the work evolves.
-  </p>
-</div>
-
-<p class="grid-label">Initiatives</p>
-
-<div class="card-grid">
-
-  <!-- Card 1: Intelligent Presentation Layer -->
-  <a class="card" href="./intelligent-presentation/index.html">
-    <div class="card-status status-live">
-      <span class="status-dot"></span> Live
+  <p class="hero-eyebrow">CTO · Strategy Index · March 2026</p>
+  <h1 class="hero-title">Technology<br><em>Strategy</em></h1>
+  <p class="hero-sub">The initiatives, frameworks, and decisions shaping how Westfield Capital deploys technology as a competitive advantage.</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-label">Current Priority</span>
+      <span class="meta-value">Claude+MCP Sprint</span>
     </div>
-    <div class="card-number">01</div>
-    <div class="card-title">The Intelligent Presentation Layer</div>
-    <div class="card-desc">Eliminating the operational tax of static deck production. Business case for HTML-first output from the Claude+MCP engine.</div>
-    <div class="card-link">View brief →</div>
-  </a>
-
-  <!-- Card 2: WIP -->
-  <a class="card" href="./WIP/index.html">
-    <div class="card-status status-wip">
-      <span class="status-dot"></span> In Progress
+    <div class="meta-item">
+      <span class="meta-label">Sprint Window</span>
+      <span class="meta-value">Q1 Remainder + Q2 2026</span>
     </div>
-    <div class="card-number">02</div>
-    <div class="card-title">WIP vs Claude Intelligence Layer</div>
-    <div class="card-desc">How Claude changes the approach to WIP 2.0 and other products — the shift from reporting to reasoning.</div>
-    <div class="card-link">View comparison →</div>
-  </a>
-
-  <!-- Card 3: Claude+MCP Sprint -->
-  <a class="card" href="./Claude-MCP/index.html">
-    <div class="card-status status-wip">
-      <span class="status-dot"></span> In Progress
+    <div class="meta-item">
+      <span class="meta-label">Documents</span>
+      <span class="meta-value">4 active</span>
     </div>
-    <div class="card-number">03</div>
-    <div class="card-title">Claude+MCP Sprint</div>
-    <div class="card-desc">The 90-day sprint architecture — Learn, Engineer, Resource, Connect. Eze/APX → Snowflake → Airia → Claude Analyst Agent.</div>
-    <div class="card-link">View sprint →</div>
-  </a>
-
-  <!-- Placeholder -->
-  <div class="card-placeholder">
-    <div class="placeholder-icon">+</div>
-    <div class="placeholder-text">Next initiative</div>
   </div>
-
 </div>
+
+<div class="grid-section">
+  <div class="grid-label">Strategy Documents</div>
+
+  <div class="card-grid">
+
+    <a class="card" href="intelligent-presentation/index.html" style="animation-delay: 0.8s">
+      <div class="card-num">01 · Intelligent Presentation Layer</div>
+      <div class="card-title">The <em>Intelligent</em> Presentation Layer</div>
+      <div class="card-desc">How Claude+MCP makes static decks structurally obsolete — the case for HTML as Westfield's first-class output format and what that means for how the firm communicates.</div>
+      <div class="card-status live">Live</div>
+    </a>
+
+    <a class="card" href="WIP/index.html" style="animation-delay: 0.9s">
+      <div class="card-num">02 · WIP Initiative</div>
+      <div class="card-title">WIP 2.0 vs the <em>Intelligence</em> Layer</div>
+      <div class="card-desc">The mandate changed while WIP was in flight. A clear-eyed comparison of what WIP 2.0 delivers versus what Claude's intelligence layer changes — and the strategic options for what happens next.</div>
+      <div class="card-status progress">In Progress</div>
+    </a>
+
+    <a class="card" href="Claude-MCP/index.html" style="animation-delay: 1.0s">
+      <div class="card-num">03 · Claude+MCP Sprint</div>
+      <div class="card-title">The 90-Day <em>Sprint</em></div>
+      <div class="card-desc">The firm's #1 technology priority. Four phases, one architecture: Eze → Snowflake → Airia → Claude. The mandate, the plan, and what we deferred to make it possible.</div>
+      <div class="card-status progress">In Progress</div>
+    </a>
+
+    <a class="card" href="risk-readiness/index.html" style="animation-delay: 1.05s">
+      <div class="card-num">04 · AI Governance</div>
+      <div class="card-title">AI Risk &amp; <em>Readiness</em></div>
+      <div class="card-desc">Where Westfield stands on AI deployment maturity. The risks we're managing, the five readiness pillars, governance infrastructure, and the 90-day checklist before going client-facing.</div>
+      <div class="card-status new">New</div>
+    </a>
+
+    <div class="card-placeholder">
+      <div class="placeholder-text">05 · Coming Soon</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
 
 <footer>
-  <div class="footer-note">Westfield Capital Management · Technology</div>
-  <div class="footer-note">Updated March 2026</div>
+  <div class="footer-logo">Westfield <span>Capital</span></div>
+  <div class="footer-note">CTO · Technology Strategy Index · March 2026</div>
 </footer>
 
 </body>
