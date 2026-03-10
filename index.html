@@ -24,6 +24,7 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
   body {
     background: var(--navy);
@@ -42,20 +43,22 @@
     pointer-events: none; z-index: 0; opacity: 0.4;
   }
 
+  /* NAV */
   nav {
-    position: relative; z-index: 1;
-    padding: 32px 10vw;
+    position: relative; z-index: 10;
+    padding: 28px 10vw;
     display: flex; justify-content: space-between; align-items: center;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     opacity: 0; animation: fadeDown 0.6s ease forwards 0.1s;
   }
-  .nav-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; letter-spacing: 0.01em; }
+  .nav-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; }
   .nav-logo span { color: var(--teal); }
   .nav-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-dim); }
 
+  /* HERO */
   .hero {
     position: relative; z-index: 1;
-    padding: 80px 10vw 64px;
+    padding: 64px 10vw 48px;
   }
   .hero::after {
     content: ''; position: absolute; top: -10%; right: -5%;
@@ -63,130 +66,162 @@
     background: radial-gradient(circle, rgba(26,158,143,0.1) 0%, transparent 70%);
     pointer-events: none;
   }
-
-  .hero-eyebrow {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
-    text-transform: uppercase; color: var(--teal); margin-bottom: 24px;
-    opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s;
-  }
-
-  .hero-title {
-    font-family: var(--serif); font-size: clamp(48px, 7vw, 96px);
-    font-weight: 300; line-height: 1.0; letter-spacing: -0.02em;
-    max-width: 700px;
-    opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s;
-  }
+  .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s; }
+  .hero-title { font-family: var(--serif); font-size: clamp(44px, 6vw, 86px); font-weight: 300; line-height: 1.0; letter-spacing: -0.02em; max-width: 700px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s; }
   .hero-title em { font-style: italic; color: var(--teal-light); }
-
-  .hero-sub {
-    margin-top: 28px; font-size: 16px; color: var(--white-dim);
-    max-width: 480px; line-height: 1.85;
-    opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s;
-  }
-
-  .hero-meta {
-    margin-top: 48px; display: flex; gap: 40px; flex-wrap: wrap;
-    opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s;
-  }
+  .hero-sub { margin-top: 24px; font-size: 15px; color: var(--white-dim); max-width: 480px; line-height: 1.85; opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s; }
+  .hero-meta { margin-top: 40px; display: flex; gap: 40px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s; }
   .meta-item { display: flex; flex-direction: column; gap: 4px; }
   .meta-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
   .meta-value { font-size: 14px; color: var(--white-dim); }
 
-  /* grid */
-  .grid-section {
-    position: relative; z-index: 1;
-    padding: 0 10vw 80px;
-  }
-
-  .grid-label {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
-    text-transform: uppercase; color: var(--teal);
-    margin-bottom: 32px; display: flex; align-items: center; gap: 16px;
+  /* TABS */
+  .tabs-wrapper {
+    position: relative; z-index: 2;
+    padding: 0 10vw;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
     opacity: 0; animation: fadeUp 0.7s ease forwards 0.75s;
   }
+  .tabs-nav {
+    display: flex; gap: 0; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 16px 24px; cursor: pointer; border: none; background: none;
+    color: var(--white-dim); white-space: nowrap;
+    position: relative; transition: color 0.2s;
+  }
+  .tab-btn::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--teal);
+    transform: scaleX(0); transition: transform 0.25s ease;
+  }
+  .tab-btn:hover { color: var(--white); }
+  .tab-btn.active { color: var(--teal-light); }
+  .tab-btn.active::after { transform: scaleX(1); }
+
+  /* TAB PANELS */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* STRATEGY GRID */
+  .grid-section { position: relative; z-index: 1; padding: 48px 10vw 80px; }
+  .grid-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 28px; display: flex; align-items: center; gap: 16px; }
   .grid-label::after { content: ''; flex: 1; height: 1px; background: rgba(26,158,143,0.2); }
 
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2px;
-  }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; }
 
   .card {
-    background: var(--navy-mid);
-    padding: 40px 36px;
+    background: var(--navy-mid); padding: 40px 36px;
     text-decoration: none; color: inherit;
     display: flex; flex-direction: column;
     position: relative; overflow: hidden;
     transition: background 0.3s ease;
-    opacity: 0; animation: fadeUp 0.7s ease forwards;
   }
-
   .card:hover { background: var(--navy-light); }
-
-  .card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0;
-    height: 2px; background: var(--teal);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.4s ease;
-  }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--teal); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
   .card:hover::before { transform: scaleX(1); }
-
-  .card::after {
-    content: '→';
-    position: absolute; bottom: 36px; right: 36px;
-    font-family: var(--serif); font-size: 24px; color: var(--teal);
-    opacity: 0; transform: translateX(-8px);
-    transition: opacity 0.3s, transform 0.3s;
-  }
+  .card::after { content: '→'; position: absolute; bottom: 36px; right: 36px; font-family: var(--serif); font-size: 24px; color: var(--teal); opacity: 0; transform: translateX(-8px); transition: opacity 0.3s, transform 0.3s; }
   .card:hover::after { opacity: 1; transform: translateX(0); }
 
-  .card-num {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--teal); margin-bottom: 24px;
-  }
-
-  .card-title {
-    font-family: var(--serif); font-size: 28px; font-weight: 300;
-    line-height: 1.15; margin-bottom: 14px; max-width: 260px;
-  }
+  .card-num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; }
+  .card-title { font-family: var(--serif); font-size: 28px; font-weight: 300; line-height: 1.15; margin-bottom: 14px; max-width: 260px; }
   .card-title em { font-style: italic; color: var(--teal-light); }
-
-  .card-desc {
-    font-size: 13px; color: var(--white-dim); line-height: 1.7;
-    flex: 1; margin-bottom: 32px;
-  }
-
-  .card-status {
-    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
-    text-transform: uppercase; display: flex; align-items: center; gap: 8px;
-    margin-top: auto;
-  }
+  .card-desc { font-size: 13px; color: var(--white-dim); line-height: 1.7; flex: 1; margin-bottom: 32px; }
+  .card-status { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; margin-top: auto; }
   .card-status::before { content: '●'; font-size: 7px; }
   .card-status.live { color: var(--teal); }
   .card-status.progress { color: var(--gold); }
   .card-status.new { color: var(--teal-light); }
 
-  .card-placeholder {
-    background: var(--navy-mid); padding: 40px 36px;
-    border: 1px dashed rgba(255,255,255,0.08);
-    display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
-    opacity: 0; animation: fadeUp 0.7s ease forwards 1.1s;
-    min-height: 260px;
-  }
-  .placeholder-text {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
-    text-transform: uppercase; color: rgba(255,255,255,0.15);
-  }
+  .card-placeholder { background: var(--navy-mid); padding: 40px 36px; border: 1px dashed rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 260px; }
+  .placeholder-text { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.15); }
 
-  .divider { width: 80vw; margin: 0 10vw 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,158,143,0.2), transparent); }
+  /* PROGRESS TAB */
+  .progress-section { position: relative; z-index: 1; padding: 48px 10vw 80px; }
 
-  footer {
-    position: relative; z-index: 1;
-    padding: 48px 10vw; border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
-    margin-top: 0;
-  }
+  .sprint-header { margin-bottom: 48px; }
+  .sprint-title { font-family: var(--serif); font-size: clamp(32px, 4vw, 54px); font-weight: 300; line-height: 1.1; margin-bottom: 16px; }
+  .sprint-title em { font-style: italic; color: var(--teal-light); }
+  .sprint-sub { font-size: 14px; color: var(--white-dim); max-width: 560px; line-height: 1.85; }
+
+  /* Overall progress bar */
+  .overall-progress { background: var(--navy-mid); padding: 36px 40px; margin-bottom: 2px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+  .op-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+  .op-bar-wrap { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+  .op-bar { height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-light)); border-radius: 4px; width: 28%; transition: width 1.4s cubic-bezier(0.16,1,0.3,1); }
+  .op-milestones { display: flex; gap: 0; }
+  .op-mile { flex: 1; font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white-dim); text-align: center; padding-top: 8px; border-top: 2px solid rgba(255,255,255,0.08); position: relative; }
+  .op-mile.done { color: var(--teal); border-top-color: var(--teal); }
+  .op-mile.active { color: var(--gold); border-top-color: var(--gold); }
+  .op-pct { font-family: var(--serif); font-size: 52px; font-weight: 300; color: var(--teal-light); line-height: 1; }
+  .op-pct-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-dim); }
+
+  /* Phase cards */
+  .phases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px; margin-bottom: 2px; }
+
+  .phase-card { background: var(--navy-mid); padding: 32px 28px; position: relative; overflow: hidden; }
+  .phase-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .phase-card.done::before { background: var(--teal); }
+  .phase-card.active::before { background: var(--gold); }
+  .phase-card.upcoming::before { background: rgba(255,255,255,0.12); }
+
+  .phase-num { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px; }
+  .phase-card.done .phase-num { color: var(--teal); }
+  .phase-card.active .phase-num { color: var(--gold); }
+  .phase-card.upcoming .phase-num { color: var(--white-dim); }
+
+  .phase-name { font-family: var(--serif); font-size: 24px; font-weight: 300; margin-bottom: 8px; }
+  .phase-dates { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--white-dim); margin-bottom: 16px; }
+  .phase-desc { font-size: 12px; color: var(--white-dim); line-height: 1.7; margin-bottom: 16px; }
+
+  .phase-tasks { display: flex; flex-direction: column; gap: 8px; }
+  .task-item { display: flex; gap: 10px; align-items: flex-start; }
+  .task-dot { width: 14px; height: 14px; border-radius: 2px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; }
+  .task-dot.done { background: var(--teal); color: var(--navy); }
+  .task-dot.active { background: rgba(201,168,76,0.2); border: 1px solid var(--gold); color: var(--gold); }
+  .task-dot.open { background: transparent; border: 1px solid rgba(255,255,255,0.15); }
+  .task-text { font-size: 12px; color: var(--white-dim); line-height: 1.5; }
+  .task-text strong { color: var(--white); font-weight: 500; }
+
+  /* Weekly log */
+  .week-log { background: var(--navy-mid); padding: 36px 40px; }
+  .week-log-title { font-family: var(--serif); font-size: 26px; font-weight: 300; margin-bottom: 24px; }
+  .week-log-title em { font-style: italic; color: var(--teal-light); }
+
+  .log-entries { display: flex; flex-direction: column; gap: 2px; }
+  .log-entry { display: grid; grid-template-columns: 120px 1fr; background: var(--navy-light); overflow: hidden; }
+  .log-date { padding: 20px; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: center; }
+  .log-date-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); }
+  .log-date-val { font-family: var(--serif); font-size: 15px; font-weight: 300; margin-top: 2px; }
+  .log-content { padding: 20px 24px; }
+  .log-tag { font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; display: inline-block; padding: 2px 8px; border-radius: 2px; }
+  .log-tag.shipped { background: var(--teal-dim); color: var(--teal); }
+  .log-tag.in-progress { background: var(--gold-dim); color: var(--gold); }
+  .log-tag.blocked { background: rgba(201,64,64,0.1); color: #C94040; }
+  .log-title { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+  .log-detail { font-size: 12px; color: var(--white-dim); line-height: 1.6; }
+
+  /* Key metrics */
+  .metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2px; margin-top: 2px; }
+  .metric-card { background: var(--navy-mid); padding: 28px 24px; }
+  .metric-val { font-family: var(--serif); font-size: 44px; font-weight: 300; line-height: 1; color: var(--teal-light); }
+  .metric-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-dim); margin-top: 6px; }
+  .metric-note { font-size: 11px; color: var(--white-dim); margin-top: 4px; line-height: 1.5; }
+
+  /* Next up block */
+  .next-up { background: var(--teal-dim); border: 1px solid rgba(26,158,143,0.25); padding: 36px 40px; margin-top: 2px; }
+  .next-up-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+  .next-up-title { font-family: var(--serif); font-size: clamp(20px, 2.5vw, 30px); font-weight: 300; line-height: 1.4; color: var(--white); }
+  .next-up-title strong { color: var(--teal-light); font-style: italic; font-weight: 300; }
+
+  /* SHARED */
+  .divider { width: 80vw; margin: 0 10vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,158,143,0.2), transparent); }
+
+  footer { position: relative; z-index: 1; padding: 48px 10vw; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
   .footer-logo { font-family: var(--serif); font-size: 18px; }
   .footer-logo span { color: var(--teal); }
   .footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-dim); }
@@ -216,58 +251,266 @@
       <span class="meta-value">Q1 Remainder + Q2 2026</span>
     </div>
     <div class="meta-item">
-      <span class="meta-label">Documents</span>
-      <span class="meta-value">4 active</span>
+      <span class="meta-label">Phase</span>
+      <span class="meta-value">01 · Learn</span>
     </div>
   </div>
 </div>
 
-<div class="grid-section">
-  <div class="grid-label">Strategy Documents</div>
+<!-- TABS -->
+<div class="tabs-wrapper">
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="strategy">Strategy Documents</button>
+    <button class="tab-btn" data-tab="progress">Claude Progress</button>
+  </div>
+</div>
 
-  <div class="card-grid">
+<!-- STRATEGY TAB -->
+<div class="tab-panel active" id="tab-strategy">
+  <div class="grid-section">
+    <div class="grid-label">Active Documents</div>
+    <div class="card-grid">
 
-    <a class="card" href="intelligent-presentation/index.html" style="animation-delay: 0.8s">
-      <div class="card-num">01 · Intelligent Presentation Layer</div>
-      <div class="card-title">The <em>Intelligent</em> Presentation Layer</div>
-      <div class="card-desc">How Claude+MCP makes static decks structurally obsolete — the case for HTML as Westfield's first-class output format and what that means for how the firm communicates.</div>
-      <div class="card-status live">Live</div>
-    </a>
+      <a class="card" href="intelligent-presentation/index.html">
+        <div class="card-num">01 · Intelligent Presentation Layer</div>
+        <div class="card-title">The <em>Intelligent</em> Presentation Layer</div>
+        <div class="card-desc">How Claude+MCP makes static decks structurally obsolete — the case for HTML as Westfield's first-class output format and what that means for how the firm communicates.</div>
+        <div class="card-status live">Live</div>
+      </a>
 
-    <a class="card" href="WIP/index.html" style="animation-delay: 0.9s">
-      <div class="card-num">02 · WIP Initiative</div>
-      <div class="card-title">WIP 2.0 vs the <em>Intelligence</em> Layer</div>
-      <div class="card-desc">The mandate changed while WIP was in flight. A clear-eyed comparison of what WIP 2.0 delivers versus what Claude's intelligence layer changes — and the strategic options for what happens next.</div>
-      <div class="card-status progress">In Progress</div>
-    </a>
+      <a class="card" href="WIP/index.html">
+        <div class="card-num">02 · WIP Initiative</div>
+        <div class="card-title">WIP 2.0 vs the <em>Intelligence</em> Layer</div>
+        <div class="card-desc">The mandate changed while WIP was in flight. A clear-eyed comparison of what WIP 2.0 delivers versus what Claude's intelligence layer changes — and the strategic options for what happens next.</div>
+        <div class="card-status progress">In Progress</div>
+      </a>
 
-    <a class="card" href="Claude-MCP/index.html" style="animation-delay: 1.0s">
-      <div class="card-num">03 · Claude+MCP Sprint</div>
-      <div class="card-title">The 90-Day <em>Sprint</em></div>
-      <div class="card-desc">The firm's #1 technology priority. Four phases, one architecture: Eze → Snowflake → Airia → Claude. The mandate, the plan, and what we deferred to make it possible.</div>
-      <div class="card-status progress">In Progress</div>
-    </a>
+      <a class="card" href="Claude-MCP/index.html">
+        <div class="card-num">03 · Claude+MCP Sprint</div>
+        <div class="card-title">The 90-Day <em>Sprint</em></div>
+        <div class="card-desc">The firm's #1 technology priority. Four phases, one architecture: Eze → Snowflake → Airia → Claude. The mandate, the plan, and what we deferred to make it possible.</div>
+        <div class="card-status progress">In Progress</div>
+      </a>
 
-    <a class="card" href="risk-readiness/index.html" style="animation-delay: 1.05s">
-      <div class="card-num">04 · AI Governance</div>
-      <div class="card-title">AI Risk &amp; <em>Readiness</em></div>
-      <div class="card-desc">Where Westfield stands on AI deployment maturity. The risks we're managing, the five readiness pillars, governance infrastructure, and the 90-day checklist before going client-facing.</div>
-      <div class="card-status new">New</div>
-    </a>
+      <a class="card" href="risk-readiness/index.html">
+        <div class="card-num">04 · AI Governance</div>
+        <div class="card-title">AI Risk &amp; <em>Readiness</em></div>
+        <div class="card-desc">Where Westfield stands on AI deployment maturity. The risks we're managing, the five readiness pillars, governance infrastructure, and the 90-day checklist before going client-facing.</div>
+        <div class="card-status new">New</div>
+      </a>
 
-    <div class="card-placeholder">
-      <div class="placeholder-text">05 · Coming Soon</div>
+      <div class="card-placeholder">
+        <div class="placeholder-text">05 · Coming Soon</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS TAB -->
+<div class="tab-panel" id="tab-progress">
+  <div class="progress-section">
+
+    <div class="sprint-header">
+      <h2 class="sprint-title">Claude+MCP<br><em>Sprint Progress</em></h2>
+      <p class="sprint-sub">Live tracking of the 90-day sprint. Four phases from infrastructure to client deployment. Updated weekly by the CTO.</p>
+    </div>
+
+    <!-- Overall progress -->
+    <div class="overall-progress">
+      <div>
+        <div class="op-label">Sprint Progress — Week 2 of 13</div>
+        <div class="op-bar-wrap"><div class="op-bar" id="overall-bar"></div></div>
+        <div class="op-milestones">
+          <div class="op-mile done">Learn</div>
+          <div class="op-mile active">Engineer</div>
+          <div class="op-mile upcoming">Resource</div>
+          <div class="op-mile upcoming">Connect</div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="op-pct">28%</div>
+        <div class="op-pct-label">Complete</div>
+      </div>
+    </div>
+
+    <!-- Phase cards -->
+    <div class="phases-grid">
+
+      <div class="phase-card done">
+        <div class="phase-num">Phase 01 · Complete</div>
+        <div class="phase-name">Learn</div>
+        <div class="phase-dates">Weeks 1–3 · Feb–Mar 2026</div>
+        <div class="phase-desc">Architecture evaluation, MCP protocol deep-dive, vendor selection, and infrastructure readiness assessment.</div>
+        <div class="phase-tasks">
+          <div class="task-item"><div class="task-dot done">✓</div><div class="task-text"><strong>Airia MCP selected</strong> as governance layer</div></div>
+          <div class="task-item"><div class="task-dot done">✓</div><div class="task-text"><strong>Architecture validated:</strong> Eze → Snowflake → Airia → Claude</div></div>
+          <div class="task-item"><div class="task-dot done">✓</div><div class="task-text"><strong>Anthropic enterprise agreement</strong> in negotiation</div></div>
+          <div class="task-item"><div class="task-dot done">✓</div><div class="task-text"><strong>Eze upgrade scoped</strong> as critical dependency</div></div>
+          <div class="task-item"><div class="task-dot done">✓</div><div class="task-text"><strong>Capacity impact assessed</strong> — Q1/Q2 projects deferred</div></div>
+        </div>
+      </div>
+
+      <div class="phase-card active">
+        <div class="phase-num">Phase 02 · Active Now</div>
+        <div class="phase-name">Engineer</div>
+        <div class="phase-dates">Weeks 4–7 · Mar–Apr 2026</div>
+        <div class="phase-desc">Build the integration stack. Connect data pipelines, configure MCP servers, and validate end-to-end Claude query flow.</div>
+        <div class="phase-tasks">
+          <div class="task-item"><div class="task-dot done">✓</div><div class="task-text"><strong>Eze upgrade</strong> — completing March 2026</div></div>
+          <div class="task-item"><div class="task-dot active">→</div><div class="task-text"><strong>Snowflake → Airia connector</strong> build in progress</div></div>
+          <div class="task-item"><div class="task-dot active">→</div><div class="task-text"><strong>MCP server configuration</strong> for portfolio data</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Claude prompt templates</strong> — attribution & analysis</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>End-to-end query validation</strong> with sample portfolio</div></div>
+        </div>
+      </div>
+
+      <div class="phase-card upcoming">
+        <div class="phase-num">Phase 03 · Upcoming</div>
+        <div class="phase-name">Resource</div>
+        <div class="phase-dates">Weeks 8–10 · Apr–May 2026</div>
+        <div class="phase-desc">People, policy, and training. Governance SOPs, analyst upskilling, and compliance sign-off before client exposure.</div>
+        <div class="phase-tasks">
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>AI use policy</strong> — finalized with Legal & Compliance</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Analyst prompting workshop</strong></div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Human review SOP</strong> for client outputs</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Quality scoring rubric</strong> — what "good" looks like</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Compliance green light</strong> to proceed to Phase 4</div></div>
+        </div>
+      </div>
+
+      <div class="phase-card upcoming">
+        <div class="phase-num">Phase 04 · Upcoming</div>
+        <div class="phase-name">Connect</div>
+        <div class="phase-dates">Weeks 11–13 · May–Jun 2026</div>
+        <div class="phase-desc">Client-facing deployment. Pilot with selected relationships, measure productivity impact, and prepare for firm-wide rollout.</div>
+        <div class="phase-tasks">
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Pilot client selection</strong> — 3 relationships</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Red team testing</strong> before client exposure</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>First AI-assisted client reports</strong> delivered</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Productivity measurement</strong> — hours recovered baseline</div></div>
+          <div class="task-item"><div class="task-dot open"> </div><div class="task-text"><strong>Rollout decision</strong> — go/expand/pause</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div class="metric-val">2</div>
+        <div class="metric-label">Weeks In</div>
+        <div class="metric-note">of 13-week sprint</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">1</div>
+        <div class="metric-label">Phases Complete</div>
+        <div class="metric-note">Learn — done</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">5</div>
+        <div class="metric-label">Systems Connected</div>
+        <div class="metric-note">Eze, APX, Snowflake, Airia, Claude</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">65</div>
+        <div class="metric-label">Target Users</div>
+        <div class="metric-note">firm-wide deployment goal</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">3–5h</div>
+        <div class="metric-label">Projected Recovery</div>
+        <div class="metric-note">per user per week</div>
+      </div>
+    </div>
+
+    <!-- Weekly log -->
+    <div class="week-log" style="margin-top:2px">
+      <div class="week-log-title">Recent <em>Activity</em></div>
+      <div class="log-entries">
+
+        <div class="log-entry">
+          <div class="log-date">
+            <div class="log-date-label">Week 2</div>
+            <div class="log-date-val">Mar 10</div>
+          </div>
+          <div class="log-content">
+            <span class="log-tag shipped">Shipped</span>
+            <div class="log-title">Strategy site live — 4 documents published</div>
+            <div class="log-detail">Intelligent Presentation Layer, WIP vs Intelligence Layer, Claude+MCP Sprint overview, and AI Risk & Readiness all published to GitHub Pages. Site shareable with leadership.</div>
+          </div>
+        </div>
+
+        <div class="log-entry">
+          <div class="log-date">
+            <div class="log-date-label">Week 2</div>
+            <div class="log-date-val">Mar 10</div>
+          </div>
+          <div class="log-content">
+            <span class="log-tag in-progress">In Progress</span>
+            <div class="log-title">Airia MCP integration — connector build started</div>
+            <div class="log-detail">Snowflake to Airia pipeline configuration underway. Data access policy scope under definition — what portfolio data Claude is permitted to query.</div>
+          </div>
+        </div>
+
+        <div class="log-entry">
+          <div class="log-date">
+            <div class="log-date-label">Week 1</div>
+            <div class="log-date-val">Mar 3</div>
+          </div>
+          <div class="log-content">
+            <span class="log-tag shipped">Shipped</span>
+            <div class="log-title">Phase 1 (Learn) complete — architecture locked</div>
+            <div class="log-detail">Eze → Snowflake → Airia → Claude architecture validated. Airia selected as MCP governance layer. Anthropic enterprise agreement in negotiation. Eze upgrade confirmed as March dependency.</div>
+          </div>
+        </div>
+
+        <div class="log-entry">
+          <div class="log-date">
+            <div class="log-date-label">Week 1</div>
+            <div class="log-date-val">Mar 3</div>
+          </div>
+          <div class="log-content">
+            <span class="log-tag in-progress">In Progress</span>
+            <div class="log-title">Capacity impact — Q1/Q2 projects deferred</div>
+            <div class="log-detail">Sprint consumes remaining Q1 and all Q2 capacity. WIP 2.0/Sigma, Resilience Program, Salesforce Delegation moved to Q3–Q4. CORE framework design initiated to prevent future sequencing disruption.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Next up -->
+    <div class="next-up">
+      <div class="next-up-label">Up Next</div>
+      <div class="next-up-title">Complete Eze upgrade → begin Snowflake↔Airia connector build → first end-to-end <strong>Claude query against live portfolio data</strong>.</div>
     </div>
 
   </div>
 </div>
 
 <div class="divider"></div>
-
 <footer>
   <div class="footer-logo">Westfield <span>Capital</span></div>
   <div class="footer-note">CTO · Technology Strategy Index · March 2026</div>
 </footer>
 
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Animate overall progress bar on load
+  setTimeout(() => {
+    const bar = document.getElementById('overall-bar');
+    if (bar) bar.style.width = '28%';
+  }, 600);
+</script>
 </body>
 </html>
