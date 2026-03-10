@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Risk & Readiness — Westfield Capital</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap');
+
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #162236;
+    --navy-light: #1E3050;
+    --teal: #1A9E8F;
+    --teal-light: #22C4B2;
+    --teal-dim: rgba(26,158,143,0.12);
+    --gold: #C9A84C;
+    --gold-dim: rgba(201,168,76,0.1);
+    --amber: #E07A2F;
+    --amber-dim: rgba(224,122,47,0.12);
+    --red: #C94040;
+    --red-dim: rgba(201,64,64,0.12);
+    --green: #2A9D6A;
+    --green-dim: rgba(42,157,106,0.12);
+    --white: #F4F6F8;
+    --white-dim: rgba(244,246,248,0.5);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  .progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--teal); z-index: 100; box-shadow: 0 0 8px var(--teal); transition: width 0.1s; }
+
+  nav {
+    position: relative; z-index: 1;
+    padding: 32px 10vw;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    opacity: 0; animation: fadeDown 0.6s ease forwards 0.1s;
+  }
+  .nav-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; }
+  .nav-logo span { color: var(--teal); }
+  .nav-back { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); text-decoration: none; }
+  .nav-back:hover { color: var(--teal-light); }
+
+  /* hero */
+  .hero { position: relative; z-index: 1; padding: 80px 10vw 60px; overflow: hidden; }
+  .hero::after {
+    content: ''; position: absolute; top: -20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,64,64,0.08) 0%, rgba(26,158,143,0.08) 50%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s; }
+  .hero-title { font-family: var(--serif); font-size: clamp(44px, 6vw, 88px); font-weight: 300; line-height: 1.05; letter-spacing: -0.02em; max-width: 760px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s; }
+  .hero-title em { font-style: italic; color: var(--teal-light); }
+  .hero-sub { margin-top: 28px; font-size: 16px; color: var(--white-dim); max-width: 560px; line-height: 1.85; opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s; }
+
+  /* overall readiness score */
+  .readiness-banner {
+    display: flex; align-items: stretch; gap: 0; margin-top: 56px;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s;
+  }
+
+  .readiness-score {
+    background: var(--teal-dim); border: 1px solid rgba(26,158,143,0.3);
+    border-right: none; padding: 36px 48px;
+    display: flex; flex-direction: column; justify-content: center; min-width: 220px;
+  }
+  .score-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .score-value { font-family: var(--serif); font-size: 72px; font-weight: 300; line-height: 1; color: var(--teal-light); }
+  .score-denom { font-family: var(--serif); font-size: 28px; color: var(--white-dim); }
+
+  .readiness-breakdown {
+    flex: 1; background: var(--navy-mid); border: 1px solid rgba(255,255,255,0.06);
+    padding: 28px 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 24px;
+  }
+
+  .breakdown-item { display: flex; flex-direction: column; gap: 8px; }
+  .breakdown-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white-dim); }
+  .breakdown-bar-wrap { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+  .breakdown-bar { height: 100%; border-radius: 2px; transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+  .breakdown-bar.high { background: var(--teal); }
+  .breakdown-bar.med { background: var(--gold); }
+  .breakdown-bar.low { background: var(--amber); }
+  .breakdown-score { font-family: var(--serif); font-size: 22px; font-weight: 300; }
+  .breakdown-score.high { color: var(--teal-light); }
+  .breakdown-score.med { color: var(--gold); }
+  .breakdown-score.low { color: var(--amber); }
+
+  section { position: relative; z-index: 1; padding: 80px 10vw; }
+
+  .section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 48px; display: flex; align-items: center; gap: 16px; }
+  .section-label::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--teal); opacity: 0.4; }
+  .section-title { font-family: var(--serif); font-size: clamp(30px, 4vw, 52px); font-weight: 300; line-height: 1.15; margin-bottom: 20px; }
+  .section-title em { font-style: italic; color: var(--teal-light); }
+  .divider { width: 80vw; margin: 0 10vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,158,143,0.25), transparent); }
+
+  /* risk matrix */
+  .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; margin-top: 48px; }
+
+  .risk-card {
+    background: var(--navy-mid); padding: 36px 32px; position: relative;
+    overflow: hidden; transition: background 0.3s;
+  }
+  .risk-card:hover { background: var(--navy-light); }
+  .risk-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .risk-card.critical::before { background: var(--red); }
+  .risk-card.moderate::before { background: var(--amber); }
+  .risk-card.managed::before { background: var(--teal); }
+
+  .risk-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 5px 10px; margin-bottom: 20px; border-radius: 2px;
+  }
+  .risk-badge.critical { background: var(--red-dim); color: var(--red); border: 1px solid rgba(201,64,64,0.25); }
+  .risk-badge.moderate { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(224,122,47,0.25); }
+  .risk-badge.managed { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(26,158,143,0.25); }
+  .risk-badge::before { content: '●'; font-size: 6px; }
+
+  .risk-title { font-family: var(--serif); font-size: 22px; font-weight: 400; margin-bottom: 10px; }
+  .risk-desc { font-size: 13px; color: var(--white-dim); line-height: 1.7; margin-bottom: 20px; }
+
+  .risk-mitigation { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; }
+  .mitigation-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+  .mitigation-text { font-size: 12px; color: var(--white-dim); line-height: 1.6; }
+
+  /* readiness pillars */
+  .pillar-list { display: flex; flex-direction: column; gap: 2px; margin-top: 48px; }
+
+  .pillar-item {
+    display: grid; grid-template-columns: 280px 1fr; background: var(--navy-mid);
+    overflow: hidden; transition: background 0.3s;
+  }
+  .pillar-item:hover { background: var(--navy-light); }
+  @media (max-width: 768px) { .pillar-item { grid-template-columns: 1fr; } }
+
+  .pillar-left {
+    padding: 32px; border-right: 1px solid rgba(255,255,255,0.05);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .pillar-name { font-family: var(--serif); font-size: 22px; font-weight: 400; margin-bottom: 8px; }
+  .pillar-category { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); }
+
+  .pillar-meter { margin-top: 20px; }
+  .meter-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+  .meter-fill { height: 100%; border-radius: 3px; transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .meter-labels { display: flex; justify-content: space-between; }
+  .meter-score { font-family: var(--serif); font-size: 18px; font-weight: 300; }
+  .meter-status { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; }
+
+  .pillar-right { padding: 32px; }
+  .pillar-detail { font-size: 13px; color: var(--white-dim); line-height: 1.75; margin-bottom: 16px; }
+  .pillar-actions { display: flex; flex-direction: column; gap: 8px; }
+  .action-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 12px; color: var(--white-dim); line-height: 1.5;
+  }
+  .action-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .action-dot.done { background: var(--teal); }
+  .action-dot.in-progress { background: var(--gold); }
+  .action-dot.pending { background: rgba(255,255,255,0.2); }
+
+  /* governance framework */
+  .governance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; margin-top: 48px; }
+
+  .gov-card { background: var(--navy-mid); padding: 32px 28px; position: relative; overflow: hidden; transition: background 0.3s; }
+  .gov-card:hover { background: var(--navy-light); }
+  .gov-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--teal), transparent); opacity: 0; transition: opacity 0.3s; }
+  .gov-card:hover::after { opacity: 1; }
+
+  .gov-icon { font-size: 26px; margin-bottom: 16px; display: block; }
+  .gov-title { font-family: var(--serif); font-size: 20px; font-weight: 400; margin-bottom: 10px; }
+  .gov-desc { font-size: 13px; color: var(--white-dim); line-height: 1.7; margin-bottom: 16px; }
+  .gov-status { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .gov-status.active { color: var(--teal); }
+  .gov-status.building { color: var(--gold); }
+  .gov-status.planned { color: var(--white-dim); }
+
+  /* 90-day checklist */
+  .checklist-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px; margin-top: 48px; }
+
+  .checklist-col { background: var(--navy-mid); padding: 32px; }
+  .checklist-phase { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .checklist-phase::after { content: ''; flex: 1; height: 1px; background: rgba(26,158,143,0.2); }
+
+  .check-list { display: flex; flex-direction: column; gap: 12px; }
+  .check-item { display: flex; gap: 12px; align-items: flex-start; }
+  .check-box {
+    width: 16px; height: 16px; border-radius: 2px; flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 500;
+  }
+  .check-box.done { background: var(--teal); color: var(--navy); }
+  .check-box.partial { background: var(--gold-dim); border: 1px solid var(--gold); color: var(--gold); }
+  .check-box.open { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: transparent; }
+  .check-text { font-size: 13px; color: var(--white-dim); line-height: 1.5; }
+  .check-text strong { color: var(--white); font-weight: 500; }
+
+  /* overall position */
+  .position-block {
+    background: var(--teal-dim); border: 1px solid rgba(26,158,143,0.25);
+    padding: 56px; margin-top: 48px;
+  }
+  .position-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; }
+  .position-text { font-family: var(--serif); font-size: clamp(22px, 3vw, 38px); font-weight: 300; line-height: 1.35; max-width: 760px; }
+  .position-text strong { font-weight: 600; color: var(--teal-light); font-style: italic; }
+
+  footer { position: relative; z-index: 1; padding: 48px 10vw; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: var(--serif); font-size: 18px; }
+  .footer-logo span { color: var(--teal); }
+  .footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-dim); }
+
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav>
+  <div class="nav-logo">Westfield <span>Capital</span></div>
+  <a class="nav-back" href="../index.html">← Back to index</a>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">Westfield Capital · Technology Strategy · AI Governance</p>
+  <h1 class="hero-title">AI Risk &<br><em>Readiness</em></h1>
+  <p class="hero-sub">Where Westfield stands on AI deployment maturity — the risks we're managing, the capabilities we've built, and the governance infrastructure required to scale responsibly.</p>
+
+  <div class="readiness-banner">
+    <div class="readiness-score">
+      <div class="score-label">Overall Readiness</div>
+      <div class="score-value">74<span class="score-denom">/100</span></div>
+    </div>
+    <div class="readiness-breakdown" id="breakdown">
+      <div class="breakdown-item">
+        <div class="breakdown-label">Infrastructure</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar high" style="width:0%" data-width="88%"></div></div>
+        <div class="breakdown-score high">88</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Data Governance</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar high" style="width:0%" data-width="82%"></div></div>
+        <div class="breakdown-score high">82</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">AI Literacy</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar med" style="width:0%" data-width="62%"></div></div>
+        <div class="breakdown-score med">62</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Governance</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar med" style="width:0%" data-width="58%"></div></div>
+        <div class="breakdown-score med">58</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Output Quality</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar low" style="width:0%" data-width="48%"></div></div>
+        <div class="breakdown-score low">48</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- RISK REGISTER -->
+<section>
+  <p class="section-label fade-in">01 · Risk Register</p>
+  <h2 class="section-title fade-in">Known risks.<br><em>Active mitigations.</em></h2>
+
+  <div class="risk-grid fade-in">
+    <div class="risk-card critical">
+      <div class="risk-badge critical">Critical</div>
+      <div class="risk-title">AI Output Used Without Verification</div>
+      <div class="risk-desc">Client-facing materials generated by Claude could contain errors, hallucinations, or outdated information if published without human review. Regulatory and reputational exposure if AI-generated analysis is treated as authoritative without oversight.</div>
+      <div class="risk-mitigation">
+        <div class="mitigation-label">Mitigation</div>
+        <div class="mitigation-text">All AI-generated client outputs require analyst sign-off before distribution. Airia MCP governance layer logs every query and response. Human-in-the-loop mandate written into sprint requirements.</div>
+      </div>
+    </div>
+
+    <div class="risk-card critical">
+      <div class="risk-badge critical">Critical</div>
+      <div class="risk-title">Sensitive Data Exposure via Prompts</div>
+      <div class="risk-desc">Portfolio positions, client information, and proprietary investment thesis could be inadvertently included in prompts sent to external AI services. Data residency and confidentiality obligations at risk.</div>
+      <div class="risk-mitigation">
+        <div class="mitigation-label">Mitigation</div>
+        <div class="mitigation-text">Anthropic enterprise agreement with data privacy terms in place. Airia governance layer intercepts and masks sensitive identifiers before queries leave the perimeter. Prompt templates audited quarterly.</div>
+      </div>
+    </div>
+
+    <div class="risk-card moderate">
+      <div class="risk-badge moderate">Moderate</div>
+      <div class="risk-title">Model Dependency & Vendor Lock-in</div>
+      <div class="risk-desc">Deep integration with Claude+MCP creates operational dependency on Anthropic's API availability and pricing. Model capability changes in future versions could disrupt established workflows.</div>
+      <div class="risk-mitigation">
+        <div class="mitigation-label">Mitigation</div>
+        <div class="mitigation-text">MCP architecture is model-agnostic by design. Abstraction layer between Airia and Claude allows swap to alternative models. SLA monitoring and fallback procedures documented in sprint governance.</div>
+      </div>
+    </div>
+
+    <div class="risk-card moderate">
+      <div class="risk-badge moderate">Moderate</div>
+      <div class="risk-title">Team Skill Gap & Adoption Resistance</div>
+      <div class="risk-desc">Productivity gains depend on analysts actually using Claude effectively. Poor prompting hygiene, distrust of AI outputs, or workflow friction could limit realized value below projected gains.</div>
+      <div class="risk-mitigation">
+        <div class="mitigation-label">Mitigation</div>
+        <div class="mitigation-text">Phase 3 (Resource) dedicated to training and workflow integration. Champions identified in each team. Early wins documented and shared to build confidence. Feedback loops built into sprint cadence.</div>
+      </div>
+    </div>
+
+    <div class="risk-card moderate">
+      <div class="risk-badge moderate">Moderate</div>
+      <div class="risk-title">Regulatory Uncertainty — AI in Finance</div>
+      <div class="risk-desc">SEC, FINRA, and state regulations around AI-generated investment communications are evolving rapidly. What is permissible today may require disclosure or prohibition tomorrow.</div>
+      <div class="risk-mitigation">
+        <div class="mitigation-label">Mitigation</div>
+        <div class="mitigation-text">Compliance team engaged in sprint governance from Phase 1. AI-generated content flagged and archived per standard document retention. Legal counsel reviewing AI use policy in parallel with sprint execution.</div>
+      </div>
+    </div>
+
+    <div class="risk-card managed">
+      <div class="risk-badge managed">Managed</div>
+      <div class="risk-title">Infrastructure Integration Complexity</div>
+      <div class="risk-desc">Connecting Eze/APX → Snowflake → Airia → Claude requires multiple secure data pipelines. Integration failures could produce stale or incorrect data in AI responses.</div>
+      <div class="risk-mitigation">
+        <div class="mitigation-label">Mitigation</div>
+        <div class="mitigation-text">18 months of infrastructure modernization provides stable foundation. Eze upgrade (March) completes the critical dependency. Data quality checks at each pipeline stage before Claude receives context.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- READINESS PILLARS -->
+<section>
+  <p class="section-label fade-in">02 · Readiness Assessment</p>
+  <h2 class="section-title fade-in">Five pillars.<br><em>Honest scores.</em></h2>
+
+  <div class="pillar-list fade-in">
+
+    <div class="pillar-item">
+      <div class="pillar-left">
+        <div>
+          <div class="pillar-category">Pillar 01</div>
+          <div class="pillar-name">Infrastructure</div>
+        </div>
+        <div class="pillar-meter">
+          <div class="meter-track"><div class="meter-fill" style="width:0%;background:var(--teal);" data-width="88%"></div></div>
+          <div class="meter-labels">
+            <div class="meter-score" style="color:var(--teal-light)">88/100</div>
+            <div class="meter-status" style="color:var(--teal)">Strong ↑</div>
+          </div>
+        </div>
+      </div>
+      <div class="pillar-right">
+        <div class="pillar-detail">Cloud-first architecture is in place. Snowflake as unified data platform, modern API connectivity, Eze/APX integration underway. The 18-month modernization program was explicitly designed to make AI deployment possible without a rebuild. This is Westfield's strongest readiness signal.</div>
+        <div class="pillar-actions">
+          <div class="action-item"><div class="action-dot done"></div><div class="check-text">Snowflake provisioned and populated with portfolio data</div></div>
+          <div class="action-item"><div class="action-dot done"></div><div class="check-text">Cloud infrastructure security audit completed</div></div>
+          <div class="action-item"><div class="action-dot in-progress"></div><div class="check-text">Eze upgrade — completing March 2026</div></div>
+          <div class="action-item"><div class="action-dot in-progress"></div><div class="check-text">MCP server configuration and Airia integration — Phase 2</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillar-item">
+      <div class="pillar-left">
+        <div>
+          <div class="pillar-category">Pillar 02</div>
+          <div class="pillar-name">Data Governance</div>
+        </div>
+        <div class="pillar-meter">
+          <div class="meter-track"><div class="meter-fill" style="width:0%;background:var(--teal);" data-width="82%"></div></div>
+          <div class="meter-labels">
+            <div class="meter-score" style="color:var(--teal-light)">82/100</div>
+            <div class="meter-status" style="color:var(--teal)">Strong ↑</div>
+          </div>
+        </div>
+      </div>
+      <div class="pillar-right">
+        <div class="pillar-detail">Data classification, access controls, and retention policies are well-established. Airia MCP adds an AI-specific governance layer — query logging, output auditing, and PII masking before data reaches Claude. The main gap is AI-specific data contracts (what data Claude is permitted to see) which are being defined in Phase 1.</div>
+        <div class="pillar-actions">
+          <div class="action-item"><div class="action-dot done"></div><div class="check-text">Data classification framework in place</div></div>
+          <div class="action-item"><div class="action-dot done"></div><div class="check-text">Role-based access controls on Snowflake</div></div>
+          <div class="action-item"><div class="action-dot in-progress"></div><div class="check-text">AI data access policy — defining Claude's permitted scope</div></div>
+          <div class="action-item"><div class="action-dot pending"></div><div class="check-text">Airia audit log review cadence — establishing in Phase 2</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillar-item">
+      <div class="pillar-left">
+        <div>
+          <div class="pillar-category">Pillar 03</div>
+          <div class="pillar-name">AI Literacy</div>
+        </div>
+        <div class="pillar-meter">
+          <div class="meter-track"><div class="meter-fill" style="width:0%;background:var(--gold);" data-width="62%"></div></div>
+          <div class="meter-labels">
+            <div class="meter-score" style="color:var(--gold)">62/100</div>
+            <div class="meter-status" style="color:var(--gold)">Building →</div>
+          </div>
+        </div>
+      </div>
+      <div class="pillar-right">
+        <div class="pillar-detail">Leadership is highly engaged and directionally aligned. The technical team has strong foundational understanding. The gap is at the analyst and PM level — the people who will be daily users of Claude need structured onboarding in effective prompting, output validation, and knowing when not to trust the model.</div>
+        <div class="pillar-actions">
+          <div class="action-item"><div class="action-dot done"></div><div class="check-text">Executive team briefed on Claude capabilities and limits</div></div>
+          <div class="action-item"><div class="action-dot in-progress"></div><div class="check-text">Technical team Claude+MCP upskilling — Phase 1/2</div></div>
+          <div class="action-item"><div class="action-dot pending"></div><div class="check-text">Analyst prompting workshop — Phase 3</div></div>
+          <div class="action-item"><div class="action-dot pending"></div><div class="check-text">PM/IC output validation training — Phase 3</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillar-item">
+      <div class="pillar-left">
+        <div>
+          <div class="pillar-category">Pillar 04</div>
+          <div class="pillar-name">AI Governance</div>
+        </div>
+        <div class="pillar-meter">
+          <div class="meter-track"><div class="meter-fill" style="width:0%;background:var(--gold);" data-width="58%"></div></div>
+          <div class="meter-labels">
+            <div class="meter-score" style="color:var(--gold)">58/100</div>
+            <div class="meter-status" style="color:var(--gold)">Building →</div>
+          </div>
+        </div>
+      </div>
+      <div class="pillar-right">
+        <div class="pillar-detail">Airia provides technical governance infrastructure. The gap is policy: written standards for what AI can and cannot do at Westfield, who reviews AI-generated outputs before client distribution, how incidents are escalated, and how the firm stays current with regulatory guidance on AI in investment management.</div>
+        <div class="pillar-actions">
+          <div class="action-item"><div class="action-dot done"></div><div class="check-text">Airia MCP governance layer selected and being configured</div></div>
+          <div class="action-item"><div class="action-dot in-progress"></div><div class="check-text">AI use policy — draft in progress with Legal and Compliance</div></div>
+          <div class="action-item"><div class="action-dot pending"></div><div class="check-text">Human review SOP for client-facing AI outputs</div></div>
+          <div class="action-item"><div class="action-dot pending"></div><div class="check-text">AI incident response playbook</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillar-item">
+      <div class="pillar-left">
+        <div>
+          <div class="pillar-category">Pillar 05</div>
+          <div class="pillar-name">Output Quality Control</div>
+        </div>
+        <div class="pillar-meter">
+          <div class="meter-track"><div class="meter-fill" style="width:0%;background:var(--amber);" data-width="48%"></div></div>
+          <div class="meter-labels">
+            <div class="meter-score" style="color:var(--amber)">48/100</div>
+            <div class="meter-status" style="color:var(--amber)">Early Stage ↗</div>
+          </div>
+        </div>
+      </div>
+      <div class="pillar-right">
+        <div class="pillar-detail">This is the biggest gap — and the honest one. We don't yet have systematic ways to measure whether Claude's outputs are accurate, consistent, or meeting Westfield's quality standard. Evaluation frameworks, benchmark test cases, and quality scoring will be critical before Phase 4 goes client-facing. This is expected given sprint stage.</div>
+        <div class="pillar-actions">
+          <div class="action-item"><div class="action-dot in-progress"></div><div class="check-text">Baseline test case library being built in Phase 1</div></div>
+          <div class="action-item"><div class="action-dot pending"></div><div class="check-text">Attribution accuracy benchmarking — Phase 2</div></div>
+          <div class="action-item"><div class="action-dot pending"></div><div class="check-text">Quality scoring rubric for AI-generated outputs</div></div>
+          <div class="action-item"><div class="action-dot pending"></div><div class="check-text">Red team / adversarial testing before Phase 4 client launch</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- GOVERNANCE -->
+<section>
+  <p class="section-label fade-in">03 · Governance Infrastructure</p>
+  <h2 class="section-title fade-in">The oversight layer<br>that makes <em>scale safe</em>.</h2>
+
+  <div class="governance-grid fade-in">
+    <div class="gov-card">
+      <span class="gov-icon">🔒</span>
+      <div class="gov-title">Airia MCP Gateway</div>
+      <div class="gov-desc">Every query to Claude passes through Airia's governance layer. Access control, PII masking, audit logging, and output monitoring — before and after each model interaction.</div>
+      <div class="gov-status active">● Active — configuring</div>
+    </div>
+    <div class="gov-card">
+      <span class="gov-icon">📋</span>
+      <div class="gov-title">AI Use Policy</div>
+      <div class="gov-desc">Written standards for permitted uses, prohibited uses, required human review stages, and escalation procedures. Co-developed with Legal and Compliance.</div>
+      <div class="gov-status building">◐ In development</div>
+    </div>
+    <div class="gov-card">
+      <span class="gov-icon">👁</span>
+      <div class="gov-title">Human Review SOP</div>
+      <div class="gov-desc">Standard operating procedure for analyst review of AI-generated outputs before client distribution. Defines what "reviewed" means and who is accountable.</div>
+      <div class="gov-status planned">○ Phase 3 deliverable</div>
+    </div>
+    <div class="gov-card">
+      <span class="gov-icon">📊</span>
+      <div class="gov-title">CORE Capacity Framework</div>
+      <div class="gov-desc">Technology commitment governance — ensures future AI initiatives go through structured capacity assessment rather than ad-hoc mandate. Prevents the sprint sequencing disruption from repeating.</div>
+      <div class="gov-status building">◐ Framework in design</div>
+    </div>
+    <div class="gov-card">
+      <span class="gov-icon">⚡</span>
+      <div class="gov-title">Incident Response</div>
+      <div class="gov-desc">Playbook for AI-related incidents: bad outputs reaching clients, model availability failures, data exposure events. Severity classification and escalation paths.</div>
+      <div class="gov-status planned">○ Phase 3 deliverable</div>
+    </div>
+    <div class="gov-card">
+      <span class="gov-icon">📡</span>
+      <div class="gov-title">Regulatory Watch</div>
+      <div class="gov-desc">Ongoing monitoring of SEC, FINRA, and state guidance on AI in investment management. Compliance team responsible for translating regulatory changes into policy updates.</div>
+      <div class="gov-status active">● Active — Compliance</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 90-DAY CHECKLIST -->
+<section>
+  <p class="section-label fade-in">04 · 90-Day Risk Checklist</p>
+  <h2 class="section-title fade-in">What needs to be true<br>before <em>Phase 4 launches</em>.</h2>
+
+  <div class="checklist-cols fade-in">
+    <div class="checklist-col">
+      <div class="checklist-phase">Phase 1–2 · Technical Foundation</div>
+      <div class="check-list">
+        <div class="check-item"><div class="check-box done">✓</div><div class="check-text"><strong>Eze/Snowflake pipeline</strong> — data flowing and validated</div></div>
+        <div class="check-item"><div class="check-box done">✓</div><div class="check-text"><strong>Airia MCP</strong> — configured and audit logging active</div></div>
+        <div class="check-item"><div class="check-box partial">~</div><div class="check-text"><strong>AI data access policy</strong> — defining Claude's permitted scope</div></div>
+        <div class="check-item"><div class="check-box partial">~</div><div class="check-text"><strong>Prompt templates</strong> — reviewed and approved by Compliance</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Test case library</strong> — baseline accuracy benchmarks built</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Security penetration test</strong> — MCP integration layer audited</div></div>
+      </div>
+    </div>
+
+    <div class="checklist-col">
+      <div class="checklist-phase">Phase 3 · People & Policy</div>
+      <div class="check-list">
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>AI Use Policy</strong> — finalized and published</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Analyst training</strong> — prompting workshop delivered</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Human review SOP</strong> — documented and signed off</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Incident playbook</strong> — escalation paths defined</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>PM/IC output calibration</strong> — what good looks like, documented</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Compliance sign-off</strong> — green light for client-facing use</div></div>
+      </div>
+    </div>
+
+    <div class="checklist-col">
+      <div class="checklist-phase">Phase 4 · Client Readiness</div>
+      <div class="check-list">
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Red team testing</strong> — adversarial prompts tried and logged</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Quality scoring rubric</strong> — attribution accuracy standard set</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Disclosure language</strong> — AI-assisted content disclosure approved</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Pilot client review</strong> — 3 client reports reviewed before rollout</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Rollback plan</strong> — revert to manual process if issues arise</div></div>
+        <div class="check-item"><div class="check-box open"> </div><div class="check-text"><strong>Legal final review</strong> — all client-facing AI output materials approved</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- POSITION -->
+<section style="padding-bottom: 80px;">
+  <p class="section-label fade-in">05 · Our Position</p>
+  <div class="position-block fade-in">
+    <p class="position-label">Strategic assessment</p>
+    <p class="position-text">
+      Westfield enters this sprint from a position of <strong>genuine infrastructure strength</strong> — 18 months of modernization means we're not building the foundation while trying to deploy AI. The critical gaps are in governance and output quality control, both of which are known and being addressed in Phase 3. The firm is <strong>ready to build, not yet ready to scale to clients</strong> — and that sequencing is correct.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Westfield <span>Capital</span></div>
+  <div class="footer-note">Technology Strategy · AI Risk & Readiness · March 2026</div>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    document.getElementById('progress').style.width = (p * 100) + '%';
+  });
+
+  // Fade-in observer
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+        obs.unobserve(el.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+  // Animate bars when breakdown section comes into view
+  const barObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('[data-width]').forEach(bar => {
+          setTimeout(() => { bar.style.width = bar.dataset.width; }, 200);
+        });
+        barObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('#breakdown, .pillar-list').forEach(el => barObs.observe(el));
+</script>
+</body>
+</html>
