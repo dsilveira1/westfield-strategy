@@ -161,9 +161,26 @@
     cursor:pointer; text-transform:uppercase; z-index:100;
   }
   .print-btn:hover { background:var(--ink3); }
+
+  .web-nav {
+    background: var(--ink); padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--rule);
+  }
+  .web-nav a { text-decoration: none; }
+  .web-nav .nav-logo { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 700; color: var(--cream); }
+  .web-nav .nav-logo span { color: var(--gold); }
+  .web-nav .nav-back { font-family: 'Source Code Pro', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+  .web-nav .nav-back:hover { color: var(--cream); }
+  @media print { .web-nav { display: none; } }
 </style>
 </head>
 <body>
+
+<div class="web-nav no-print">
+  <a class="nav-logo" href="../index.html">Westfield <span>Capital</span></a>
+  <a class="nav-back" href="../index.html">← Back to index</a>
+</div>
 
 <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
 
