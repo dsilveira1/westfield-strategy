@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eze Platform Migration Decision — Westfield Capital</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
 
   :root {
-    --navy: #0D1B2A;
-    --navy-mid: #162236;
-    --navy-light: #1E3050;
-    --teal: #1A9E8F;
-    --teal-light: #22C4B2;
-    --teal-dim: rgba(26,158,143,0.12);
+    --navy: #FFFFFF;
+    --navy-mid: #F5F7FA;
+    --navy-light: #E8ECF2;
+    --teal: #3D5A9E;
+    --teal-light: #5B7BC2;
+    --teal-dim: rgba(61,90,158,0.08);
     --gold: #C9A84C;
-    --gold-dim: rgba(201,168,76,0.1);
-    --white: #F4F6F8;
-    --white-dim: rgba(244,246,248,0.5);
-    --white-faint: rgba(244,246,248,0.06);
+    --gold-dim: rgba(201,168,76,0.06);
+    --white: #1B2541;
+    --white-dim: rgba(27,37,65,0.55);
+    --white-faint: rgba(27,37,65,0.04);
     --red: #E05252;
     --red-dim: rgba(224,82,82,0.12);
     --amber: #D4A03C;
@@ -27,9 +27,9 @@
     --blue-dim: rgba(91,141,239,0.12);
     --green: #2ECC71;
     --green-dim: rgba(46,204,113,0.12);
-    --serif: 'Cormorant Garamond', Georgia, serif;
-    --sans: 'DM Sans', sans-serif;
-    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Montserrat', sans-serif;
+    --mono: 'Roboto Mono', monospace;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,7 +47,7 @@
   body::before {
     content: ''; position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0; opacity: 0.4;
+    pointer-events: none; z-index: 0; opacity: 0.15;
   }
 
   .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--teal); z-index: 100; box-shadow: 0 0 8px var(--teal); transition: width 0.1s; }
@@ -56,7 +56,7 @@
     position: relative; z-index: 1;
     padding: 32px 10vw;
     display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(27,37,65,0.06);
     opacity: 0; animation: fadeDown 0.6s ease forwards 0.1s;
   }
   .nav-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; text-decoration: none; color: inherit; }
@@ -69,7 +69,7 @@
   .hero::after {
     content: ''; position: absolute; top: -30%; right: -15%;
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(26,158,143,0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(61,90,158,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
   .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s; }
@@ -89,7 +89,7 @@
   .section-title em { font-style: italic; color: var(--teal-light); }
   .section-desc { color: var(--white-dim); font-size: 15px; max-width: 620px; line-height: 1.85; margin-bottom: 48px; }
 
-  .divider { width: 80vw; margin: 0 10vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,158,143,0.25), transparent); }
+  .divider { width: 80vw; margin: 0 10vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(61,90,158,0.25), transparent); }
 
   /* stats bar */
   .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2px; margin-bottom: 48px; }
@@ -99,7 +99,7 @@
   .stat-num.green { color: var(--green); }
   .stat-num.teal { color: var(--teal-light); }
   .stat-desc { font-size: 12px; color: var(--white-dim); line-height: 1.5; margin-top: 6px; }
-  .stat-source { font-family: var(--mono); font-size: 9px; color: rgba(244,246,248,0.3); margin-top: 4px; letter-spacing: 0.08em; }
+  .stat-source { font-family: var(--mono); font-size: 9px; color: rgba(27,37,65,0.3); margin-top: 4px; letter-spacing: 0.08em; }
 
   /* env/card grid */
   .env-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2px; }
@@ -169,7 +169,7 @@
 
   /* recommendation callout */
   .reco-block {
-    background: var(--teal-dim); border: 1px solid rgba(26,158,143,0.25);
+    background: var(--teal-dim); border: 1px solid rgba(61,90,158,0.25);
     padding: 32px 36px; margin-bottom: 48px;
   }
   .reco-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
@@ -203,7 +203,7 @@
   .contingency-text { font-size: 13px; color: var(--white-dim); line-height: 1.75; font-style: italic; }
   .contingency-text strong { color: var(--white); font-weight: 500; font-style: normal; }
 
-  footer { position: relative; z-index: 1; padding: 48px 10vw; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  footer { position: relative; z-index: 1; padding: 48px 10vw; border-top: 1px solid rgba(27,37,65,0.06); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
   .footer-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; text-decoration: none; color: inherit; }
   .footer-logo span { color: var(--teal); }
   .footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-dim); }
