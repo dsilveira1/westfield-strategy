@@ -3,1246 +3,664 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Westfield Capital — Claude AI Deployment Risk & Readiness</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<title>Claude AI Deployment — Westfield Capital</title>
 <style>
-  @page { size: letter landscape; margin: 0; }
-  @media print {
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .no-print { display: none; }
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap');
+
   :root {
-    --ink: #0f1117; --ink2: #1c2030; --ink3: #2a3048;
-    --rule: #d4c9b0; --rule-lt: #e8e2d8;
-    --gold: #b8982a; --cream: #faf8f4; --fog: #f0ece4;
-    --text: #1c2030; --text-mid: #4a5168; --text-dim: #8a91a8;
-    --green: #1a5c3a; --green-lt: #edf5f0;
-    --amber: #7a4a10; --amber-lt: #fdf3e4;
-    --red: #6b1f1f; --red-lt: #fdf0f0;
-    --blue: #1a3a6b; --blue-lt: #edf2fb;
-  }
-  html, body {
-    width: 11in; background: var(--cream);
-    font-family: 'Source Sans 3', sans-serif; font-size: 9.5pt; color: var(--text); line-height: 1.5;
-  }
-  .page {
-    width: 11in; height: 8.5in; background: var(--cream);
-    display: grid; grid-template-rows: auto 1fr auto; position: relative; overflow: hidden;
-    page-break-after: always;
-  }
-  .page::before { content:''; position:absolute; top:0; left:0; width:0.18in; height:8.5in; background:var(--ink); }
-  .page::after { content:''; position:absolute; top:0; left:0.18in; width:0.04in; height:8.5in; background:var(--gold); }
-
-  .header {
-    padding: 0.2in 0.35in 0.1in 0.42in; border-bottom: 1px solid var(--rule);
-    display: flex; justify-content: space-between; align-items: flex-end; margin-left: 0.25in;
-  }
-  .firm-eyebrow { font-family:'Source Code Pro',monospace; font-size:6.5pt; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:2px; }
-  .firm-name { font-family:'Playfair Display',Georgia,serif; font-size:16pt; font-weight:700; color:var(--ink); line-height:1.1; }
-  .doc-title { font-family:'Source Sans 3',sans-serif; font-size:9pt; color:var(--text-mid); margin-top:2px; }
-  .header-meta { font-family:'Source Code Pro',monospace; font-size:6.5pt; color:var(--text-dim); letter-spacing:0.08em; line-height:1.8; text-align:right; }
-  .page-label { font-family:'Source Code Pro',monospace; font-size:6pt; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; margin-top:3px; }
-
-  .body {
-    padding: 0.1in 0.35in 0.06in 0.42in; margin-left: 0.25in;
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.07in 0.1in;
-  }
-  .body-p2 {
-    padding: 0.12in 0.4in 0.06in 0.42in; margin-left: 0.25in;
-    display: grid; grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 0.08in 0.14in;
+    --navy: #0D1B2A;
+    --navy-mid: #162236;
+    --navy-light: #1E3050;
+    --teal: #1A9E8F;
+    --teal-light: #22C4B2;
+    --teal-dim: rgba(26,158,143,0.12);
+    --gold: #C9A84C;
+    --gold-dim: rgba(201,168,76,0.1);
+    --white: #F4F6F8;
+    --white-dim: rgba(244,246,248,0.5);
+    --white-faint: rgba(244,246,248,0.06);
+    --red: #E05252;
+    --red-dim: rgba(224,82,82,0.12);
+    --amber: #D4A03C;
+    --amber-dim: rgba(212,160,60,0.12);
+    --blue: #5B8DEF;
+    --blue-dim: rgba(91,141,239,0.12);
+    --green: #2ECC71;
+    --green-dim: rgba(46,204,113,0.12);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
   }
 
-  .section-label {
-    font-family:'Source Code Pro',monospace; font-size:6pt; letter-spacing:0.14em;
-    text-transform:uppercase; color:var(--gold); margin-bottom:3px;
-    display:flex; align-items:center; gap:5px;
-  }
-  .section-label::after { content:''; flex:1; height:1px; background:var(--rule-lt); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-  .risk-card {
-    padding: 0.05in 0.08in; position: relative; border: 1px solid var(--rule-lt); background: white;
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
   }
-  .risk-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; }
-  .risk-card.red::before { background: var(--red); }
-  .risk-card.amber::before { background: var(--amber); }
-  .risk-card.green::before { background: var(--green); }
-  .risk-card.blue::before { background: var(--blue); }
 
-  .risk-tag {
-    font-family:'Source Code Pro',monospace; font-size:5pt; letter-spacing:0.08em;
-    text-transform:uppercase; padding:1px 4px; display:inline-block; margin-bottom:2px;
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
   }
-  .risk-tag.critical { background:var(--red-lt); color:var(--red); }
-  .risk-tag.high { background:var(--amber-lt); color:var(--amber); }
-  .risk-tag.moderate { background:var(--blue-lt); color:var(--blue); }
-  .risk-tag.action { background:var(--green-lt); color:var(--green); }
-  .risk-tag.info { background:var(--fog); color:var(--text-dim); }
 
-  .risk-title { font-family:'Playfair Display',serif; font-size:8pt; font-weight:600; color:var(--ink); margin-bottom:2px; }
-  .risk-desc { font-size:6.5pt; color:var(--text-mid); line-height:1.45; }
-  .risk-action { font-size:6pt; color:var(--green); margin-top:2px; font-weight:500; }
+  .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--teal); z-index: 100; box-shadow: 0 0 8px var(--teal); transition: width 0.1s; }
 
-  .stats-bar {
-    grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.07in;
+  nav {
+    position: relative; z-index: 1;
+    padding: 32px 10vw;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    opacity: 0; animation: fadeDown 0.6s ease forwards 0.1s;
   }
-  .stat {
-    background: var(--ink); padding: 0.04in 0.07in; position: relative;
-  }
-  .stat::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--gold); }
-  .stat-num { font-family:'Playfair Display',serif; font-size:13pt; font-weight:700; color:var(--gold); line-height:1.1; }
-  .stat-label { font-size:5.5pt; color:#a8a49c; line-height:1.3; margin-top:1px; }
-  .stat-source { font-family:'Source Code Pro',monospace; font-size:4.5pt; color:#6a6860; margin-top:1px; }
+  .nav-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; text-decoration: none; color: inherit; }
+  .nav-logo span { color: var(--teal); }
+  .nav-back { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); text-decoration: none; }
+  .nav-back:hover { color: var(--teal-light); }
 
-  .bottom-line {
-    grid-column: 1 / -1; background: var(--ink); padding: 0.06in 0.12in; position: relative;
+  /* hero */
+  .hero { position: relative; z-index: 1; padding: 80px 10vw 60px; overflow: hidden; }
+  .hero::after {
+    content: ''; position: absolute; top: -30%; right: -15%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(26,158,143,0.12) 0%, transparent 70%);
+    pointer-events: none;
   }
-  .bottom-line::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--gold); }
-  .bl-label { font-family:'Source Code Pro',monospace; font-size:6pt; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:2px; }
-  .bl-text { font-size:6.5pt; color:#c8c4bc; line-height:1.5; }
-  .bl-text strong { color:#e8e4da; }
+  .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s; }
+  .hero-title { font-family: var(--serif); font-size: clamp(44px, 6vw, 88px); font-weight: 300; line-height: 1.05; letter-spacing: -0.02em; max-width: 760px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s; }
+  .hero-title em { font-style: italic; color: var(--teal-light); }
+  .hero-sub { margin-top: 28px; font-size: 16px; color: var(--white-dim); max-width: 560px; line-height: 1.85; opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s; }
 
-  .footer {
-    margin-left:0.25in; padding:0.05in 0.35in 0.06in 0.42in;
-    border-top:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; background:var(--fog);
-  }
-  .footer-left { font-family:'Source Code Pro',monospace; font-size:5.5pt; color:var(--text-dim); letter-spacing:0.08em; }
-  .footer-right { font-size:6pt; color:var(--text-dim); font-style:italic; }
+  .hero-stats { display: flex; gap: 48px; margin-top: 48px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s; flex-wrap: wrap; }
+  .stat-item { display: flex; flex-direction: column; gap: 4px; }
+  .stat-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
+  .stat-value { font-family: var(--serif); font-size: 36px; font-weight: 300; color: var(--white); }
 
-  /* Page 2 specifics */
-  .env-card {
-    padding: 0.1in 0.14in; position: relative; border: 1px solid var(--rule-lt); background: white;
-  }
-  .env-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; }
-  .env-card.snow::before { background: #4a9fc8; }
-  .env-card.team::before { background: var(--gold); }
-  .env-card.infra::before { background: var(--green); }
-  .env-card.deploy::before { background: #8a6abf; }
-  .env-card.open::before { background: var(--amber); }
-  .env-card.policy::before { background: var(--red); }
+  section { position: relative; z-index: 1; padding: 80px 10vw; }
+  .section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 48px; display: flex; align-items: center; gap: 16px; }
+  .section-label::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--teal); opacity: 0.4; }
+  .section-title { font-family: var(--serif); font-size: clamp(30px, 4vw, 52px); font-weight: 300; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 20px; }
+  .section-title em { font-style: italic; color: var(--teal-light); }
+  .section-desc { color: var(--white-dim); font-size: 15px; max-width: 620px; line-height: 1.85; margin-bottom: 48px; }
 
-  .env-title { font-family:'Playfair Display',serif; font-size:9.5pt; font-weight:600; color:var(--ink); margin-bottom:4px; }
-  .env-tag {
-    font-family:'Source Code Pro',monospace; font-size:5pt; letter-spacing:0.08em;
-    text-transform:uppercase; padding:1px 4px; display:inline-block; margin-bottom:2px;
-  }
-  .env-tag.ready { background:var(--green-lt); color:var(--green); }
-  .env-tag.partial { background:var(--amber-lt); color:var(--amber); }
-  .env-tag.needed { background:var(--red-lt); color:var(--red); }
-  .env-tag.decided { background:var(--blue-lt); color:var(--blue); }
+  .divider { width: 80vw; margin: 0 10vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,158,143,0.25), transparent); }
 
-  .env-row {
-    display: flex; gap: 8px; align-items: flex-start; margin-bottom: 5px;
-  }
-  .env-label {
-    font-family:'Source Code Pro',monospace; font-size:6pt; color:var(--text-dim);
-    letter-spacing:0.04em; width: 0.75in; flex-shrink:0; text-transform:uppercase;
-  }
-  .env-value { font-size:7.5pt; color:var(--text-mid); line-height:1.5; }
-  .env-value strong { color:var(--ink); }
+  /* stats bar */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2px; margin-bottom: 48px; }
+  .stat-card { background: var(--navy-mid); padding: 28px 24px; border-left: 2px solid var(--gold); }
+  .stat-num { font-family: var(--serif); font-size: 44px; font-weight: 300; color: var(--gold); line-height: 1; }
+  .stat-desc { font-size: 12px; color: var(--white-dim); line-height: 1.5; margin-top: 6px; }
+  .stat-source { font-family: var(--mono); font-size: 9px; color: rgba(244,246,248,0.3); margin-top: 4px; letter-spacing: 0.08em; }
 
-  .open-item {
-    display: flex; gap: 8px; align-items: flex-start; margin-bottom: 5px;
+  /* risk cards */
+  .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px; }
+  .risk-card { background: var(--navy-mid); padding: 28px 24px; position: relative; border-left: 3px solid; transition: background 0.3s; }
+  .risk-card:hover { background: var(--navy-light); }
+  .risk-card.critical { border-color: var(--red); }
+  .risk-card.high { border-color: var(--amber); }
+  .risk-card.moderate { border-color: var(--blue); }
+  .risk-card.action { border-color: var(--teal); }
+
+  .risk-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; padding: 2px 8px; display: inline-block; margin-bottom: 8px; border-radius: 2px; }
+  .risk-tag.critical { background: var(--red-dim); color: var(--red); }
+  .risk-tag.high { background: var(--amber-dim); color: var(--amber); }
+  .risk-tag.moderate { background: var(--blue-dim); color: var(--blue); }
+  .risk-tag.action { background: var(--teal-dim); color: var(--teal); }
+
+  .risk-title { font-family: var(--serif); font-size: 20px; font-weight: 400; color: var(--white); margin-bottom: 8px; }
+  .risk-desc { font-size: 13px; color: var(--white-dim); line-height: 1.7; margin-bottom: 4px; }
+  .risk-desc strong { color: var(--white); font-weight: 500; }
+  .risk-action { font-family: var(--mono); font-size: 10px; color: var(--teal); margin-top: 12px; letter-spacing: 0.06em; }
+
+  /* summary block */
+  .summary-block {
+    background: var(--gold-dim); border-left: 3px solid var(--gold);
+    padding: 32px 36px; margin-top: 2px;
   }
-  .open-dot {
-    width: 6px; height: 6px; border-radius: 50%; flex-shrink:0; margin-top: 3px;
-  }
+  .summary-text { font-size: 14px; color: var(--white-dim); line-height: 1.75; }
+  .summary-text strong { color: var(--white); font-weight: 500; }
+
+  /* env cards */
+  .env-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2px; }
+  .env-card { background: var(--navy-mid); padding: 28px 24px; position: relative; border-left: 3px solid var(--teal); transition: background 0.3s; }
+  .env-card:hover { background: var(--navy-light); }
+  .env-card.snow { border-color: var(--blue); }
+  .env-card.team { border-color: var(--gold); }
+  .env-card.infra { border-color: var(--teal); }
+  .env-card.deploy { border-color: #8a6abf; }
+  .env-card.open { border-color: var(--amber); }
+  .env-card.policy { border-color: var(--red); }
+
+  .env-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; padding: 2px 8px; display: inline-block; margin-bottom: 8px; border-radius: 2px; }
+  .env-tag.ready { background: var(--teal-dim); color: var(--teal); }
+  .env-tag.partial { background: var(--amber-dim); color: var(--amber); }
+  .env-tag.needed { background: var(--red-dim); color: var(--red); }
+  .env-tag.decided { background: rgba(138,106,191,0.12); color: #B094E0; }
+
+  .env-title { font-family: var(--serif); font-size: 22px; font-weight: 400; color: var(--white); margin-bottom: 12px; }
+
+  .env-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px; }
+  .env-label { font-family: var(--mono); font-size: 10px; color: var(--teal); letter-spacing: 0.06em; width: 90px; flex-shrink: 0; text-transform: uppercase; padding-top: 2px; }
+  .env-value { font-size: 13px; color: var(--white-dim); line-height: 1.65; }
+  .env-value strong { color: var(--white); font-weight: 500; }
+
+  /* open items */
+  .open-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+  .open-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
   .open-dot.red { background: var(--red); }
   .open-dot.amber { background: var(--amber); }
   .open-dot.blue { background: var(--blue); }
-  .open-text { font-size:7pt; color:var(--text-mid); line-height:1.5; }
-  .open-text strong { color:var(--ink); }
+  .open-dot.green { background: var(--teal); }
+  .open-text { font-size: 13px; color: var(--white-dim); line-height: 1.65; }
+  .open-text strong { color: var(--white); font-weight: 500; }
 
-  .print-btn {
-    position:fixed; bottom:24px; right:24px; background:var(--ink); color:white; border:none;
-    padding:10px 20px; font-family:'Source Code Pro',monospace; font-size:9pt; letter-spacing:0.1em;
-    cursor:pointer; text-transform:uppercase; z-index:100;
+  /* cost table */
+  .cost-table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+  .cost-table th {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); text-align: left; padding: 10px 12px;
+    border-bottom: 1px solid rgba(26,158,143,0.3);
   }
-  .print-btn:hover { background:var(--ink3); }
+  .cost-table td {
+    padding: 10px 12px; font-size: 13px; color: var(--white-dim);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .cost-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .cost-table .row-name { font-weight: 500; color: var(--white); }
+  .cost-table .row-warn { color: var(--amber); }
+  .cost-table .row-total { background: var(--teal-dim); }
+  .cost-table .row-total td { color: var(--teal-light); font-weight: 500; border-bottom: none; }
 
-  .web-nav {
-    background: var(--ink); padding: 16px 32px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid var(--rule);
-  }
-  .web-nav a { text-decoration: none; }
-  .web-nav .nav-logo { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 700; color: var(--cream); }
-  .web-nav .nav-logo span { color: var(--gold); }
-  .web-nav .nav-back { font-family: 'Source Code Pro', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
-  .web-nav .nav-back:hover { color: var(--cream); }
-  @media print { .web-nav { display: none; } }
+  /* assumptions */
+  .assumptions { background: var(--navy-mid); padding: 28px 24px; margin-top: 2px; border-left: 3px solid var(--gold); }
+  .assumptions p { font-size: 12px; color: var(--white-dim); line-height: 1.7; margin-bottom: 8px; }
+  .assumptions strong { color: var(--white); font-weight: 500; }
+
+  /* ROI block */
+  .roi-block { background: var(--teal-dim); border: 1px solid rgba(26,158,143,0.25); padding: 32px 36px; margin-top: 2px; }
+  .roi-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+  .roi-text { font-size: 14px; color: var(--white-dim); line-height: 1.75; }
+  .roi-text strong { color: var(--teal-light); font-weight: 500; }
+
+  footer { position: relative; z-index: 1; padding: 48px 10vw; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; text-decoration: none; color: inherit; }
+  .footer-logo span { color: var(--teal); }
+  .footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-dim); }
+
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
-<div class="web-nav no-print">
+<div class="progress-bar" id="progress"></div>
+
+<nav>
   <a class="nav-logo" href="../index.html">Westfield <span>Capital</span></a>
   <a class="nav-back" href="../index.html">← Back to index</a>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">Confidential · Internal Briefing · Pre-Deployment</p>
+  <h1 class="hero-title">Claude AI<br><em>Deployment</em></h1>
+  <p class="hero-sub">Risk register, cost estimates, readiness assessment, and governance framework for taking Claude to production at Westfield Capital.</p>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-label">Pages</span>
+      <span class="stat-value">5</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Enterprise Seats</span>
+      <span class="stat-value">65</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Status</span>
+      <span class="stat-value">Pre-Deploy</span>
+    </div>
+  </div>
 </div>
 
-<button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+<div class="divider"></div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- PAGE 1: RISK SUMMARY                                       -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<div class="page">
-  <header class="header">
-    <div>
-      <div class="firm-eyebrow">Confidential · Internal Briefing</div>
-      <div class="firm-name">Westfield Capital Management</div>
-      <div class="doc-title">Claude AI Deployment — Risk & Readiness Summary</div>
+<!-- ═════════════════ 01 · RISK SUMMARY ═════════════════ -->
+<section>
+  <p class="section-label fade-in">01 · Risk Summary</p>
+  <h2 class="section-title fade-in">Where the<br><em>risks</em> live</h2>
+
+  <div class="stats-row fade-in">
+    <div class="stat-card">
+      <div class="stat-num">78%</div>
+      <div class="stat-desc">of orgs deploying AI without adequate guardrails</div>
+      <div class="stat-source">Palo Alto / Prisma AIRS</div>
     </div>
-    <div>
-      <div class="header-meta">
-        Prepared by: Dee Silveira, CTO<br>
-        Date: March 2026<br>
-        Status: Pre-Deployment
-      </div>
-      <div class="page-label">Page 1 of 5 — Risk Summary</div>
+    <div class="stat-card">
+      <div class="stat-num">6%</div>
+      <div class="stat-desc">have an advanced AI security framework</div>
+      <div class="stat-source">Stanford / Palo Alto</div>
     </div>
-  </header>
-
-  <main class="body">
-
-    <div class="stats-bar">
-      <div class="stat">
-        <div class="stat-num">78%</div>
-        <div class="stat-label">of orgs deploying AI without adequate guardrails</div>
-        <div class="stat-source">Palo Alto / Prisma AIRS</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">6%</div>
-        <div class="stat-label">have an advanced AI security framework</div>
-        <div class="stat-source">Stanford / Palo Alto</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">98%</div>
-        <div class="stat-label">of breaches preventable with security hygiene</div>
-        <div class="stat-source">Microsoft Digital Defense Report</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">71%</div>
-        <div class="stat-label">of AI teams spend 25%+ time on integration</div>
-        <div class="stat-source">CData State of AI Connectivity</div>
-      </div>
+    <div class="stat-card">
+      <div class="stat-num">98%</div>
+      <div class="stat-desc">of breaches preventable with security hygiene</div>
+      <div class="stat-source">Microsoft Digital Defense Report</div>
     </div>
+    <div class="stat-card">
+      <div class="stat-num">71%</div>
+      <div class="stat-desc">of AI teams spend 25%+ time on integration</div>
+      <div class="stat-source">CData State of AI Connectivity</div>
+    </div>
+  </div>
 
-    <!-- ROW 1 -->
-    <div class="risk-card amber">
+  <div class="risk-grid fade-in">
+
+    <div class="risk-card high">
       <span class="risk-tag high">Architecture</span>
       <div class="risk-title">Two Governance Layers — Not One</div>
-      <div class="risk-desc">
-        <strong>Layer 1 — User Permissions:</strong> Exists in downstream systems. Access follows credentials. Agents inherit user permissions. (Microsoft Cloud Adoption Framework)
-      </div>
-      <div class="risk-desc" style="margin-top:2px;">
-        <strong>Layer 2 — Agent Governance:</strong> New. What Claude can do with those permissions — multi-system queries, action chaining, read/write, prompt injection. Guardrails separate from model logic. (Palo Alto Governance Framework)
-      </div>
+      <div class="risk-desc"><strong>Layer 1 — User Permissions:</strong> Exists in downstream systems. Access follows credentials. Agents inherit user permissions.</div>
+      <div class="risk-desc"><strong>Layer 2 — Agent Governance:</strong> New. What Claude can do with those permissions — multi-system queries, action chaining, read/write, prompt injection. Guardrails separate from model logic.</div>
       <div class="risk-action">↳ Connector walkthrough maps where Layer 1 ends and Layer 2 begins</div>
     </div>
 
-    <div class="risk-card amber">
+    <div class="risk-card high">
       <span class="risk-tag high">Timeline</span>
       <div class="risk-title">Platform Choice ≠ Speed</div>
-      <div class="risk-desc">
-        Native connectors solve authentication — OAuth, hours. But auth isn't the bottleneck. Server-side governance config is: tool scoping, DLP, cross-system boundaries, audit format. Identical work regardless of platform. Claude Enterprise, Airia, or anything else — the platform affects who manages controls, not whether the work exists.
-      </div>
+      <div class="risk-desc">Native connectors solve authentication — OAuth, hours. But auth isn't the bottleneck. Server-side governance config is: tool scoping, DLP, cross-system boundaries, audit format. Identical work regardless of platform.</div>
       <div class="risk-action">↳ Scope per-connector lift before committing to timelines</div>
     </div>
 
-    <div class="risk-card blue">
+    <div class="risk-card moderate">
       <span class="risk-tag moderate">Sequencing</span>
       <div class="risk-title">Compliance Defines the Standard</div>
-      <div class="risk-desc">
-        Technology builds the options. Compliance chooses. Going prepared with clear trade-offs produces a better outcome than going early with abstract questions. Everything we log can also be used against us. The CCO sits in front of the examiner — she should define what defensible looks like.
-      </div>
+      <div class="risk-desc">Technology builds the options. Compliance chooses. Going prepared with clear trade-offs produces a better outcome than going early with abstract questions. Everything we log can also be used against us.</div>
       <div class="risk-action">↳ Build the technical picture first, then bring compliance real options</div>
     </div>
 
-    <!-- ROW 2 -->
-    <div class="risk-card red">
+    <div class="risk-card critical">
       <span class="risk-tag critical">Non-Starter Without Controls</span>
       <div class="risk-title">Cowork — Not for Regulated Workloads</div>
-      <div class="risk-desc">
-        Anthropic states: "Do not use Cowork for regulated workloads." Not in audit logs, Compliance API, or data exports. History stored locally outside retention policies. We're a regulated entity — using a product whose vendor says it's not built for us is not a manageable risk. <strong>Compensating control:</strong> Cortex XDR with Koi integration (when available) provides endpoint-level visibility into AI agent behavior on the device — what Claude modified, when, which files. Does not replace application-level audit from Anthropic, but closes the endpoint blind spot.
-      </div>
-      <div class="risk-action">↳ Disable until Koi ships in Cortex XDR or Anthropic builds audit coverage. Pursue both.</div>
+      <div class="risk-desc">Anthropic states: "Do not use Cowork for regulated workloads." Not in audit logs, Compliance API, or data exports. <strong>Compensating control:</strong> Cortex XDR with Koi integration provides endpoint-level visibility into AI agent behavior on the device.</div>
+      <div class="risk-action">↳ Disable until Koi ships in Cortex XDR or Anthropic builds audit coverage</div>
     </div>
 
-    <div class="risk-card red">
+    <div class="risk-card critical">
       <span class="risk-tag critical">Non-Starter</span>
       <div class="risk-title">Excel & PowerPoint Add-Ins — Same Gap</div>
-      <div class="risk-desc">
-        Neither inherits data retention settings. Neither in audit logs or Compliance API. Both beta/research preview. Same gap as Cowork without the explicit warning — an inconsistency on Anthropic's part. Marketed to financial services while documentation says otherwise.
-      </div>
+      <div class="risk-desc">Neither inherits data retention settings. Neither in audit logs or Compliance API. Both beta/research preview. Marketed to financial services while documentation says otherwise.</div>
       <div class="risk-action">↳ Off the table for client data until audit logging confirmed in writing</div>
     </div>
 
-    <div class="risk-card red">
+    <div class="risk-card critical">
       <span class="risk-tag critical">Westfield-Specific</span>
       <div class="risk-title">File Sync — Undetectable AI Changes</div>
-      <div class="risk-desc">
-        Box Sync and OneDrive: Claude edits files locally, changes sync to cloud attributed to the user. No system captures AI involvement. Downstream audit trails become actively misleading. Cortex XDR with Koi could detect AI agent file modifications at the endpoint level — providing a compensating detection layer. But the underlying problem remains until Anthropic builds application-level logging.
-      </div>
-      <div class="risk-action">↳ Block desktop tools on synced folders. Cortex XDR/Koi provides interim detection when available.</div>
+      <div class="risk-desc">Box Sync and OneDrive: Claude edits files locally, changes sync to cloud attributed to the user. No system captures AI involvement. Downstream audit trails become actively misleading.</div>
+      <div class="risk-action">↳ Block desktop tools on synced folders. Cortex XDR/Koi provides interim detection.</div>
     </div>
 
-    <!-- ROW 3 -->
-    <div class="risk-card amber">
+    <div class="risk-card high">
       <span class="risk-tag high">Vendor</span>
       <div class="risk-title">Marketing vs. Documentation</div>
-      <div class="risk-desc">
-        Claude for Financial Services launched with RBC, D.E. Shaw, Bridgewater. Finance plugins, FactSet/MSCI/LSEG connectors, cross-app Excel-to-PowerPoint workflows. Every tool in that workflow is outside the audit perimeter. Marketing says financial services. Documentation says not for regulated workloads.
-      </div>
+      <div class="risk-desc">Claude for Financial Services launched with RBC, D.E. Shaw, Bridgewater. Every tool in that workflow is outside the audit perimeter. Marketing says financial services. Documentation says not for regulated workloads.</div>
       <div class="risk-action">↳ Ask Anthropic what other regulated firms have in their contracts</div>
     </div>
 
-    <div class="risk-card green">
+    <div class="risk-card action">
       <span class="risk-tag action">Usable Today</span>
       <div class="risk-title">Claude Web, API & Code — Audit-Ready</div>
-      <div class="risk-desc">
-        Web interface, API, and Claude Code are covered by Enterprise audit logs, Compliance API, custom retention, SSO/SCIM. These are the governed surfaces. Chat-based research, analysis, drafting, and code generation are production-ready. The limitation is desktop tools — not Claude.
-      </div>
+      <div class="risk-desc">Web interface, API, and Claude Code are covered by Enterprise audit logs, Compliance API, custom retention, SSO/SCIM. These are the governed surfaces. The limitation is desktop tools — not Claude.</div>
       <div class="risk-action">↳ Deploy through governed surfaces now</div>
     </div>
 
-    <div class="risk-card green">
+    <div class="risk-card action">
       <span class="risk-tag action">Licensing</span>
       <div class="risk-title">Negotiate Audit Coverage in Contract</div>
-      <div class="risk-desc">
-        Audit coverage for Cowork, Excel, and PowerPoint should be a contract condition — not a roadmap item. Get a committed timeline in writing. Other regulated firms may have provisions not in the standard Enterprise plan.
-      </div>
+      <div class="risk-desc">Audit coverage for Cowork, Excel, and PowerPoint should be a contract condition — not a roadmap item. Other regulated firms may have provisions not in the standard Enterprise plan.</div>
       <div class="risk-action">↳ Make desktop tool audit coverage a contract requirement</div>
     </div>
 
-    <div class="bottom-line">
-      <div class="bl-label">Page 1 Summary</div>
-      <div class="bl-text">
-        Claude is ready for Westfield <strong>through governed surfaces.</strong> Desktop tools are not — and with Box Sync/OneDrive they make <strong>undetectable changes</strong> that corrupt existing audit trails. <strong>User permissions and agent governance are two separate layers.</strong> Westfield's Cortex XDR deployment positions us for the Koi integration — <strong>endpoint-level AI agent visibility on infrastructure we already own.</strong> That's the compensating control for desktop tools until Anthropic closes the gap. Deploy through governed channels. Negotiate desktop tool coverage in the Enterprise contract. <strong>Move fast — but build it right.</strong>
-      </div>
+  </div>
+
+  <div class="summary-block fade-in">
+    <div class="summary-text">
+      Claude is ready for Westfield <strong>through governed surfaces.</strong> Desktop tools are not — and with Box Sync/OneDrive they make <strong>undetectable changes</strong> that corrupt existing audit trails. <strong>User permissions and agent governance are two separate layers.</strong> Deploy through governed channels. Negotiate desktop tool coverage in the Enterprise contract. <strong>Move fast — but build it right.</strong>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═════════════════ 02 · DEPLOYMENT READINESS ═════════════════ -->
+<section>
+  <p class="section-label fade-in">02 · Deployment Readiness</p>
+  <h2 class="section-title fade-in">Environment &<br><em>readiness</em> assessment</h2>
+
+  <div class="env-grid fade-in">
+
+    <div class="env-card deploy">
+      <span class="env-tag decided">Decided</span>
+      <div class="env-title">Deployment Model</div>
+      <div class="env-row"><div class="env-label">Enterprise</div><div class="env-value"><strong>65 seats — firm wide.</strong> Web interface, Projects, connectors. SSO via Okta. Compliance API covers all activity.</div></div>
+      <div class="env-row"><div class="env-label">Premium</div><div class="env-value"><strong>5–6 seats</strong> with Claude Code for engineering. MCP connector development, Snowflake integration, API workflows.</div></div>
+      <div class="env-row"><div class="env-label">API</div><div class="env-value"><strong>AWS Bedrock.</strong> Powers the analyst agent. Traffic stays in Westfield's AWS environment. Supports Zero Data Retention.</div></div>
+      <div class="env-row"><div class="env-label">Pricing</div><div class="env-value">Seats are per-user (predictable). API is per-token (variable — pilot data needed). Both covered by Compliance API.</div></div>
     </div>
 
-  </main>
-
-  <footer class="footer">
-    <div class="footer-left">WESTFIELD CAPITAL MANAGEMENT · CONFIDENTIAL · MARCH 2026 · DEE SILVEIRA, CTO</div>
-    <div class="footer-right">Page 1 of 5 — Risk Summary</div>
-  </footer>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- PAGE 2: DEPLOYMENT READINESS                               -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<div class="page">
-  <header class="header">
-    <div>
-      <div class="firm-eyebrow">Confidential · Internal Briefing</div>
-      <div class="firm-name">Westfield Capital Management</div>
-      <div class="doc-title">Claude AI Deployment — Environment & Readiness Assessment</div>
-    </div>
-    <div>
-      <div class="header-meta">
-        Prepared by: Dee Silveira, CTO<br>
-        Date: March 2026<br>
-        Status: Pre-Deployment
-      </div>
-      <div class="page-label">Page 2 of 5 — Deployment Readiness</div>
-    </div>
-  </header>
-
-  <main style="padding:0.12in 0.4in 0.06in 0.42in;margin-left:0.25in;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;gap:0.08in 0.1in;">
-
-    <!-- COL 1: Deployment + Snowflake -->
-    <div style="display:flex;flex-direction:column;gap:0.08in;">
-
-      <div class="env-card deploy">
-        <span class="env-tag decided">Decided</span>
-        <div class="env-title">Deployment Model</div>
-        <div class="env-row">
-          <div class="env-label">Enterprise</div>
-          <div class="env-value"><strong>65 seats — firm wide.</strong> Web interface, Projects, connectors. SSO via Okta. Compliance API covers all activity.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Premium</div>
-          <div class="env-value"><strong>5–6 seats</strong> with Claude Code for engineering. MCP connector development, Snowflake integration, API workflows.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">API</div>
-          <div class="env-value"><strong>AWS Bedrock.</strong> Powers the analyst agent. Traffic stays in Westfield's AWS environment. Supports Zero Data Retention.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Pricing</div>
-          <div class="env-value">Seats are per-user (predictable). API is per-token (variable — pilot data needed). Both covered by Compliance API.</div>
-        </div>
-      </div>
-
-      <div class="env-card snow">
-        <span class="env-tag partial">Needs Build</span>
-        <div class="env-title">Snowflake — Data Gateway</div>
-        <div class="env-row">
-          <div class="env-label">Current</div>
-          <div class="env-value">Eze and APX export via existing pipelines. Data lands as <strong>transformed views</strong> (needs verification). Never connects to Claude directly.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Needs Build</div>
-          <div class="env-value"><strong>RBAC and view scoping.</strong> Which views Claude can query, per-role permissions, read-only enforcement. Dedicated virtual warehouse for AI queries.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Principle</div>
-          <div class="env-value">If it's in Snowflake, Claude can access it — credentials follow the user. Agent governance controls what Claude does with it.</div>
-        </div>
-      </div>
-
-      <div class="env-card infra">
-        <span class="env-tag ready">Ready</span>
-        <div class="env-title">Infrastructure</div>
-        <div class="env-row">
-          <div class="env-label">Identity</div>
-          <div class="env-value"><strong>Okta</strong> — SSO/SCIM configured. Standard integration.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Endpoint</div>
-          <div class="env-value"><strong>Cortex XDR</strong> — deployed. Koi integration coming. No migration needed.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">SIEM</div>
-          <div class="env-value"><strong>Palo Alto Cortex.</strong> Feed originates from Airia (enforcement point). Downstream systems continue operational logging.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Cloud</div>
-          <div class="env-value"><strong>AWS.</strong> Bedrock for Claude API. IAM, CloudTrail, VPC in place.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">File Sync</div>
-          <div class="env-value"><strong>Box Sync + OneDrive.</strong> Desktop tools blocked until audit coverage exists.</div>
-        </div>
-      </div>
-
+    <div class="env-card snow">
+      <span class="env-tag partial">Needs Build</span>
+      <div class="env-title">Snowflake — Data Gateway</div>
+      <div class="env-row"><div class="env-label">Current</div><div class="env-value">Eze and APX export via existing pipelines. Data lands as <strong>transformed views</strong> (needs verification). Never connects to Claude directly.</div></div>
+      <div class="env-row"><div class="env-label">Needs Build</div><div class="env-value"><strong>RBAC and view scoping.</strong> Which views Claude can query, per-role permissions, read-only enforcement. Dedicated virtual warehouse for AI queries.</div></div>
+      <div class="env-row"><div class="env-label">Principle</div><div class="env-value">If it's in Snowflake, Claude can access it — credentials follow the user. Agent governance controls what Claude does with it.</div></div>
     </div>
 
-    <!-- COL 2: Team + Open Items -->
-    <div style="display:flex;flex-direction:column;gap:0.08in;">
-
-      <div class="env-card team">
-        <span class="env-tag ready">Top Priority</span>
-        <div class="env-title">Team & Ownership</div>
-        <div class="env-row">
-          <div class="env-label">Priority</div>
-          <div class="env-value"><strong>AI deployment is the team's top priority.</strong> Bandwidth allocated.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">MCP</div>
-          <div class="env-value"><strong>Net new for entire team.</strong> Connector walkthrough builds understanding before client data.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Mangesh</div>
-          <div class="env-value">Primary for Snowflake MCP setup. Team members capable of supporting.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Juan / Alvin</div>
-          <div class="env-value">Snowflake view scoping and ETL verification. Eze/APX export knowledge.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">CCO</div>
-          <div class="env-value">Dee owns the relationship. Compliance conversation after technical picture is complete.</div>
-        </div>
-      </div>
-
-      <div class="env-card open">
-        <span class="env-tag needed">Open Items</span>
-        <div class="env-title">Must Resolve Before Deployment</div>
-        <div class="open-item">
-          <div class="open-dot red"></div>
-          <div class="open-text"><strong>AI Acceptable Use Policy</strong> — does not exist. Must be created before any user gets a seat.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot red"></div>
-          <div class="open-text"><strong>Anthropic Enterprise contract</strong> — not yet engaged. Negotiate seats, desktop tool audit timeline, regulated-firm provisions.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Snowflake view verification</strong> — confirm transformed views. Scope RBAC build.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>FactSet + Bloomberg licensing</strong> — AI agent consumption terms under current agreements. Must confirm before production.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Connector walkthrough</strong> — Slack or Otter end to end. Map user permissions vs. agent governance.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot blue"></div>
-          <div class="open-text"><strong>Cortex XDR / Koi</strong> — Palo Alto rep for timeline. SIEM feed from Airia.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot blue"></div>
-          <div class="open-text"><strong>CCO conversation</strong> — retention and logging standard from real options.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot blue"></div>
-          <div class="open-text"><strong>Pilot scope</strong> — Tech team, BPMC, and a PM. Expand from here based on pilot data.</div>
-        </div>
-      </div>
-
+    <div class="env-card infra">
+      <span class="env-tag ready">Ready</span>
+      <div class="env-title">Infrastructure</div>
+      <div class="env-row"><div class="env-label">Identity</div><div class="env-value"><strong>Okta</strong> — SSO/SCIM configured. Standard integration.</div></div>
+      <div class="env-row"><div class="env-label">Endpoint</div><div class="env-value"><strong>Cortex XDR</strong> — deployed. Koi integration coming. No migration needed.</div></div>
+      <div class="env-row"><div class="env-label">SIEM</div><div class="env-value"><strong>Palo Alto Cortex.</strong> Feed originates from Airia (enforcement point).</div></div>
+      <div class="env-row"><div class="env-label">Cloud</div><div class="env-value"><strong>AWS.</strong> Bedrock for Claude API. IAM, CloudTrail, VPC in place.</div></div>
+      <div class="env-row"><div class="env-label">File Sync</div><div class="env-value"><strong>Box Sync + OneDrive.</strong> Desktop tools blocked until audit coverage exists.</div></div>
     </div>
 
-    <!-- COL 3: Strategy + Ready Now -->
-    <div style="display:flex;flex-direction:column;gap:0.08in;">
-
-      <div class="env-card deploy" style="border-color:#8a6abf;">
-        <span class="env-tag decided" style="background:#f5f0fd;color:#8a6abf;">Strategy</span>
-        <div class="env-title">Two-Layer Audit Architecture</div>
-        <div class="env-row">
-          <div class="env-label">Layer A</div>
-          <div class="env-value"><strong>Application (Anthropic + Airia):</strong> Compliance API covers web, API, Claude Code. Airia governs all MCP connections — DLP, boundaries, tool scoping, audit logging. SIEM feed originates here.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Layer B</div>
-          <div class="env-value"><strong>Endpoint (Cortex XDR + Koi):</strong> Desktop tools — Cowork, Excel, PowerPoint. AI tools running, files modified, risk scoring. Compensating control when Koi ships.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Gap</div>
-          <div class="env-value"><strong style="color:var(--amber);">Koi hasn't shipped.</strong> Desktop tools off-limits until Koi or Anthropic audit — whichever first.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Cost</div>
-          <div class="env-value"><strong style="color:var(--green);">Minimal incremental.</strong> Already on Cortex XDR. Koi is a platform enhancement. No additional licensing at 65 users.</div>
-        </div>
-      </div>
-
-      <div class="env-card infra">
-        <span class="env-tag ready">Ready Now</span>
-        <div class="env-title">What Doesn't Need to Wait</div>
-        <div class="env-row">
-          <div class="env-label">Anthropic</div>
-          <div class="env-value">Engage sales. Desktop tool audit coverage as contract condition.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Airia</div>
-          <div class="env-value">Friday call — latency, pricing, Snowflake connector, SIEM integration, FS references.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Palo Alto</div>
-          <div class="env-value">Koi timeline. Airia audit log ingestion into Cortex.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Data Vendors</div>
-          <div class="env-value">FactSet and Bloomberg — AI agent consumption terms.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Connector</div>
-          <div class="env-value">Pick Slack or Otter. Map full setup end to end.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">AUP</div>
-          <div class="env-value">Start drafting the acceptable use policy now.</div>
-        </div>
-      </div>
-
+    <div class="env-card team">
+      <span class="env-tag ready">Top Priority</span>
+      <div class="env-title">Team & Ownership</div>
+      <div class="env-row"><div class="env-label">Priority</div><div class="env-value"><strong>AI deployment is the team's top priority.</strong> Bandwidth allocated.</div></div>
+      <div class="env-row"><div class="env-label">MCP</div><div class="env-value"><strong>Net new for entire team.</strong> Connector walkthrough builds understanding before client data.</div></div>
+      <div class="env-row"><div class="env-label">Mangesh</div><div class="env-value">Primary for Snowflake MCP setup. Team members capable of supporting.</div></div>
+      <div class="env-row"><div class="env-label">Juan / Alvin</div><div class="env-value">Snowflake view scoping and ETL verification. Eze/APX export knowledge.</div></div>
+      <div class="env-row"><div class="env-label">CCO</div><div class="env-value">Dee owns the relationship. Compliance conversation after technical picture is complete.</div></div>
     </div>
 
-    <!-- BOTTOM LINE -->
-    <div class="bottom-line" style="grid-column: 1 / -1;">
-      <div class="bl-label">Deployment Readiness Summary</div>
-      <div class="bl-text" style="font-size:7.5pt;">
-        Infrastructure is ready — <strong>Okta, Cortex XDR, AWS</strong> all in place. Two-layer audit: <strong>Airia + Anthropic Compliance API</strong> for application-level, <strong>Cortex XDR/Koi</strong> for endpoint-level. Already on the platform Koi integrates into — <strong>no migration, no additional licensing.</strong> Snowflake views exist but <strong>RBAC needs build.</strong> Two blockers: <strong>AI acceptable use policy and Anthropic Enterprise contract.</strong> Five vendor conversations now: <strong>Anthropic, Airia, Palo Alto, FactSet, Bloomberg.</strong>
-      </div>
+    <div class="env-card open">
+      <span class="env-tag needed">Open Items</span>
+      <div class="env-title">Must Resolve Before Deployment</div>
+      <div class="open-item"><div class="open-dot red"></div><div class="open-text"><strong>AI Acceptable Use Policy</strong> — does not exist. Must be created before any user gets a seat.</div></div>
+      <div class="open-item"><div class="open-dot red"></div><div class="open-text"><strong>Anthropic Enterprise contract</strong> — not yet engaged. Negotiate seats, desktop tool audit timeline, regulated-firm provisions.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Snowflake view verification</strong> — confirm transformed views. Scope RBAC build.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>FactSet + Bloomberg licensing</strong> — AI agent consumption terms under current agreements.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Connector walkthrough</strong> — Slack or Otter end to end. Map user permissions vs. agent governance.</div></div>
+      <div class="open-item"><div class="open-dot blue"></div><div class="open-text"><strong>Cortex XDR / Koi</strong> — Palo Alto rep for timeline. SIEM feed from Airia.</div></div>
+      <div class="open-item"><div class="open-dot blue"></div><div class="open-text"><strong>CCO conversation</strong> — retention and logging standard from real options.</div></div>
+      <div class="open-item"><div class="open-dot blue"></div><div class="open-text"><strong>Pilot scope</strong> — Tech team, BPMC, and a PM. Expand from here based on pilot data.</div></div>
     </div>
 
-  </main>
-
-  <footer class="footer">
-    <div class="footer-left">WESTFIELD CAPITAL MANAGEMENT · CONFIDENTIAL · MARCH 2026 · DEE SILVEIRA, CTO</div>
-    <div class="footer-right">Page 2 of 5 — Deployment Readiness</div>
-  </footer>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- PAGE 3: AIRIA GOVERNANCE LAYER                             -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<div class="page">
-  <header class="header">
-    <div>
-      <div class="firm-eyebrow">Confidential · Internal Briefing</div>
-      <div class="firm-name">Westfield Capital Management</div>
-      <div class="doc-title">Airia — Governance Layer Assessment</div>
-    </div>
-    <div>
-      <div class="header-meta">
-        Prepared by: Dee Silveira, CTO<br>
-        Date: March 2026<br>
-        Status: Pre-Deployment
-      </div>
-      <div class="page-label">Page 3 of 5 — Airia Governance Layer</div>
-    </div>
-  </header>
-
-  <main class="body-p2">
-
-    <!-- LEFT: WHAT AIRIA PROVIDES -->
-    <div style="display:flex;flex-direction:column;gap:0.08in;">
-
-      <div class="env-card deploy" style="border-color:#5a7abf;">
-        <span class="env-tag decided" style="background:var(--green-lt);color:var(--green);">Confirmed — Demo Call</span>
-        <div class="env-title">What Airia Provides (Validated March 2026)</div>
-        <div class="env-row">
-          <div class="env-label">MCP Gateway</div>
-          <div class="env-value"><strong>~1,100 pre-catalogued MCP servers.</strong> Admins approve which servers are available org-wide; users/teams configure their subset. Snowflake access restrictable to specific schemas/tables. Containerized MCP server hosting — spun up at runtime, destroyed on completion.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">AI Gateway</div>
-          <div class="env-value">Full request/response logging across all LLM traffic. Guardrails for prompt injection, sensitive data exposure, policy violations. <strong>Per-user and per-gateway dollar-value budgets</strong> (not just token limits) with automatic routing to cheaper models at threshold. Failover and load balancing across providers.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Surfaces</div>
-          <div class="env-value"><strong>Claude Code and Cowork:</strong> full control via gateway routing. <strong>Web app:</strong> browser extension monitoring (Airia acknowledged this is "heavy-handed," not true security). <strong>Native desktop app:</strong> cannot currently be intercepted inline — compliance API approach on short-term roadmap (see below).</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Multi-Model</div>
-          <div class="env-value">Not Claude-exclusive. Supports OpenAI, Gemini, self-hosted models on AWS/Azure. Translation layer handles provider switching. Relevant if Westfield diversifies models by use case.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Standalone</div>
-          <div class="env-value"><strong>MCP Gateway works without Claude Enterprise.</strong> Full org-wide policy enforcement through Claude requires Enterprise licensing. Other investment firms use hybrid: Enterprise for most users, Airia layered on for governed data access.</div>
-        </div>
-      </div>
-
-      <div class="env-card open">
-        <span class="env-tag needed">Must Configure</span>
-        <div class="env-title">What Westfield Still Has to Define in Airia</div>
-        <div style="font-size:7pt;color:var(--text-mid);line-height:1.5;margin-bottom:4px;">
-          Airia provides the platform. Someone still has to define the rules. This is the Layer 2 agent governance work — it lives in Airia's console instead of being built from scratch, but the decisions are the same.
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Agent-to-system access policies</strong> — which agents can access which systems. Snowflake read-only vs. Slack read-write vs. FactSet read-only. Per-role, per-team, per-workflow.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>DLP rules and data classification</strong> — what data can leave each system and reach the model. PII, client account numbers, sensitive fields. Define once in Airia, enforce everywhere.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Cross-system boundary policies</strong> — rules for when a single prompt touches multiple systems. Client data silo enforcement at the query level.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Approval workflows</strong> — which agent actions require human confirmation before execution. Write operations, cross-system aggregation, high-risk data access.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Risk classification</strong> — tag agents, models, and data sources with Westfield's risk definitions. Align with internal compliance policies.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Routing rules</strong> — route requests based on data sensitivity, team, and compliance requirements. Set cost thresholds and latency targets per workload.</div>
-        </div>
-      </div>
-
+    <div class="env-card deploy" style="border-color:#8a6abf;">
+      <span class="env-tag decided">Strategy</span>
+      <div class="env-title">Two-Layer Audit Architecture</div>
+      <div class="env-row"><div class="env-label">Layer A</div><div class="env-value"><strong>Application (Anthropic + Airia):</strong> Compliance API covers web, API, Claude Code. Airia governs all MCP connections — DLP, boundaries, tool scoping, audit logging.</div></div>
+      <div class="env-row"><div class="env-label">Layer B</div><div class="env-value"><strong>Endpoint (Cortex XDR + Koi):</strong> Desktop tools — Cowork, Excel, PowerPoint. AI tools running, files modified, risk scoring.</div></div>
+      <div class="env-row"><div class="env-label">Gap</div><div class="env-value"><strong style="color:var(--amber);">Koi hasn't shipped.</strong> Desktop tools off-limits until Koi or Anthropic audit — whichever first.</div></div>
+      <div class="env-row"><div class="env-label">Cost</div><div class="env-value"><strong style="color:var(--teal);">Minimal incremental.</strong> Already on Cortex XDR. Koi is a platform enhancement. No additional licensing at 65 users.</div></div>
     </div>
 
-    <!-- RIGHT: PRICING, TRIAL, FIT -->
-    <div style="display:flex;flex-direction:column;gap:0.08in;">
+  </div>
 
-      <div class="env-card deploy" style="border-color:#5a7abf;">
-        <span class="env-tag decided" style="background:var(--blue-lt);color:var(--blue);">Pricing</span>
-        <div class="env-title">Airia Pricing Structure</div>
-        <div class="env-row">
-          <div class="env-label">Tiers</div>
-          <div class="env-value">Free (eval, 1 user, 100 executions/mo), Individual ($50/mo, 1,000 executions), Team ($250/mo, unlimited users, 10,000 executions), <strong>Enterprise (custom — quote-based).</strong></div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Westfield</div>
-          <div class="env-value"><strong>Enterprise is the only relevant tier.</strong> SSO/SAML, audit logs, flexible deployment, custom SLAs, dedicated support. Pricing based on executions and users — negotiate a pilot cap before committing.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Trial</div>
-          <div class="env-value"><strong>14-day free trial available.</strong> Use to validate governance controls, connector setup, and latency before any enterprise commitment.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Cost Model</div>
-          <div class="env-value">Airia platform fee + Claude token costs (passed through or separate). Confirm whether token costs are additive or inclusive in the enterprise quote. This is a key negotiation point.</div>
-        </div>
-      </div>
+  <div class="summary-block fade-in" style="margin-top:2px;">
+    <div class="summary-text">
+      Infrastructure is ready — <strong>Okta, Cortex XDR, AWS</strong> all in place. Two-layer audit: <strong>Airia + Anthropic Compliance API</strong> for application-level, <strong>Cortex XDR/Koi</strong> for endpoint-level. Snowflake views exist but <strong>RBAC needs build.</strong> Two blockers: <strong>AI acceptable use policy and Anthropic Enterprise contract.</strong>
+    </div>
+  </div>
+</section>
 
-      <div class="env-card infra">
-        <span class="env-tag ready">Architecture Fit</span>
-        <div class="env-title">How Airia Fits Westfield's Two-Layer Model</div>
-        <div class="env-row">
-          <div class="env-label">Layer 1</div>
-          <div class="env-value"><strong>User permissions stay downstream.</strong> Airia passes user identity through to each system. Access follows credentials. No change from current state.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Layer 2</div>
-          <div class="env-value"><strong>Airia IS the agent governance layer.</strong> It sits between Claude and every downstream system, enforcing DLP, cross-system boundaries, tool scoping, and audit logging. This is what we've been describing — commercialized.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Cortex XDR</div>
-          <div class="env-value"><strong>Complementary, not competing.</strong> Airia governs the MCP/API layer. Cortex XDR/Koi governs the endpoint layer. Together they cover application + endpoint. Belt and suspenders.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Desktop Gap</div>
-          <div class="env-value"><strong>Three paths to coverage emerging:</strong> (1) Anthropic builds native audit into desktop tools. (2) Cortex XDR/Koi detects AI agent activity at the endpoint. (3) Airia is building async recording via Anthropic's compliance APIs — no device agent required, short-term roadmap. Desktop tools stay blocked for client data until at least one path ships.</div>
-        </div>
-      </div>
+<div class="divider"></div>
 
-      <div class="env-card team">
-        <span class="env-tag ready" style="background:var(--green-lt);color:var(--green);">Post-Call Status</span>
-        <div class="env-title">Demo Call — Confirmed & Outstanding</div>
-        <div class="open-item">
-          <div class="open-dot green" style="background:var(--green);"></div>
-          <div class="open-text"><strong>Snowflake governance</strong> — confirmed. Schema/table-level restrictions. Containerized hosting. Full logging.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot green" style="background:var(--green);"></div>
-          <div class="open-text"><strong>Cost controls</strong> — confirmed. Per-user dollar budgets with auto-routing to cheaper models. Not just token limits.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot green" style="background:var(--green);"></div>
-          <div class="open-text"><strong>Standalone mode</strong> — confirmed. MCP Gateway works without Claude Enterprise. Full enforcement requires Enterprise.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot green" style="background:var(--green);"></div>
-          <div class="open-text"><strong>Browser extensions</strong> — Airia acknowledged these are "heavy-handed," not real security. Gateway routing is the robust path.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>SOC 2 Type II</strong> — Alvin flagged. Unclear which frameworks Airia is certified against. Must confirm before any contract. Non-negotiable for RIA.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Excel/PowerPoint plugins</strong> — Airia has Word add-in (live), Outlook (early access), Excel/PPT in development. Confirm whether these route through governed gateway.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Desktop app compliance API ETA</strong> — short-term roadmap per Rahul. Need specific timeline.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>SIEM integration</strong> — not discussed on call. Need to confirm Cortex XDR/SIEM feed — native or syslog/webhook.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Latency</strong> — not quantified on call. Need measurable numbers before production decision.</div>
-        </div>
-      </div>
+<!-- ═════════════════ 03 · AIRIA GOVERNANCE ═════════════════ -->
+<section>
+  <p class="section-label fade-in">03 · Airia Governance Layer</p>
+  <h2 class="section-title fade-in">The governance<br><em>platform</em> assessed</h2>
+  <p class="section-desc fade-in">Airia validated as the governance layer on a March 2026 demo call. Here's what it provides, what Westfield still needs to define, and how it fits the two-layer audit model.</p>
 
-      <!-- POC Next Steps -->
-      <div class="env-card infra">
-        <span class="env-tag ready">Next Steps</span>
-        <div class="env-title">POC / Trial Scope</div>
-        <div class="env-row">
-          <div class="env-label">Use Case 1</div>
-          <div class="env-value"><strong>Governed Snowflake query access.</strong> Analyst agent vision. Highest governance complexity. Schema/table restrictions, DLP, audit logging.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Use Case 2</div>
-          <div class="env-value"><strong>Box document retrieval with DLP.</strong> Books and records system. Real client data exposure. DLP masking before model processing.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Process</div>
-          <div class="env-value">30-minute scoping call with Airia once use cases are confirmed. Airia assesses feasibility and timeline based on integrations required. Trial does not require Claude Enterprise.</div>
-        </div>
-      </div>
+  <div class="env-grid fade-in">
 
+    <div class="env-card infra">
+      <span class="env-tag ready">Confirmed — Demo Call</span>
+      <div class="env-title">What Airia Provides</div>
+      <div class="env-row"><div class="env-label">MCP Gateway</div><div class="env-value"><strong>~1,100 pre-catalogued MCP servers.</strong> Admins approve which servers are available org-wide. Snowflake access restrictable to specific schemas/tables. Containerized MCP server hosting.</div></div>
+      <div class="env-row"><div class="env-label">AI Gateway</div><div class="env-value">Full request/response logging across all LLM traffic. Guardrails for prompt injection, sensitive data exposure, policy violations. <strong>Per-user and per-gateway dollar-value budgets</strong> with automatic routing to cheaper models.</div></div>
+      <div class="env-row"><div class="env-label">Surfaces</div><div class="env-value"><strong>Claude Code and Cowork:</strong> full control via gateway routing. <strong>Web app:</strong> browser extension monitoring. <strong>Native desktop app:</strong> cannot currently be intercepted — compliance API approach on short-term roadmap.</div></div>
+      <div class="env-row"><div class="env-label">Multi-Model</div><div class="env-value">Not Claude-exclusive. Supports OpenAI, Gemini, self-hosted models on AWS/Azure. Relevant if Westfield diversifies models.</div></div>
+      <div class="env-row"><div class="env-label">Standalone</div><div class="env-value"><strong>MCP Gateway works without Claude Enterprise.</strong> Full org-wide policy enforcement through Claude requires Enterprise licensing.</div></div>
     </div>
 
-    <!-- BOTTOM LINE -->
-    <div class="bottom-line" style="grid-column: 1 / -1;">
-      <div class="bl-label">Airia Assessment — Post Demo Call</div>
-      <div class="bl-text" style="font-size:7.5pt;">
-        Demo validated Airia as the governance layer. <strong>MCP Gateway confirmed: Snowflake schema/table restrictions, containerized hosting, full logging.</strong> Cost controls go beyond tokens — per-user dollar budgets with auto-routing. Works standalone without Claude Enterprise for the trial. <strong>Three paths to desktop tool coverage now emerging</strong> — Anthropic native, Cortex XDR/Koi, and Airia's compliance API approach. Two critical items before contract: <strong>SOC 2 Type II certification status and SIEM integration path.</strong> POC scope: governed Snowflake access and Box document retrieval with DLP. <strong>Claude Enterprise is a parallel workstream — needed for full org-wide enforcement.</strong>
-      </div>
+    <div class="env-card open">
+      <span class="env-tag needed">Must Configure</span>
+      <div class="env-title">What Westfield Still Has to Define</div>
+      <p style="font-size:12px;color:var(--white-dim);line-height:1.65;margin-bottom:12px;">Airia provides the platform. Someone still has to define the rules. This is the Layer 2 agent governance work.</p>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Agent-to-system access policies</strong> — which agents can access which systems. Per-role, per-team, per-workflow.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>DLP rules and data classification</strong> — what data can leave each system and reach the model. PII, client account numbers, sensitive fields.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Cross-system boundary policies</strong> — rules for when a single prompt touches multiple systems.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Approval workflows</strong> — which agent actions require human confirmation before execution.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Risk classification</strong> — tag agents, models, and data sources with Westfield's risk definitions.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Routing rules</strong> — route requests based on data sensitivity, team, and compliance requirements.</div></div>
     </div>
 
-  </main>
-
-  <footer class="footer">
-    <div class="footer-left">WESTFIELD CAPITAL MANAGEMENT · CONFIDENTIAL · MARCH 2026 · DEE SILVEIRA, CTO</div>
-    <div class="footer-right">Page 3 of 5 — Airia Governance Layer</div>
-  </footer>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- PAGE 4: OPEN ITEMS & VENDOR NEGOTIATION                    -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<div class="page">
-  <header class="header">
-    <div>
-      <div class="firm-eyebrow">Confidential · Internal Briefing</div>
-      <div class="firm-name">Westfield Capital Management</div>
-      <div class="doc-title">Open Items, Phase Sequencing & Vendor Negotiations</div>
-    </div>
-    <div>
-      <div class="header-meta">
-        Prepared by: Dee Silveira, CTO<br>
-        Date: March 2026<br>
-        Status: Pre-Deployment
-      </div>
-      <div class="page-label">Page 4 of 4 — Open Items & Sequencing</div>
-    </div>
-  </header>
-
-  <main class="body-p2">
-
-    <!-- LEFT: PHASE SEQUENCING & VENDOR PREP -->
-    <div style="display:flex;flex-direction:column;gap:0.08in;">
-
-      <!-- Phase 1 vs Phase 2 -->
-      <div class="env-card infra">
-        <span class="env-tag ready">Sequencing</span>
-        <div class="env-title">Phase 1 — Productivity (Content-Assisted)</div>
-        <div class="env-row">
-          <div class="env-label">Connectors</div>
-          <div class="env-value"><strong>Slack, M365, Box.</strong> Pre-built MCP connectors. Client data exposure is real — Box is Westfield's official books and records system. M365 includes email and OneDrive with client communications and account data.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Governance</div>
-          <div class="env-value"><strong>Airia DLP rules required before connecting Box or M365.</strong> Define what Claude can access in books and records, what email content is in scope, what fields are masked. Phase 1 is not low-risk — it's lower-complexity workflows with real client data.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Workflows</div>
-          <div class="env-value">Research, drafting, summarization, communications, document analysis. Content-assisted — Claude helps search, draft, and summarize. Not decision-assisted.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Users</div>
-          <div class="env-value">Pilot group: <strong>Tech team, BPMC, and a PM.</strong> Generate real usage and cost data before firm-wide rollout to all 65 seats.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Surface</div>
-          <div class="env-value">Claude web interface and API only. <strong>No desktop tools until audit coverage exists.</strong></div>
-        </div>
-      </div>
-
-      <div class="env-card deploy" style="border-color:var(--amber);">
-        <span class="env-tag high">Phase 2</span>
-        <div class="env-title">Phase 2 — Agentic (Higher Risk)</div>
-        <div class="env-row">
-          <div class="env-label">Connectors</div>
-          <div class="env-value"><strong>Snowflake, FactSet, Salesforce</strong> — client portfolio data, market data, CRM. Requires full Layer 2 governance configured and tested. Airia as the MCP governance gateway.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Workflows</div>
-          <div class="env-value">Analyst agent — multi-system queries, financial modeling, scenario analysis, portfolio research. The CEO mandate. Requires CCO alignment on audit trail format before going live.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Prerequisites</div>
-          <div class="env-value">Snowflake RBAC built and tested. Airia governance rules configured. CCO has defined logging standard. FactSet and Bloomberg licensing confirmed. Connector walkthrough completed on Phase 1 systems.</div>
-        </div>
-      </div>
-
-      <!-- Vendor Negotiations -->
-      <div class="env-card team">
-        <span class="env-tag ready">Vendor Prep</span>
-        <div class="env-title">Five Vendor Conversations</div>
-        <div class="open-item">
-          <div class="open-dot red"></div>
-          <div class="open-text"><strong>Anthropic</strong> — Enterprise license (65 seats + 5-6 premium). Desktop tool audit coverage timeline in writing. Provisions comparable to RBC/D.E. Shaw. BAA if needed. Token pricing for API via Bedrock.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot red"></div>
-          <div class="open-text"><strong>Airia</strong> — Enterprise pricing for 65 users. Pilot cap on executions. Token costs additive or inclusive. 14-day trial scope. Snowflake connector capabilities. Financial services references.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Palo Alto</strong> — Koi integration timeline into Cortex XDR for endpoint-level agent visibility. SIEM feed will originate from Airia, not Anthropic — Palo Alto's role is endpoint governance and ingesting Airia's audit stream.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>FactSet</strong> — AI agent consumption terms under current agreement. If not covered, what amended terms look like. Must confirm before any production deployment.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Bloomberg</strong> — Same as FactSet. AI agent access to Bloomberg data via MCP connector. Licensing terms for automated consumption vs. human terminal use.</div>
-        </div>
-      </div>
-
+    <div class="env-card deploy">
+      <span class="env-tag decided" style="background:var(--blue-dim);color:var(--blue);">Pricing</span>
+      <div class="env-title">Airia Pricing Structure</div>
+      <div class="env-row"><div class="env-label">Tiers</div><div class="env-value">Free (eval, 1 user), Individual ($50/mo), Team ($250/mo), <strong>Enterprise (custom — quote-based).</strong></div></div>
+      <div class="env-row"><div class="env-label">Westfield</div><div class="env-value"><strong>Enterprise is the only relevant tier.</strong> SSO/SAML, audit logs, flexible deployment, custom SLAs, dedicated support.</div></div>
+      <div class="env-row"><div class="env-label">Trial</div><div class="env-value"><strong>14-day free trial available.</strong> Use to validate governance controls, connector setup, and latency before commitment.</div></div>
+      <div class="env-row"><div class="env-label">Cost Model</div><div class="env-value">Airia platform fee + Claude token costs. Confirm whether token costs are additive or inclusive. Key negotiation point.</div></div>
     </div>
 
-    <!-- RIGHT: EXPANDED OPEN ITEMS & AUP -->
-    <div style="display:flex;flex-direction:column;gap:0.08in;">
-
-      <!-- Expanded Licensing -->
-      <div class="env-card open">
-        <span class="env-tag needed">Data Vendor Licensing</span>
-        <div class="env-title">FactSet & Bloomberg — AI Agent Terms</div>
-        <div style="font-size:7pt;color:var(--text-mid);line-height:1.5;margin-bottom:4px;">
-          Both vendors license data for human consumption through their platforms. AI agent access — where Claude queries their data programmatically via MCP connectors — may not be covered under current agreements. This could affect total cost materially.
-        </div>
-        <div class="env-row">
-          <div class="env-label">FactSet</div>
-          <div class="env-value">Anthropic has a native FactSet MCP connector. But <strong>the connector existing doesn't mean Westfield's license covers AI agent consumption.</strong> Confirm terms with FactSet rep before any production use.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Bloomberg</div>
-          <div class="env-value">Bloomberg terminal licensing is user-based. AI agent access to Bloomberg data through an MCP connector is a fundamentally different consumption model. <strong>Confirm whether current agreement permits this or requires amendment.</strong></div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Risk</div>
-          <div class="env-value">If either vendor requires amended terms, the cost increase could be significant. Better to know before the pilot expands than after production deployment.</div>
-        </div>
-      </div>
-
-      <!-- AUP Outline -->
-      <div class="env-card" style="border-color:var(--red);">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);"></div>
-        <span class="env-tag critical">Blocker</span>
-        <div class="env-title">AI Acceptable Use Policy — Scope</div>
-        <div style="font-size:7pt;color:var(--text-mid);line-height:1.5;margin-bottom:4px;">
-          Does not exist. Must be created and signed off before any user gets a seat. Minimum scope should cover:
-        </div>
-        <div class="open-item">
-          <div class="open-dot red"></div>
-          <div class="open-text"><strong>Permitted uses</strong> — which workflows, which data types, which systems Claude can be used with. What's explicitly prohibited.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot red"></div>
-          <div class="open-text"><strong>Client data handling</strong> — rules for using Claude with any data that touches client accounts, portfolios, or communications.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot red"></div>
-          <div class="open-text"><strong>Desktop tool restrictions</strong> — Cowork, Excel add-in, PowerPoint add-in explicitly prohibited for client data until audit coverage exists.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Human oversight requirements</strong> — when Claude output must be reviewed before use. Investment recommendations, client communications, compliance-adjacent work.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot amber"></div>
-          <div class="open-text"><strong>Prompt injection awareness</strong> — don't upload untrusted external files. Don't use Claude with documents from counterparties or unknown sources.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot blue"></div>
-          <div class="open-text"><strong>Training and acknowledgment</strong> — all users sign the policy and complete awareness training before receiving a seat.</div>
-        </div>
-        <div class="open-item">
-          <div class="open-dot blue"></div>
-          <div class="open-text"><strong>Incident reporting</strong> — what to do if Claude produces something unexpected, accesses data it shouldn't, or behaves outside expected parameters.</div>
-        </div>
-      </div>
-
-      <!-- Additional Desktop Tools -->
-      <div class="env-card" style="border-color:var(--amber);">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--amber);"></div>
-        <span class="env-tag high">Verify</span>
-        <div class="env-title">Other Desktop Tools to Scope</div>
-        <div class="env-row">
-          <div class="env-label">Claude in Chrome</div>
-          <div class="env-value">Browser-based agent for web interactions. Matt's deck mentions it. <strong>Verify whether this is in the Enterprise audit perimeter</strong> — same question as Cowork/Excel/PowerPoint.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">M365 Connector</div>
-          <div class="env-value">Anthropic has a detailed security guide for the M365 connector. <strong>This IS in the audit perimeter</strong> (it's an MCP connector, not a desktop tool). Worth reviewing the security model since M365 has client data.</div>
-        </div>
-        <div class="env-row">
-          <div class="env-label">Salesforce</div>
-          <div class="env-value">MCP connector available. CRM data includes client information. <strong>Phase 2 scope</strong> — requires full agent governance before connecting.</div>
-        </div>
-      </div>
-
+    <div class="env-card infra">
+      <span class="env-tag ready">Architecture Fit</span>
+      <div class="env-title">How Airia Fits the Two-Layer Model</div>
+      <div class="env-row"><div class="env-label">Layer 1</div><div class="env-value"><strong>User permissions stay downstream.</strong> Airia passes user identity through to each system. No change from current state.</div></div>
+      <div class="env-row"><div class="env-label">Layer 2</div><div class="env-value"><strong>Airia IS the agent governance layer.</strong> Sits between Claude and every downstream system, enforcing DLP, boundaries, tool scoping, audit logging.</div></div>
+      <div class="env-row"><div class="env-label">Cortex XDR</div><div class="env-value"><strong>Complementary, not competing.</strong> Airia governs MCP/API layer. Cortex XDR/Koi governs endpoint. Belt and suspenders.</div></div>
+      <div class="env-row"><div class="env-label">Desktop Gap</div><div class="env-value"><strong>Three paths:</strong> (1) Anthropic native audit, (2) Cortex XDR/Koi at endpoint, (3) Airia compliance API approach. Desktop tools blocked until at least one ships.</div></div>
     </div>
 
-    <!-- BOTTOM LINE -->
-    <div class="bottom-line" style="grid-column: 1 / -1;">
-      <div class="bl-label">Path Forward</div>
-      <div class="bl-text" style="font-size:7.5pt;">
-        <strong>Phase 1 starts with Slack, M365, and Box through governed surfaces.</strong> Phase 2 adds Snowflake, FactSet, and Salesforce with full Airia governance configured. Two blockers must clear first: <strong>AI acceptable use policy and Anthropic Enterprise contract.</strong> Five vendor conversations start now — Anthropic and Airia are critical path, Palo Alto/FactSet/Bloomberg are parallel. <strong>The 14-day Airia trial validates before enterprise commitment. The connector walkthrough builds MCP fluency before client data.</strong> Desktop tools stay off until audit coverage exists — from Anthropic natively, from Cortex XDR/Koi at the endpoint, or both. <strong>Every open item is known. Every decision has an owner. The sequence is clear.</strong>
-      </div>
+    <div class="env-card team">
+      <span class="env-tag ready" style="background:var(--teal-dim);color:var(--teal);">Post-Call Status</span>
+      <div class="env-title">Demo Call — Confirmed & Outstanding</div>
+      <div class="open-item"><div class="open-dot green"></div><div class="open-text"><strong>Snowflake governance</strong> — confirmed. Schema/table-level restrictions. Containerized hosting. Full logging.</div></div>
+      <div class="open-item"><div class="open-dot green"></div><div class="open-text"><strong>Cost controls</strong> — confirmed. Per-user dollar budgets with auto-routing. Not just token limits.</div></div>
+      <div class="open-item"><div class="open-dot green"></div><div class="open-text"><strong>Standalone mode</strong> — confirmed. MCP Gateway works without Claude Enterprise.</div></div>
+      <div class="open-item"><div class="open-dot green"></div><div class="open-text"><strong>Browser extensions</strong> — Airia acknowledged these are "heavy-handed," not real security.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>SOC 2 Type II</strong> — Alvin flagged. Unclear which frameworks Airia is certified against. Non-negotiable for RIA.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Excel/PowerPoint plugins</strong> — Airia has Word add-in (live), others in development.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Desktop app compliance API ETA</strong> — short-term roadmap. Need specific timeline.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>SIEM integration</strong> — not discussed. Need to confirm Cortex XDR/SIEM feed.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Latency</strong> — not quantified. Need measurable numbers before production.</div></div>
     </div>
 
-  </main>
-
-  <footer class="footer">
-    <div class="footer-left">WESTFIELD CAPITAL MANAGEMENT · CONFIDENTIAL · MARCH 2026 · DEE SILVEIRA, CTO</div>
-    <div class="footer-right">Page 4 of 5 — Open Items & Sequencing</div>
-  </footer>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- PAGE 5: COST ESTIMATES                                     -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<div class="page">
-  <header class="header">
-    <div>
-      <div class="firm-eyebrow">Confidential · Internal Briefing</div>
-      <div class="firm-name">Westfield Capital Management</div>
-      <div class="doc-title">Cost Estimates — Per-System Token & Platform Costs</div>
-    </div>
-    <div>
-      <div class="header-meta">
-        Prepared by: Dee Silveira, CTO<br>
-        Date: March 2026<br>
-        Status: Pre-Deployment
-      </div>
-      <div class="page-label">Page 5 of 5 — Cost Estimates</div>
-    </div>
-  </header>
-
-  <main style="padding:0.1in 0.4in 0.06in 0.42in;margin-left:0.25in;display:flex;flex-direction:column;gap:0.07in;">
-
-    <!-- SYSTEM-BY-SYSTEM TOKEN COSTS -->
-    <div style="display:flex;gap:0.1in;">
-
-      <!-- Token cost table -->
-      <div style="flex:2;">
-        <div class="section-label" style="font-family:'Source Code Pro',monospace;font-size:6pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;display:flex;align-items:center;gap:5px;">Per-System Token Cost Estimates<span style="flex:1;height:1px;background:var(--rule-lt);"></span></div>
-        <table style="width:100%;border-collapse:collapse;font-size:7pt;">
-          <thead>
-            <tr>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">System</th>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">Connection</th>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">Est. Monthly Tokens</th>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">Sonnet 4.6 /mo</th>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">Opus 4.6 /mo</th>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">System-Side Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">SS&C Eze</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">File → Snowflake</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">N/A (via Snowflake)</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$0</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$0</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">None — file export</td>
-            </tr>
-            <tr>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">SS&C APX</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">File → Snowflake + API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">5M–15M in, 1M–3M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$30–$90</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$50–$150</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--amber);font-weight:500;">API licensing TBD</td>
-            </tr>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Snowflake ❄</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">MCP API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">80M–200M in, 8M–20M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$360–$900</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$600–$1,500</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--amber);font-weight:500;">$1K–$3K compute</td>
-            </tr>
-            <tr>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Box</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">MCP API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">30M–60M in, 3M–6M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$135–$270</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$225–$450</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">Likely covered</td>
-            </tr>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">M365 (Email)</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">MCP API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">40M–80M in, 4M–8M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$180–$360</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$300–$600</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">Covered under E3/E5</td>
-            </tr>
-            <tr>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">M365 (OneDrive)</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">MCP API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">20M–40M in, 2M–4M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$90–$180</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$150–$300</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">Included in M365</td>
-            </tr>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Slack</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">MCP API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">15M–30M in, 2M–4M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$75–$150</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$125–$250</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">Likely covered</td>
-            </tr>
-            <tr>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Salesforce</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">MCP API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">20M–40M in, 3M–6M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$105–$210</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$175–$350</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--amber);font-weight:500;">May hit API limits</td>
-            </tr>
-            <tr style="background:var(--amber-lt);">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--amber);">FactSet</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">MCP API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">30M–80M in, 5M–10M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$165–$390</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$275–$650</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--red);font-weight:600;">Licensing TBD</td>
-            </tr>
-            <tr style="background:var(--amber-lt);">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--amber);">Bloomberg</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">MCP API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">20M–60M in, 3M–8M out</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$105–$300</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$175–$500</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--red);font-weight:600;">Licensing TBD</td>
-            </tr>
-            <tr style="background:var(--fog);font-weight:600;">
-              <td colspan="3" style="padding:4px 6px;border-bottom:1.5px solid var(--rule);color:var(--ink);">Token Subtotal — All Systems (blended Sonnet/Opus)</td>
-              <td colspan="2" style="padding:4px 6px;border-bottom:1.5px solid var(--rule);color:var(--ink);">$1,800 – $4,000 /month</td>
-              <td style="padding:4px 6px;border-bottom:1.5px solid var(--rule);color:var(--text-mid);font-weight:400;font-size:6pt;">Sonnet primary, Opus for analysis</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Assumptions sidebar -->
-      <div style="flex:1;">
-        <div class="section-label" style="font-family:'Source Code Pro',monospace;font-size:6pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;display:flex;align-items:center;gap:5px;">Assumptions<span style="flex:1;height:1px;background:var(--rule-lt);"></span></div>
-        <div style="background:white;border:1px solid var(--rule-lt);padding:0.08in;font-size:6.5pt;color:var(--text-mid);line-height:1.5;">
-          <div style="margin-bottom:5px;">
-            <strong style="color:var(--ink);">Token rates (per MTok)</strong><br>
-            Sonnet 4.6: $3 input / $15 output<br>
-            Opus 4.6: $5 input / $25 output<br>
-            Prompt caching: 90% discount on cached input (not reflected in table — could reduce costs 30–50%)
-          </div>
-          <div style="margin-bottom:5px;">
-            <strong style="color:var(--ink);">Usage basis</strong><br>
-            65 users firm-wide, 22 working days/month. Phase 1: ~30% heavy, 40% moderate, 30% light. Phase 2: investment team running 30–50 complex agentic queries/day.
-          </div>
-          <div style="margin-bottom:5px;">
-            <strong style="color:var(--ink);">Document retrieval</strong><br>
-            10-page PDF ≈ 3,000–5,000 tokens. Email thread (20 msgs) ≈ 10,000–15,000 tokens. Snowflake result set ≈ 50,000–100,000 tokens per complex query.
-          </div>
-          <div style="margin-bottom:5px;">
-            <strong style="color:var(--ink);">Prompt caching impact</strong><br>
-            Repetitive analytical patterns (same Snowflake views, recurring FactSet queries) benefit most. Could cut retrieval-heavy costs by 30–50%. Not included in estimates above.
-          </div>
-          <div>
-            <strong style="color:var(--red);">Snowflake context</strong><br>
-            Westfield's Snowflake spend has already grown from $5K to $20K/month on human-driven queries. AI-generated queries will be more frequent, more complex, and run at machine speed. Dedicated VW and cost monitoring are critical.
-          </div>
-        </div>
-      </div>
-
+    <div class="env-card infra">
+      <span class="env-tag ready">Next Steps</span>
+      <div class="env-title">POC / Trial Scope</div>
+      <div class="env-row"><div class="env-label">Use Case 1</div><div class="env-value"><strong>Governed Snowflake query access.</strong> Analyst agent vision. Highest governance complexity.</div></div>
+      <div class="env-row"><div class="env-label">Use Case 2</div><div class="env-value"><strong>Box document retrieval with DLP.</strong> Books and records system. Real client data exposure.</div></div>
+      <div class="env-row"><div class="env-label">Process</div><div class="env-value">30-minute scoping call with Airia once use cases confirmed. Trial does not require Claude Enterprise.</div></div>
     </div>
 
-    <!-- TOTAL COST SUMMARY -->
-    <div style="display:grid;grid-template-columns:2fr 1fr;gap:0.1in;">
+  </div>
 
-      <div>
-        <div class="section-label" style="font-family:'Source Code Pro',monospace;font-size:6pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;display:flex;align-items:center;gap:5px;">Total Monthly Cost Estimate<span style="flex:1;height:1px;background:var(--rule-lt);"></span></div>
-        <table style="width:100%;border-collapse:collapse;font-size:7pt;">
-          <thead>
-            <tr>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">Component</th>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">Low /mo</th>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">High /mo</th>
-              <th style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--rule);">Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Anthropic Enterprise seats</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$1,625</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$2,500</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);font-size:6pt;">65 seats + 5–6 premium. Seat-based or usage-based model TBD.</td>
-            </tr>
-            <tr>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">API tokens — all systems</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$1,800</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$4,000</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);font-size:6pt;">Blended Sonnet/Opus across all MCP connectors. Pre-caching discount.</td>
-            </tr>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Snowflake incremental compute</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$1,000</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$3,000</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);font-size:6pt;">Dedicated VW. Budget aggressively — already 4x growth ($5K → $20K).</td>
-            </tr>
-            <tr>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Airia Enterprise</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$2,000</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$5,000</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);font-size:6pt;">Custom quote — TBD Friday. Execution-based. Negotiate pilot cap.</td>
-            </tr>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Cortex XDR / Koi</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$0</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$0</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);font-size:6pt;">Already licensed. Koi is platform enhancement.</td>
-            </tr>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Salesforce API</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$0</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$500</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);font-size:6pt;">May need API call increase if hitting daily limits.</td>
-            </tr>
-            <tr>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">AWS infrastructure</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$200</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$600</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);font-size:6pt;">CloudWatch, VPC endpoints, S3, data transfer, Lambda. Bedrock overhead beyond token costs.</td>
-            </tr>
-            <tr style="background:white;">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--ink);">Bedrock data residency</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$180</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);">$400</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--text-mid);font-size:6pt;">10% premium on regional endpoints if data residency required. Applied to API token line.</td>
-            </tr>
-            <tr style="background:var(--amber-lt);">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--amber);">FactSet AI terms</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--amber);">TBD</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--amber);">TBD</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--red);font-size:6pt;font-weight:500;">Could be material. Amendment risk. Confirm before production.</td>
-            </tr>
-            <tr style="background:var(--amber-lt);">
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);font-weight:600;color:var(--amber);">Bloomberg AI terms</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--amber);">TBD</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--amber);">TBD</td>
-              <td style="padding:3px 6px;border-bottom:1px solid var(--rule-lt);color:var(--red);font-size:6pt;font-weight:500;">Could be material. Terminal licensing ≠ AI agent access.</td>
-            </tr>
-            <tr style="background:var(--green-lt);">
-              <td style="padding:4px 6px;border-bottom:2px solid var(--rule);font-weight:700;color:var(--green);">Total Recurring (excl. data vendors)</td>
-              <td style="padding:4px 6px;border-bottom:2px solid var(--rule);font-weight:700;color:var(--green);">$6,805</td>
-              <td style="padding:4px 6px;border-bottom:2px solid var(--rule);font-weight:700;color:var(--green);">$16,000</td>
-              <td style="padding:4px 6px;border-bottom:2px solid var(--rule);color:var(--text-mid);font-size:6pt;">Per month. Annualized: $82K–$192K before FactSet/Bloomberg.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="summary-block fade-in" style="margin-top:2px;">
+    <div class="summary-text">
+      Demo validated Airia as the governance layer. <strong>MCP Gateway confirmed: Snowflake schema/table restrictions, containerized hosting, full logging.</strong> Two critical items before contract: <strong>SOC 2 Type II certification and SIEM integration path.</strong> POC scope: governed Snowflake access and Box document retrieval with DLP.
+    </div>
+  </div>
+</section>
 
-      <!-- ROI + Key Variables -->
-      <div style="display:flex;flex-direction:column;gap:0.07in;">
-        <div style="background:var(--ink);padding:0.08in;position:relative;overflow:hidden;">
-          <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:28pt;color:rgba(184,152,42,0.1);line-height:1;">ROI</div>
-          <div style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;">Productivity Frame</div>
-          <div style="font-size:6.5pt;color:#c8c4bc;line-height:1.5;">
-            65 users recovering <strong style="color:#e8e4da;">3–5 hours/week</strong> = <strong style="color:#e8e4da;">195–325 hours of capacity per week</strong> without adding headcount. At $7K–$16K/month, that's <strong style="color:#e8e4da;">$2.15–$4.94 per recovered hour.</strong> Payback is measurable within the pilot window.
-          </div>
-        </div>
+<div class="divider"></div>
 
-        <div style="background:white;border:1px solid var(--rule-lt);padding:0.08in;">
-          <div style="font-family:'Source Code Pro',monospace;font-size:5.5pt;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;">Key Cost Variables</div>
-          <div style="font-size:6.5pt;color:var(--text-mid);line-height:1.5;">
-            <strong style="color:var(--ink);">Biggest swing:</strong> Data retrieval volume per agentic query. A single Snowflake query pulling 200K tokens costs $0.60–$1.00 in input alone. 50 queries/day = $660–$1,100/month just from Snowflake retrieval.<br><br>
-            <strong style="color:var(--ink);">Prompt caching:</strong> 90% discount on repeated input patterns. Portfolio analysis hits the same views repeatedly — could cut retrieval costs 30–50%. Not in estimates above.<br><br>
-            <strong style="color:var(--ink);">Snowflake compute:</strong> Already 4x growth ($5K → $20K). AI queries at machine speed will accelerate this. Dedicated VW with cost alerts is non-negotiable.<br><br>
-            <strong style="color:var(--amber);">Data vendors:</strong> FactSet and Bloomberg could add $5K–$20K/month or $0. No way to estimate until reps confirm terms.
-          </div>
-        </div>
-      </div>
+<!-- ═════════════════ 04 · PHASE SEQUENCING ═════════════════ -->
+<section>
+  <p class="section-label fade-in">04 · Phase Sequencing & Vendors</p>
+  <h2 class="section-title fade-in">Open items &<br><em>negotiation</em> map</h2>
 
+  <div class="env-grid fade-in">
+
+    <div class="env-card infra">
+      <span class="env-tag ready">Sequencing</span>
+      <div class="env-title">Phase 1 — Productivity (Content-Assisted)</div>
+      <div class="env-row"><div class="env-label">Connectors</div><div class="env-value"><strong>Slack, M365, Box.</strong> Pre-built MCP connectors. Client data exposure is real — Box is Westfield's official books and records system.</div></div>
+      <div class="env-row"><div class="env-label">Governance</div><div class="env-value"><strong>Airia DLP rules required before connecting Box or M365.</strong> Phase 1 is not low-risk — it's lower-complexity workflows with real client data.</div></div>
+      <div class="env-row"><div class="env-label">Workflows</div><div class="env-value">Research, drafting, summarization, communications, document analysis. Content-assisted — Claude helps search, draft, and summarize.</div></div>
+      <div class="env-row"><div class="env-label">Users</div><div class="env-value">Pilot group: <strong>Tech team, BPMC, and a PM.</strong> Generate real usage and cost data before firm-wide rollout.</div></div>
+      <div class="env-row"><div class="env-label">Surface</div><div class="env-value">Claude web interface and API only. <strong>No desktop tools until audit coverage exists.</strong></div></div>
     </div>
 
-    <!-- BOTTOM LINE -->
-    <div class="bottom-line">
-      <div class="bl-label">Cost Summary</div>
-      <div class="bl-text" style="font-size:7.5pt;">
-        Estimated recurring cost of <strong>$6,800–$16,000/month ($82K–$192K annualized)</strong> before FactSet and Bloomberg licensing. Bedrock token rates match direct Anthropic pricing — no markup — but <strong>regional endpoints add 10%</strong> if data residency required, plus AWS infrastructure overhead (CloudWatch, VPC, S3, data transfer). <strong>Prompt caching could reduce token costs 30–50%</strong> on repetitive analytical patterns. The real unknowns remain data vendor licensing and Snowflake compute growth. <strong>The pilot generates real numbers. Budget to the high end. Let the data bring it down.</strong>
-      </div>
+    <div class="env-card open" style="border-color:var(--amber);">
+      <span class="env-tag partial">Phase 2</span>
+      <div class="env-title">Phase 2 — Agentic (Higher Risk)</div>
+      <div class="env-row"><div class="env-label">Connectors</div><div class="env-value"><strong>Snowflake, FactSet, Salesforce</strong> — client portfolio data, market data, CRM. Requires full Layer 2 governance configured.</div></div>
+      <div class="env-row"><div class="env-label">Workflows</div><div class="env-value">Analyst agent — multi-system queries, financial modeling, scenario analysis, portfolio research. The CEO mandate.</div></div>
+      <div class="env-row"><div class="env-label">Prerequisites</div><div class="env-value">Snowflake RBAC built and tested. Airia governance rules configured. CCO has defined logging standard. FactSet and Bloomberg licensing confirmed.</div></div>
     </div>
 
-  </main>
+    <div class="env-card team">
+      <span class="env-tag ready">Vendor Prep</span>
+      <div class="env-title">Five Vendor Conversations</div>
+      <div class="open-item"><div class="open-dot red"></div><div class="open-text"><strong>Anthropic</strong> — Enterprise license (65 seats + 5-6 premium). Desktop tool audit coverage timeline in writing. Provisions comparable to RBC/D.E. Shaw.</div></div>
+      <div class="open-item"><div class="open-dot red"></div><div class="open-text"><strong>Airia</strong> — Enterprise pricing for 65 users. Pilot cap on executions. Token costs additive or inclusive. 14-day trial scope.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Palo Alto</strong> — Koi integration timeline into Cortex XDR. SIEM feed from Airia.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>FactSet</strong> — AI agent consumption terms under current agreement.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Bloomberg</strong> — AI agent access to Bloomberg data via MCP connector. Licensing terms for automated vs. human use.</div></div>
+    </div>
 
-  <footer class="footer">
-    <div class="footer-left">WESTFIELD CAPITAL MANAGEMENT · CONFIDENTIAL · MARCH 2026 · DEE SILVEIRA, CTO</div>
-    <div class="footer-right">Page 5 of 5 — Cost Estimates</div>
-  </footer>
-</div>
+    <div class="env-card open">
+      <span class="env-tag needed" style="background:var(--amber-dim);color:var(--amber);">Data Vendor Licensing</span>
+      <div class="env-title">FactSet & Bloomberg — AI Agent Terms</div>
+      <p style="font-size:12px;color:var(--white-dim);line-height:1.65;margin-bottom:12px;">Both vendors license data for human consumption. AI agent access may not be covered under current agreements.</p>
+      <div class="env-row"><div class="env-label">FactSet</div><div class="env-value">Anthropic has a native FactSet MCP connector. But <strong>the connector existing doesn't mean Westfield's license covers AI agent consumption.</strong></div></div>
+      <div class="env-row"><div class="env-label">Bloomberg</div><div class="env-value">Bloomberg terminal licensing is user-based. AI agent access is a fundamentally different consumption model. <strong>Confirm whether current agreement permits this.</strong></div></div>
+      <div class="env-row"><div class="env-label">Risk</div><div class="env-value">If either vendor requires amended terms, the cost increase could be significant.</div></div>
+    </div>
 
+    <div class="env-card policy" style="border-color:var(--red);">
+      <span class="env-tag critical">Blocker</span>
+      <div class="env-title">AI Acceptable Use Policy — Scope</div>
+      <p style="font-size:12px;color:var(--white-dim);line-height:1.65;margin-bottom:12px;">Does not exist. Must be created and signed off before any user gets a seat.</p>
+      <div class="open-item"><div class="open-dot red"></div><div class="open-text"><strong>Permitted uses</strong> — which workflows, data types, systems. What's explicitly prohibited.</div></div>
+      <div class="open-item"><div class="open-dot red"></div><div class="open-text"><strong>Client data handling</strong> — rules for using Claude with any data that touches client accounts.</div></div>
+      <div class="open-item"><div class="open-dot red"></div><div class="open-text"><strong>Desktop tool restrictions</strong> — Cowork, Excel, PowerPoint explicitly prohibited for client data.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Human oversight requirements</strong> — when Claude output must be reviewed before use.</div></div>
+      <div class="open-item"><div class="open-dot amber"></div><div class="open-text"><strong>Prompt injection awareness</strong> — don't upload untrusted external files.</div></div>
+      <div class="open-item"><div class="open-dot blue"></div><div class="open-text"><strong>Training and acknowledgment</strong> — all users sign the policy before receiving a seat.</div></div>
+      <div class="open-item"><div class="open-dot blue"></div><div class="open-text"><strong>Incident reporting</strong> — what to do if Claude behaves outside expected parameters.</div></div>
+    </div>
+
+    <div class="env-card open" style="border-color:var(--amber);">
+      <span class="env-tag partial">Verify</span>
+      <div class="env-title">Other Desktop Tools to Scope</div>
+      <div class="env-row"><div class="env-label">Chrome</div><div class="env-value">Browser-based agent. <strong>Verify whether this is in the Enterprise audit perimeter.</strong></div></div>
+      <div class="env-row"><div class="env-label">M365</div><div class="env-value">MCP connector — <strong>IS in the audit perimeter.</strong> Worth reviewing since M365 has client data.</div></div>
+      <div class="env-row"><div class="env-label">Salesforce</div><div class="env-value">MCP connector available. CRM data includes client information. <strong>Phase 2 scope.</strong></div></div>
+    </div>
+
+  </div>
+
+  <div class="summary-block fade-in" style="margin-top:2px;">
+    <div class="summary-text">
+      <strong>Phase 1 starts with Slack, M365, and Box through governed surfaces.</strong> Phase 2 adds Snowflake, FactSet, and Salesforce with full Airia governance. Two blockers: <strong>AI acceptable use policy and Anthropic Enterprise contract.</strong> Five vendor conversations now. <strong>Every open item is known. Every decision has an owner. The sequence is clear.</strong>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═════════════════ 05 · COST ESTIMATES ═════════════════ -->
+<section style="padding-bottom: 80px;">
+  <p class="section-label fade-in">05 · Cost Estimates</p>
+  <h2 class="section-title fade-in">Per-system token &<br><em>platform</em> costs</h2>
+  <p class="section-desc fade-in">Estimated recurring costs across all MCP connectors, platform licensing, and infrastructure. Data vendor licensing (FactSet, Bloomberg) could add materially.</p>
+
+  <div class="fade-in" style="overflow-x:auto;">
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>System</th>
+          <th>Connection</th>
+          <th>Est. Monthly Tokens</th>
+          <th>Sonnet 4.6 /mo</th>
+          <th>Opus 4.6 /mo</th>
+          <th>System-Side Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="row-name">SS&C Eze</td><td>File → Snowflake</td><td>N/A (via Snowflake)</td><td>$0</td><td>$0</td><td>None — file export</td></tr>
+        <tr><td class="row-name">SS&C APX</td><td>File → Snowflake + API</td><td>5M–15M in, 1M–3M out</td><td>$30–$90</td><td>$50–$150</td><td class="row-warn">API licensing TBD</td></tr>
+        <tr><td class="row-name">Snowflake ❄</td><td>MCP API</td><td>80M–200M in, 8M–20M out</td><td>$360–$900</td><td>$600–$1,500</td><td class="row-warn">$1K–$3K compute</td></tr>
+        <tr><td class="row-name">Box</td><td>MCP API</td><td>30M–60M in, 3M–6M out</td><td>$135–$270</td><td>$225–$450</td><td>Likely covered</td></tr>
+        <tr><td class="row-name">M365 (Email)</td><td>MCP API</td><td>40M–80M in, 4M–8M out</td><td>$180–$360</td><td>$300–$600</td><td>Covered under E3/E5</td></tr>
+        <tr><td class="row-name">M365 (OneDrive)</td><td>MCP API</td><td>20M–40M in, 2M–4M out</td><td>$90–$180</td><td>$150–$300</td><td>Included in M365</td></tr>
+        <tr><td class="row-name">Slack</td><td>MCP API</td><td>15M–30M in, 2M–4M out</td><td>$75–$150</td><td>$125–$250</td><td>Likely covered</td></tr>
+        <tr><td class="row-name">Salesforce</td><td>MCP API</td><td>20M–40M in, 3M–6M out</td><td>$105–$210</td><td>$175–$350</td><td class="row-warn">May hit API limits</td></tr>
+        <tr><td class="row-name row-warn">FactSet</td><td>MCP API</td><td>30M–80M in, 5M–10M out</td><td>$165–$390</td><td>$275–$650</td><td style="color:var(--red);font-weight:500;">Licensing TBD</td></tr>
+        <tr><td class="row-name row-warn">Bloomberg</td><td>MCP API</td><td>20M–60M in, 3M–8M out</td><td>$105–$300</td><td>$175–$500</td><td style="color:var(--red);font-weight:500;">Licensing TBD</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="fade-in" style="margin-top:24px; overflow-x:auto;">
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Low /mo</th>
+          <th>High /mo</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="row-name">Anthropic Enterprise seats</td><td>$1,625</td><td>$2,500</td><td>65 seats + 5–6 premium</td></tr>
+        <tr><td class="row-name">API tokens — all systems</td><td>$1,800</td><td>$4,000</td><td>Blended Sonnet/Opus across all MCP connectors</td></tr>
+        <tr><td class="row-name">Snowflake incremental compute</td><td>$1,000</td><td>$3,000</td><td>Dedicated VW. Already 4x growth ($5K → $20K)</td></tr>
+        <tr><td class="row-name">Airia Enterprise</td><td>$2,000</td><td>$5,000</td><td>Custom quote — execution-based</td></tr>
+        <tr><td class="row-name">Cortex XDR / Koi</td><td>$0</td><td>$0</td><td>Already licensed. Koi is platform enhancement.</td></tr>
+        <tr><td class="row-name">AWS infrastructure</td><td>$200</td><td>$600</td><td>CloudWatch, VPC, S3, data transfer, Lambda</td></tr>
+        <tr><td class="row-name">Bedrock data residency</td><td>$180</td><td>$400</td><td>10% premium on regional endpoints</td></tr>
+        <tr><td class="row-name row-warn">FactSet AI terms</td><td>TBD</td><td>TBD</td><td style="color:var(--red);">Could be material. Amendment risk.</td></tr>
+        <tr><td class="row-name row-warn">Bloomberg AI terms</td><td>TBD</td><td>TBD</td><td style="color:var(--red);">Terminal licensing ≠ AI agent access.</td></tr>
+        <tr class="row-total"><td class="row-name">Total Recurring (excl. data vendors)</td><td>$6,805</td><td>$16,000</td><td>Annualized: $82K–$192K</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="assumptions fade-in" style="margin-top:2px;">
+    <p><strong>Token rates (per MTok):</strong> Sonnet 4.6: $3 input / $15 output. Opus 4.6: $5 input / $25 output. Prompt caching: 90% discount on cached input (could reduce costs 30–50%).</p>
+    <p><strong>Usage basis:</strong> 65 users firm-wide, 22 working days/month. Phase 1: ~30% heavy, 40% moderate, 30% light. Phase 2: 30–50 complex agentic queries/day.</p>
+    <p><strong>Snowflake context:</strong> Westfield's Snowflake spend has already grown from $5K to $20K/month on human-driven queries. AI queries at machine speed will accelerate this. Dedicated VW with cost alerts is non-negotiable.</p>
+    <p><strong>Biggest swing:</strong> Data retrieval volume per agentic query. A single Snowflake query pulling 200K tokens costs $0.60–$1.00 in input alone. 50 queries/day = $660–$1,100/month just from Snowflake retrieval.</p>
+  </div>
+
+  <div class="roi-block fade-in" style="margin-top:2px;">
+    <div class="roi-label">Productivity Frame</div>
+    <div class="roi-text">
+      65 users recovering <strong>3–5 hours/week</strong> = <strong>195–325 hours of capacity per week</strong> without adding headcount. At $7K–$16K/month, that's <strong>$2.15–$4.94 per recovered hour.</strong> Payback is measurable within the pilot window.
+    </div>
+  </div>
+
+  <div class="summary-block fade-in" style="margin-top:2px;">
+    <div class="summary-text">
+      Estimated recurring cost of <strong>$6,800–$16,000/month ($82K–$192K annualized)</strong> before FactSet and Bloomberg licensing. <strong>Prompt caching could reduce token costs 30–50%.</strong> The real unknowns remain data vendor licensing and Snowflake compute growth. <strong>The pilot generates real numbers. Budget to the high end. Let the data bring it down.</strong>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a class="footer-logo" href="../index.html">Westfield <span>Capital</span></a>
+  <div class="footer-note">Technology Strategy · Claude AI Deployment · March 2026</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    document.getElementById('progress').style.width = (p * 100) + '%';
+  });
+  const obs = new IntersectionObserver(e => e.forEach(el => { if(el.isIntersecting) { el.target.classList.add('visible'); obs.unobserve(el.target); } }), { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
