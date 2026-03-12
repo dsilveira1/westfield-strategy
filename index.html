@@ -136,6 +136,28 @@
   .card-status.live { color: var(--teal); }
   .card-status.progress { color: var(--gold); }
   .card-status.new { color: var(--teal-light); }
+  .card-status.flagship { color: var(--gold); }
+
+  /* MISSION STATEMENT */
+  .mission {
+    position: relative; z-index: 1;
+    padding: 0 10vw 8px;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.7s;
+  }
+  .mission-block {
+    background: var(--navy-mid);
+    border-left: 3px solid var(--gold);
+    padding: 28px 36px;
+    max-width: 720px;
+  }
+  .mission-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+  }
+  .mission-text {
+    font-family: var(--serif); font-size: 17px; font-weight: 300;
+    font-style: italic; line-height: 1.7; color: var(--white-dim);
+  }
 
   .card-placeholder { background: var(--navy-mid); padding: 40px 36px; border: 1px dashed rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 260px; }
   .placeholder-text { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.15); }
@@ -257,6 +279,13 @@
   </div>
 </div>
 
+<div class="mission">
+  <div class="mission-block">
+    <div class="mission-label">Technology Mission Statement</div>
+    <div class="mission-text">Westfield's technology aims to maximize the flow of high-quality investment decisions into successfully executed and reconciled trades at the lowest operational cost and minimal delay while maintaining the highest client service, compliance, and innovation standards.</div>
+  </div>
+</div>
+
 <!-- TABS -->
 <div class="tabs-wrapper">
   <div class="tabs-nav">
@@ -304,6 +333,13 @@
         <div class="card-title">Claude AI<br><em>Deployment</em></div>
         <div class="card-desc">Risk register, cost estimates, readiness assessment, and governance framework for the Claude+MCP deployment — the full operational brief for taking Claude to production at Westfield.</div>
         <div class="card-status new">New</div>
+      </a>
+
+      <a class="card" href="Westfield_Technology_Strategy_2026.html">
+        <div class="card-num">06 · 2026 Strategy</div>
+        <div class="card-title">Technology <em>Strategy</em> 2026</div>
+        <div class="card-desc">The comprehensive technology strategy for Westfield Capital. Purpose, boundaries, operating model, CORE charter, domain leadership, governance, rollout phases, metrics, and key decisions for 2026.</div>
+        <div class="card-status flagship">Flagship</div>
       </a>
 
     </div>
