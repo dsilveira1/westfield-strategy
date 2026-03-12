@@ -46,6 +46,21 @@
     flex-direction: column;
   }
 
+  .sidebar-back {
+    display: block;
+    padding: 12px 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.2s;
+    margin-bottom: 16px;
+  }
+  .sidebar-back:hover { color: var(--accent); }
+  .sidebar-back::before { content: '← '; }
+
   .sidebar-brand {
     padding: 0 24px 32px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -553,6 +568,7 @@
 
 <!-- ── SIDEBAR ── -->
 <nav class="sidebar">
+  <a class="sidebar-back" href="index.html">Strategy Index</a>
   <div class="sidebar-brand">
     <div class="firm">Westfield Capital Management</div>
     <div class="doc-title">Technology Strategy &amp; Operating Model 2026</div>

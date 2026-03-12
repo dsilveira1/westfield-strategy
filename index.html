@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Westfield Capital — Technology Strategy</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
   :root {
     --navy: #0D1B2A;
@@ -18,9 +18,9 @@
     --gold-dim: rgba(201,168,76,0.1);
     --white: #F4F6F8;
     --white-dim: rgba(244,246,248,0.5);
-    --serif: 'Cormorant Garamond', Georgia, serif;
-    --sans: 'DM Sans', sans-serif;
-    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -136,6 +136,68 @@
   .card-status.live { color: var(--teal); }
   .card-status.progress { color: var(--gold); }
   .card-status.new { color: var(--teal-light); }
+  .card-status.flagship { color: var(--gold); }
+
+  /* FEATURED CARD */
+  .featured-card {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    background: var(--navy-mid); text-decoration: none; color: inherit;
+    position: relative; overflow: hidden; margin-bottom: 2px;
+    transition: background 0.3s ease;
+  }
+  .featured-card:hover { background: var(--navy-light); }
+  .featured-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--teal));
+  }
+  .featured-card::after {
+    content: '→'; position: absolute; bottom: 40px; right: 40px;
+    font-family: var(--serif); font-size: 28px; color: var(--gold);
+    opacity: 0; transform: translateX(-8px); transition: opacity 0.3s, transform 0.3s;
+  }
+  .featured-card:hover::after { opacity: 1; transform: translateX(0); }
+
+  .featured-left { padding: 48px 44px; }
+  .featured-right {
+    padding: 48px 44px; border-left: 1px solid rgba(255,255,255,0.05);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .featured-num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .featured-title { font-family: var(--serif); font-size: 36px; font-weight: 400; line-height: 1.15; margin-bottom: 16px; }
+  .featured-title em { font-style: italic; color: var(--teal-light); }
+  .featured-desc { font-size: 14px; color: var(--white-dim); line-height: 1.85; margin-bottom: 20px; }
+  .featured-status { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 8px; }
+  .featured-status::before { content: '★'; font-size: 10px; }
+  .featured-topics { display: flex; flex-wrap: wrap; gap: 8px; }
+  .featured-topic {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 14px; border: 1px solid rgba(255,255,255,0.1); color: var(--white-dim);
+  }
+  @media (max-width: 768px) {
+    .featured-card { grid-template-columns: 1fr; }
+    .featured-right { border-left: none; border-top: 1px solid rgba(255,255,255,0.05); }
+  }
+
+  /* MISSION STATEMENT */
+  .mission {
+    position: relative; z-index: 1;
+    padding: 0 10vw 8px;
+    opacity: 0; animation: fadeUp 0.7s ease forwards 0.7s;
+  }
+  .mission-block {
+    background: var(--navy-mid);
+    border-left: 3px solid var(--gold);
+    padding: 28px 36px;
+    max-width: 720px;
+  }
+  .mission-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+  }
+  .mission-text {
+    font-family: var(--serif); font-size: 17px; font-weight: 300;
+    font-style: italic; line-height: 1.7; color: var(--white-dim);
+  }
 
   .card-placeholder { background: var(--navy-mid); padding: 40px 36px; border: 1px dashed rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 260px; }
   .placeholder-text { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.15); }
@@ -257,6 +319,13 @@
   </div>
 </div>
 
+<div class="mission">
+  <div class="mission-block">
+    <div class="mission-label">Technology Mission Statement</div>
+    <div class="mission-text">Westfield's technology aims to maximize the flow of high-quality investment decisions into successfully executed and reconciled trades at the lowest operational cost and minimal delay while maintaining the highest client service, compliance, and innovation standards.</div>
+  </div>
+</div>
+
 <!-- TABS -->
 <div class="tabs-wrapper">
   <div class="tabs-nav">
@@ -268,7 +337,30 @@
 <!-- STRATEGY TAB -->
 <div class="tab-panel active" id="tab-strategy">
   <div class="grid-section">
-    <div class="grid-label">Active Documents</div>
+    <div class="grid-label">Flagship</div>
+
+    <a class="featured-card" href="Westfield_Technology_Strategy_2026.html">
+      <div class="featured-left">
+        <div class="featured-num">2026 Technology Strategy</div>
+        <div class="featured-title">Technology <em>Strategy</em> 2026</div>
+        <div class="featured-desc">The comprehensive technology strategy for Westfield Capital. Purpose, boundaries, operating model, CORE charter, domain leadership, governance, rollout phases, metrics, and key decisions for 2026.</div>
+        <div class="featured-status">Flagship Document</div>
+      </div>
+      <div class="featured-right">
+        <div class="featured-topics">
+          <span class="featured-topic">Purpose & Boundaries</span>
+          <span class="featured-topic">Operating Model</span>
+          <span class="featured-topic">CORE Charter</span>
+          <span class="featured-topic">Domain Leadership</span>
+          <span class="featured-topic">Governance</span>
+          <span class="featured-topic">Rollout Phases</span>
+          <span class="featured-topic">Metrics & KPIs</span>
+          <span class="featured-topic">Key Decisions</span>
+        </div>
+      </div>
+    </a>
+
+    <div class="grid-label" style="margin-top:40px">Active Documents</div>
     <div class="card-grid">
 
       <a class="card" href="intelligent-presentation/index.html">
