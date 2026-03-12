@@ -59,6 +59,7 @@
   .hero {
     position: relative; z-index: 1;
     padding: 64px 10vw 48px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
   }
   .hero::after {
     content: ''; position: absolute; top: -10%; right: -5%;
@@ -66,6 +67,8 @@
     background: radial-gradient(circle, rgba(26,158,143,0.1) 0%, transparent 70%);
     pointer-events: none;
   }
+  .hero-left { }
+  .hero-right { opacity: 0; animation: fadeUp 0.7s ease forwards 0.7s; }
   .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s; }
   .hero-title { font-family: var(--serif); font-size: clamp(44px, 6vw, 86px); font-weight: 300; line-height: 1.0; letter-spacing: -0.02em; max-width: 700px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s; }
   .hero-title em { font-style: italic; color: var(--teal-light); }
@@ -74,6 +77,9 @@
   .meta-item { display: flex; flex-direction: column; gap: 4px; }
   .meta-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
   .meta-value { font-size: 14px; color: var(--white-dim); }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+  }
 
   /* TABS */
   .tabs-wrapper {
@@ -179,24 +185,19 @@
   }
 
   /* MISSION STATEMENT */
-  .mission {
-    position: relative; z-index: 1;
-    padding: 0 10vw 8px;
-    opacity: 0; animation: fadeUp 0.7s ease forwards 0.7s;
-  }
   .mission-block {
     background: var(--navy-mid);
     border-left: 3px solid var(--gold);
-    padding: 28px 36px;
-    max-width: 720px;
+    padding: 32px 40px;
+    margin-top: 24px;
   }
   .mission-label {
     font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
   }
   .mission-text {
-    font-family: var(--serif); font-size: 17px; font-weight: 300;
-    font-style: italic; line-height: 1.7; color: var(--white-dim);
+    font-family: var(--serif); font-size: clamp(20px, 2.2vw, 26px); font-weight: 300;
+    font-style: italic; line-height: 1.6; color: var(--white-dim);
   }
 
   .card-placeholder { background: var(--navy-mid); padding: 40px 36px; border: 1px dashed rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 260px; }
@@ -300,29 +301,30 @@
 </nav>
 
 <div class="hero">
-  <p class="hero-eyebrow">CTO · Strategy Index · March 2026</p>
-  <h1 class="hero-title">Technology<br><em>Strategy</em></h1>
-  <p class="hero-sub">The initiatives, frameworks, and decisions shaping how Westfield Capital deploys technology as a competitive advantage.</p>
-  <div class="hero-meta">
-    <div class="meta-item">
-      <span class="meta-label">Current Priority</span>
-      <span class="meta-value">Claude+MCP Sprint</span>
-    </div>
-    <div class="meta-item">
-      <span class="meta-label">Sprint Window</span>
-      <span class="meta-value">Q1 Remainder + Q2 2026</span>
-    </div>
-    <div class="meta-item">
-      <span class="meta-label">Phase</span>
-      <span class="meta-value">01 · Learn</span>
+  <div class="hero-left">
+    <p class="hero-eyebrow">CTO · Strategy Index · March 2026</p>
+    <h1 class="hero-title">Technology<br><em>Strategy</em></h1>
+    <p class="hero-sub">The initiatives, frameworks, and decisions shaping how Westfield Capital deploys technology as a competitive advantage.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Current Priority</span>
+        <span class="meta-value">Claude+MCP Sprint</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Sprint Window</span>
+        <span class="meta-value">Q1 Remainder + Q2 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Phase</span>
+        <span class="meta-value">01 · Learn</span>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="mission">
-  <div class="mission-block">
-    <div class="mission-label">Technology Mission Statement</div>
-    <div class="mission-text">Westfield's technology aims to maximize the flow of high-quality investment decisions into successfully executed and reconciled trades at the lowest operational cost and minimal delay while maintaining the highest client service, compliance, and innovation standards.</div>
+  <div class="hero-right">
+    <div class="mission-block">
+      <div class="mission-label">Technology Mission Statement</div>
+      <div class="mission-text">Westfield's technology aims to maximize the flow of high-quality investment decisions into successfully executed and reconciled trades at the lowest operational cost and minimal delay while maintaining the highest client service, compliance, and innovation standards.</div>
+    </div>
   </div>
 </div>
 
