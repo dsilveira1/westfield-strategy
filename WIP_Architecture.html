@@ -4,26 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WCM WIP Architecture v4</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
   :root {
-    --bg:       #07111D;
-    --bg2:      #0B1928;
-    --panel:    #0F2035;
-    --border:   #1A3050;
-    --border2:  #254870;
-    --purple:   #A78BFA;
-    --snow:     #38BEFF;
-    --blue:     #60A5FA;
-    --teal:     #2DD4BF;
-    --gold:     #FCD34D;
-    --green:    #4ADE80;
-    --red:      #F87171;
-    --amber:    #FBB040;
-    --white:    #E8F1FA;
-    --dim:      #7A9BBC;
-    --faint:    #364E66;
-    --review-bg:#0A1E2A;
+    --bg:       #FFFFFF;
+    --bg2:      #F5F7FA;
+    --panel:    #E8ECF2;
+    --border:   rgba(27,37,65,0.08);
+    --border2:  rgba(27,37,65,0.14);
+    --purple:   #7C5CBF;
+    --snow:     #1A8FD4;
+    --blue:     #3B7BE0;
+    --teal:     #1A9E8F;
+    --gold:     #B89530;
+    --green:    #1A9E8F;
+    --red:      #D04040;
+    --amber:    #B89530;
+    --white:    #1B2541;
+    --dim:      rgba(27,37,65,0.55);
+    --faint:    rgba(27,37,65,0.35);
+    --review-bg: #F5F7FA;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -31,18 +32,17 @@
   body {
     background: var(--bg);
     color: var(--white);
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
     min-height: 100vh;
   }
 
-  /* subtle grid */
+  /* subtle noise texture */
   body::before {
     content:''; position:fixed; inset:0; z-index:0;
-    background-image:
-      linear-gradient(rgba(26,48,80,.3) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(26,48,80,.3) 1px, transparent 1px);
-    background-size: 56px 56px;
-    pointer-events:none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events:none; opacity: 0.15;
   }
 
   .page {
@@ -61,25 +61,25 @@
   }
   .h-left { display:flex; flex-direction:column; gap:5px; }
   .h-eyebrow {
-    font-family:'IBM Plex Mono',monospace; font-size:10px;
+    font-family:'Roboto Mono',monospace; font-size:10px;
     letter-spacing:.25em; color:var(--dim); text-transform:uppercase;
   }
   .h-title {
-    font-family:'Rajdhani',sans-serif; font-size:30px; font-weight:700;
+    font-family:'Playfair Display',Georgia,serif; font-size:30px; font-weight:700;
     color:var(--white); letter-spacing:.04em; line-height:1;
   }
   .h-sub {
-    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--faint);
+    font-family:'Roboto Mono',monospace; font-size:11px; color:var(--faint);
     margin-top:2px;
   }
   .h-right { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
   .pill {
-    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    font-family:'Roboto Mono',monospace; font-size:9px; font-weight:500;
     letter-spacing:.18em; padding:4px 11px; border-radius:3px; text-transform:uppercase;
   }
-  .pill-teal  { background:rgba(45,212,191,.15); color:var(--teal); border:1px solid rgba(45,212,191,.3); }
-  .pill-muted { background:rgba(26,48,80,.6);    color:var(--dim);  border:1px solid var(--border); }
-  .h-meta { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--faint); }
+  .pill-teal  { background:rgba(26,158,143,.1); color:var(--teal); border:1px solid rgba(26,158,143,.25); }
+  .pill-muted { background:rgba(27,37,65,0.05);   color:var(--dim);  border:1px solid var(--border); }
+  .h-meta { font-family:'Roboto Mono',monospace; font-size:10px; color:var(--faint); }
 
   /* ━━━━━━━━━━━━━━━ PRINCIPLE ━━━━━━━━━━━━━━━ */
   .principle {
@@ -93,7 +93,7 @@
     animation: fadeD .5s .1s ease both;
   }
   .pr-tag {
-    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    font-family:'Roboto Mono',monospace; font-size:9px; font-weight:500;
     letter-spacing:.22em; color:var(--teal); text-transform:uppercase; white-space:nowrap;
   }
   .pr-text { font-size:14px; line-height:1.6; color:var(--dim); }
@@ -127,18 +127,18 @@
   /* label strip */
   .lstrip {
     width:96px; flex-shrink:0;
-    background: rgba(10,20,35,.5);
+    background: rgba(27,37,65,0.04);
     border-right: 1px solid var(--border);
     display:flex; flex-direction:column; justify-content:center;
     padding: 14px 12px;
     gap:4px;
   }
   .l-num {
-    font-family:'IBM Plex Mono',monospace; font-size:8px;
+    font-family:'Roboto Mono',monospace; font-size:8px;
     color:var(--faint); letter-spacing:.15em; text-transform:uppercase;
   }
   .l-name {
-    font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:700;
+    font-family:'Playfair Display',Georgia,serif; font-size:15px; font-weight:700;
     letter-spacing:.06em; line-height:1.2; text-transform:uppercase;
   }
 
@@ -158,55 +158,55 @@
   .node:hover { transform:translateY(-2px); }
 
   .n-title {
-    font-family:'Rajdhani',sans-serif; font-size:17px; font-weight:700;
+    font-family:'Playfair Display',Georgia,serif; font-size:17px; font-weight:700;
     letter-spacing:.04em; line-height:1.1;
   }
   .n-sub {
-    font-family:'IBM Plex Mono',monospace; font-size:10px;
+    font-family:'Roboto Mono',monospace; font-size:10px;
     color:var(--dim); line-height:1.5;
   }
   .n-tiny {
-    font-family:'IBM Plex Mono',monospace; font-size:9px;
+    font-family:'Roboto Mono',monospace; font-size:9px;
     color:var(--faint); line-height:1.4; margin-top:2px;
   }
 
   /* colour variants */
-  .nc-purple { background:rgba(167,139,250,.07); border-color:rgba(167,139,250,.3); }
+  .nc-purple { background:rgba(124,92,191,.06); border-color:rgba(124,92,191,.25); }
   .nc-purple .n-title { color:var(--purple); }
-  .nc-purple:hover { box-shadow:0 6px 28px rgba(167,139,250,.2); }
+  .nc-purple:hover { box-shadow:0 6px 28px rgba(124,92,191,.12); }
 
-  .nc-snow   { background:rgba(56,190,255,.07); border-color:rgba(56,190,255,.3); }
+  .nc-snow   { background:rgba(26,143,212,.06); border-color:rgba(26,143,212,.25); }
   .nc-snow .n-title { color:var(--snow); }
-  .nc-snow:hover   { box-shadow:0 6px 28px rgba(56,190,255,.2); }
+  .nc-snow:hover   { box-shadow:0 6px 28px rgba(26,143,212,.12); }
 
-  .nc-blue   { background:rgba(96,165,250,.07); border-color:rgba(96,165,250,.3); }
+  .nc-blue   { background:rgba(59,123,224,.06); border-color:rgba(59,123,224,.25); }
   .nc-blue .n-title { color:var(--blue); }
-  .nc-blue:hover   { box-shadow:0 6px 28px rgba(96,165,250,.2); }
+  .nc-blue:hover   { box-shadow:0 6px 28px rgba(59,123,224,.12); }
 
-  .nc-teal   { background:rgba(45,212,191,.07); border-color:rgba(45,212,191,.3); }
+  .nc-teal   { background:rgba(26,158,143,.06); border-color:rgba(26,158,143,.25); }
   .nc-teal .n-title { color:var(--teal); }
-  .nc-teal:hover   { box-shadow:0 6px 28px rgba(45,212,191,.2); }
+  .nc-teal:hover   { box-shadow:0 6px 28px rgba(26,158,143,.12); }
 
-  .nc-gold   { background:rgba(252,211,77,.07); border-color:rgba(252,211,77,.3); }
+  .nc-gold   { background:rgba(184,149,48,.06); border-color:rgba(184,149,48,.25); }
   .nc-gold .n-title { color:var(--gold); }
-  .nc-gold:hover   { box-shadow:0 6px 28px rgba(252,211,77,.2); }
+  .nc-gold:hover   { box-shadow:0 6px 28px rgba(184,149,48,.12); }
 
-  .nc-green  { background:rgba(74,222,128,.07); border-color:rgba(74,222,128,.3); }
+  .nc-green  { background:rgba(26,158,143,.06); border-color:rgba(26,158,143,.25); }
   .nc-green .n-title { color:var(--green); }
-  .nc-green:hover  { box-shadow:0 6px 28px rgba(74,222,128,.2); }
+  .nc-green:hover  { box-shadow:0 6px 28px rgba(26,158,143,.12); }
 
   /* SNOWFLAKE special */
   .sf-node {
-    background:rgba(56,190,255,.1); border:2px solid rgba(56,190,255,.55);
+    background:rgba(26,143,212,.06); border:2px solid rgba(26,143,212,.35);
     border-radius:6px; padding:18px 36px; text-align:center;
     flex:1; max-width:540px;
   }
   .sf-node .sf-t {
-    font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700;
+    font-family:'Playfair Display',Georgia,serif; font-size:22px; font-weight:700;
     color:var(--snow); letter-spacing:.06em;
   }
   .sf-node .sf-s {
-    font-family:'IBM Plex Mono',monospace; font-size:10px;
+    font-family:'Roboto Mono',monospace; font-size:10px;
     color:var(--dim); margin-top:6px; line-height:1.5;
   }
 
@@ -214,7 +214,7 @@
   .ro {
     display:inline-flex; align-items:center;
     background:var(--red); color:#fff;
-    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    font-family:'Roboto Mono',monospace; font-size:9px; font-weight:500;
     letter-spacing:.14em; padding:3px 9px; border-radius:3px;
     flex-shrink:0; white-space:nowrap;
   }
@@ -222,9 +222,9 @@
   /* DLP badges */
   .dlp {
     display:inline-flex; align-items:center;
-    background:rgba(251,176,64,.12); color:var(--amber);
-    border:1px solid rgba(251,176,64,.35);
-    font-family:'IBM Plex Mono',monospace; font-size:9px;
+    background:rgba(184,149,48,.08); color:var(--amber);
+    border:1px solid rgba(184,149,48,.25);
+    font-family:'Roboto Mono',monospace; font-size:9px;
     padding:2px 9px; border-radius:3px; white-space:nowrap;
   }
 
@@ -258,7 +258,7 @@
   }
   .scol + .scol { border-left:1px dashed var(--border2); }
   .scol-hdr {
-    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    font-family:'Roboto Mono',monospace; font-size:9px; font-weight:500;
     letter-spacing:.2em; text-transform:uppercase; margin-bottom:2px;
   }
 
@@ -271,10 +271,10 @@
   }
 
   /* review row */
-  .layer-review { background:rgba(10,25,32,.9) !important; border-color:rgba(45,212,191,.3) !important; }
-  .layer-review:hover { border-color:rgba(45,212,191,.55) !important; }
+  .layer-review { background:rgba(26,158,143,.04) !important; border-color:rgba(26,158,143,.25) !important; }
+  .layer-review:hover { border-color:rgba(26,158,143,.45) !important; }
   .bypass-label {
-    font-family:'IBM Plex Mono',monospace; font-size:11px;
+    font-family:'Roboto Mono',monospace; font-size:11px;
     color:var(--faint); font-style:italic; align-self:center;
   }
 
@@ -297,38 +297,38 @@
     animation: fadeL .55s .35s ease both;
   }
   .sb-head {
-    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    font-family:'Roboto Mono',monospace; font-size:9px; font-weight:500;
     letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
     margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border);
   }
   .sb-box { border:1px solid; border-radius:4px; padding:12px 13px; margin-bottom:10px; }
-  .sb-a { border-color:rgba(74,222,128,.3); background:rgba(74,222,128,.04); }
-  .sb-b { border-color:rgba(248,113,113,.3); background:rgba(248,113,113,.04); }
+  .sb-a { border-color:rgba(26,158,143,.25); background:rgba(26,158,143,.04); }
+  .sb-b { border-color:rgba(208,64,64,.25); background:rgba(208,64,64,.04); }
   .sb-title {
-    font-family:'Rajdhani',sans-serif; font-size:13px; font-weight:700;
+    font-family:'Playfair Display',Georgia,serif; font-size:13px; font-weight:700;
     letter-spacing:.05em; margin-bottom:8px;
   }
   .sb-a .sb-title { color:var(--green); }
   .sb-b .sb-title { color:var(--red); }
   .sb-item {
-    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim);
+    font-family:'Roboto Mono',monospace; font-size:9px; color:var(--dim);
     line-height:1.65; padding-left:9px; border-left:2px solid; margin-bottom:3px;
   }
   .sb-a .sb-item { border-color:var(--green); }
   .sb-b .sb-item { border-color:var(--red); }
   .sb-warn {
-    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--red);
-    background:rgba(248,113,113,.07); border:1px solid rgba(248,113,113,.2);
+    font-family:'Roboto Mono',monospace; font-size:9px; color:var(--red);
+    background:rgba(208,64,64,.06); border:1px solid rgba(208,64,64,.15);
     border-radius:3px; padding:7px 9px; margin-top:7px; line-height:1.55;
   }
   .sb-section { margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
   .sb-dm-item {
-    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim);
+    font-family:'Roboto Mono',monospace; font-size:9px; color:var(--dim);
     line-height:1.65; padding-left:9px; border-left:2px solid var(--faint); margin-bottom:4px;
   }
   .sb-blocker {
-    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--red);
-    background:rgba(248,113,113,.07); border:1px solid rgba(248,113,113,.2);
+    font-family:'Roboto Mono',monospace; font-size:9px; color:var(--red);
+    background:rgba(208,64,64,.06); border:1px solid rgba(208,64,64,.15);
     border-radius:3px; padding:5px 8px; margin-bottom:5px; line-height:1.4;
   }
 
@@ -340,7 +340,7 @@
   }
   .ki { display:flex; align-items:center; gap:8px; }
   .kd { width:11px; height:11px; border-radius:2px; flex-shrink:0; }
-  .kl { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--dim); }
+  .kl { font-family:'Roboto Mono',monospace; font-size:10px; color:var(--dim); }
 
   /* ━━━━━━━━━━━━━━━ FOOTER ━━━━━━━━━━━━━━━ */
   footer {
@@ -348,7 +348,7 @@
     display:flex; justify-content:space-between; align-items:center;
     animation: fadeU .5s .65s ease both;
   }
-  .ft { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--faint); line-height:1.85; }
+  .ft { font-family:'Roboto Mono',monospace; font-size:9px; color:var(--faint); line-height:1.85; }
 
   /* ━━━━━━━━━━━━━━━ ANIMS ━━━━━━━━━━━━━━━ */
   @keyframes fadeD { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
@@ -451,30 +451,31 @@
     </div>
 
     <!-- ═══════════════ FORK: TWO PATHS ═══════════════ -->
-    <div class="fork-wrap">
-      <svg class="fork-svg" viewBox="0 0 900 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- stem down from Snowflake -->
-        <line x1="450" y1="0" x2="450" y2="24" stroke="#38BEFF" stroke-width="3"/>
-        <circle cx="450" cy="24" r="5" fill="#38BEFF"/>
-        <!-- horizontal bar -->
-        <line x1="230" y1="24" x2="670" y2="24" stroke="#38BEFF" stroke-width="2.5"/>
-        <!-- left leg to Sigma -->
-        <line x1="230" y1="24" x2="230" y2="50" stroke="#60A5FA" stroke-width="3"/>
-        <polygon points="220,50 240,50 230,62" fill="#60A5FA"/>
-        <!-- right leg to Claude -->
-        <line x1="670" y1="24" x2="670" y2="50" stroke="#2DD4BF" stroke-width="3"/>
-        <polygon points="660,50 680,50 670,62" fill="#2DD4BF"/>
-        <!-- left label -->
-        <text x="100" y="44" font-family="IBM Plex Mono, monospace" font-size="13" fill="#60A5FA" letter-spacing="1">Direct BI connection</text>
-        <!-- right label — right-aligned area -->
-        <text x="680" y="44" font-family="IBM Plex Mono, monospace" font-size="13" fill="#2DD4BF" letter-spacing="1">Via Airia MCP governance</text>
-      </svg>
-      <!-- READ ONLY badges absolutely over the SVG -->
-      <div style="position:absolute;top:38px;left:calc(25.5% - 42px);">
-        <span class="ro">READ ONLY</span>
+    <!-- Stem down from Snowflake -->
+    <div class="arr">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="arr-stem" style="background:#1A8FD4;"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#1A8FD4;"></div>
       </div>
-      <div style="position:absolute;top:38px;right:calc(23.5% - 42px);">
-        <span class="ro">READ ONLY</span>
+    </div>
+    <!-- Horizontal bar + two legs using the same lstrip+split-body layout as layers -->
+    <div style="display:flex; align-items:stretch;">
+      <div style="width:96px; flex-shrink:0;"></div>
+      <div style="flex:1; display:flex;">
+        <!-- Left half (Sigma) -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; border-top:2.5px solid #1A8FD4;">
+          <div style="width:3px; height:18px; background:#3B7BE0;"></div>
+          <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #3B7BE0;"></div>
+          <span style="font-family:'Roboto Mono',monospace; font-size:11px; color:#3B7BE0; letter-spacing:0.08em; margin-top:6px;">Direct BI connection</span>
+          <span class="ro" style="margin-top:4px;">READ ONLY</span>
+        </div>
+        <!-- Right half (Claude) -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; border-top:2.5px solid #1A8FD4;">
+          <div style="width:3px; height:18px; background:#1A9E8F;"></div>
+          <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #1A9E8F;"></div>
+          <span style="font-family:'Roboto Mono',monospace; font-size:11px; color:var(--teal); letter-spacing:0.08em; margin-top:6px;">Via Airia MCP governance</span>
+          <span class="ro" style="margin-top:4px;">READ ONLY</span>
+        </div>
       </div>
     </div>
 
@@ -581,7 +582,7 @@
     <!-- split arrows ↓ (Sigma = no gate label; Claude = arrow) -->
     <div class="split-arr">
       <div class="split-arr-half">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);font-style:italic;">no review gate (fixed format, governed)</span>
+        <span style="font-family:'Roboto Mono',monospace;font-size:10px;color:var(--faint);font-style:italic;">no review gate (fixed format, governed)</span>
       </div>
       <div class="split-arr-half">
         <div style="display:flex;flex-direction:column;align-items:center;">
@@ -593,7 +594,7 @@
 
     <!-- ═══════════════ LAYER 7: HUMAN REVIEW ═══════════════ -->
     <div class="layer layer-review" style="min-height:84px;">
-      <div class="lstrip" style="border-color:rgba(45,212,191,.25); align-self:flex-start; padding-top:18px;">
+      <div class="lstrip" style="border-color:rgba(26,158,143,.25); align-self:flex-start; padding-top:18px;">
         <span class="l-num">Layer 07</span>
         <span class="l-name" style="color:var(--teal)">Human<br>Review</span>
       </div>
