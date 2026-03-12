@@ -451,29 +451,30 @@
     </div>
 
     <!-- ═══════════════ FORK: TWO PATHS ═══════════════ -->
-    <div class="fork-wrap" style="height:auto; min-height:92px;">
-      <svg class="fork-svg" viewBox="0 0 100 72" preserveAspectRatio="none" style="width:100%; height:72px;" xmlns="http://www.w3.org/2000/svg">
-        <!-- stem down from Snowflake -->
-        <line x1="50" y1="0" x2="50" y2="24" stroke="#38BEFF" stroke-width="3" vector-effect="non-scaling-stroke"/>
-        <circle cx="50" cy="24" r="1" fill="#38BEFF"/>
-        <!-- horizontal bar -->
-        <line x1="25" y1="24" x2="75" y2="24" stroke="#38BEFF" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
-        <!-- left leg to Sigma -->
-        <line x1="25" y1="24" x2="25" y2="50" stroke="#60A5FA" stroke-width="3" vector-effect="non-scaling-stroke"/>
-        <polygon points="24,50 26,50 25,54" fill="#60A5FA"/>
-        <!-- right leg to Claude -->
-        <line x1="75" y1="24" x2="75" y2="50" stroke="#1A9E8F" stroke-width="3" vector-effect="non-scaling-stroke"/>
-        <polygon points="74,50 76,50 75,54" fill="#1A9E8F"/>
-      </svg>
-      <!-- HTML labels and badges — positioned at 25% and 75% to match fork legs -->
-      <div style="position:relative; margin-top:-16px; z-index:1; height:48px;">
-        <div style="position:absolute; left:25%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:6px;">
-          <span style="font-family:'DM Mono',monospace; font-size:11px; color:#60A5FA; letter-spacing:0.08em;">Direct BI connection</span>
-          <span class="ro">READ ONLY</span>
+    <!-- Stem down from Snowflake -->
+    <div class="arr">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="arr-stem" style="background:#38BEFF;"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#38BEFF;"></div>
+      </div>
+    </div>
+    <!-- Horizontal bar + two legs using the same lstrip+split-body layout as layers -->
+    <div style="display:flex; align-items:stretch;">
+      <div style="width:96px; flex-shrink:0;"></div>
+      <div style="flex:1; display:flex;">
+        <!-- Left half (Sigma) -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; border-top:2.5px solid #38BEFF;">
+          <div style="width:3px; height:18px; background:#60A5FA;"></div>
+          <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #60A5FA;"></div>
+          <span style="font-family:'DM Mono',monospace; font-size:11px; color:#60A5FA; letter-spacing:0.08em; margin-top:6px;">Direct BI connection</span>
+          <span class="ro" style="margin-top:4px;">READ ONLY</span>
         </div>
-        <div style="position:absolute; left:75%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:6px;">
-          <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--teal); letter-spacing:0.08em;">Via Airia MCP governance</span>
-          <span class="ro">READ ONLY</span>
+        <!-- Right half (Claude) -->
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; border-top:2.5px solid #38BEFF;">
+          <div style="width:3px; height:18px; background:#1A9E8F;"></div>
+          <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #1A9E8F;"></div>
+          <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--teal); letter-spacing:0.08em; margin-top:6px;">Via Airia MCP governance</span>
+          <span class="ro" style="margin-top:4px;">READ ONLY</span>
         </div>
       </div>
     </div>
