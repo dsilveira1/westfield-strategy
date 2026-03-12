@@ -5,22 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Westfield Capital — Technology Strategy</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
 
   :root {
-    --navy: #0D1B2A;
-    --navy-mid: #162236;
-    --navy-light: #1E3050;
-    --teal: #1A9E8F;
-    --teal-light: #22C4B2;
-    --teal-dim: rgba(26,158,143,0.12);
+    --navy: #FFFFFF;
+    --navy-mid: #F5F7FA;
+    --navy-light: #E8ECF2;
+    --teal: #3D5A9E;
+    --teal-light: #5B7BC2;
+    --teal-dim: rgba(61,90,158,0.08);
     --gold: #C9A84C;
-    --gold-dim: rgba(201,168,76,0.1);
-    --white: #F4F6F8;
-    --white-dim: rgba(244,246,248,0.5);
+    --gold-dim: rgba(201,168,76,0.06);
+    --white: #1B2541;
+    --white-dim: rgba(27,37,65,0.55);
     --serif: 'Playfair Display', Georgia, serif;
-    --sans: 'IBM Plex Sans', sans-serif;
-    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Montserrat', sans-serif;
+    --mono: 'Roboto Mono', monospace;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,7 +40,7 @@
     content: '';
     position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0; opacity: 0.4;
+    pointer-events: none; z-index: 0; opacity: 0.15;
   }
 
   /* NAV */
@@ -48,7 +48,7 @@
     position: relative; z-index: 10;
     padding: 28px 10vw;
     display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(27,37,65,0.06);
     opacity: 0; animation: fadeDown 0.6s ease forwards 0.1s;
   }
   .nav-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; text-decoration: none; color: inherit; }
@@ -85,7 +85,7 @@
   .tabs-wrapper {
     position: relative; z-index: 2;
     padding: 0 10vw;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(27,37,65,0.07);
     opacity: 0; animation: fadeUp 0.7s ease forwards 0.75s;
   }
   .tabs-nav {
@@ -165,7 +165,7 @@
 
   .featured-left { padding: 48px 44px; }
   .featured-right {
-    padding: 48px 44px; border-left: 1px solid rgba(255,255,255,0.05);
+    padding: 48px 44px; border-left: 1px solid rgba(27,37,65,0.06);
     display: flex; flex-direction: column; justify-content: center;
   }
   .featured-num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
@@ -181,7 +181,7 @@
   }
   @media (max-width: 768px) {
     .featured-card { grid-template-columns: 1fr; }
-    .featured-right { border-left: none; border-top: 1px solid rgba(255,255,255,0.05); }
+    .featured-right { border-left: none; border-top: 1px solid rgba(27,37,65,0.06); }
   }
 
   /* MISSION STATEMENT */
@@ -200,7 +200,7 @@
     font-style: italic; line-height: 1.6; color: var(--white-dim);
   }
 
-  .card-placeholder { background: var(--navy-mid); padding: 40px 36px; border: 1px dashed rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 260px; }
+  .card-placeholder { background: var(--navy-mid); padding: 40px 36px; border: 1px dashed rgba(27,37,65,0.08); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 260px; }
   .placeholder-text { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.15); }
 
   /* PROGRESS TAB */
@@ -217,7 +217,7 @@
   .op-bar-wrap { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
   .op-bar { height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-light)); border-radius: 4px; width: 28%; transition: width 1.4s cubic-bezier(0.16,1,0.3,1); }
   .op-milestones { display: flex; gap: 0; }
-  .op-mile { flex: 1; font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white-dim); text-align: center; padding-top: 8px; border-top: 2px solid rgba(255,255,255,0.08); position: relative; }
+  .op-mile { flex: 1; font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white-dim); text-align: center; padding-top: 8px; border-top: 2px solid rgba(27,37,65,0.08); position: relative; }
   .op-mile.done { color: var(--teal); border-top-color: var(--teal); }
   .op-mile.active { color: var(--gold); border-top-color: var(--gold); }
   .op-pct { font-family: var(--serif); font-size: 52px; font-weight: 300; color: var(--teal-light); line-height: 1; }
@@ -257,7 +257,7 @@
 
   .log-entries { display: flex; flex-direction: column; gap: 2px; }
   .log-entry { display: grid; grid-template-columns: 120px 1fr; background: var(--navy-light); overflow: hidden; }
-  .log-date { padding: 20px; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: center; }
+  .log-date { padding: 20px; border-right: 1px solid rgba(27,37,65,0.06); display: flex; flex-direction: column; justify-content: center; }
   .log-date-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); }
   .log-date-val { font-family: var(--serif); font-size: 15px; font-weight: 300; margin-top: 2px; }
   .log-content { padding: 20px 24px; }
@@ -284,7 +284,7 @@
   /* SHARED */
   .divider { width: 80vw; margin: 0 10vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,158,143,0.2), transparent); }
 
-  footer { position: relative; z-index: 1; padding: 48px 10vw; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  footer { position: relative; z-index: 1; padding: 48px 10vw; border-top: 1px solid rgba(27,37,65,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
   .footer-logo { font-family: var(--serif); font-size: 18px; }
   .footer-logo span { color: var(--teal); }
   .footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white-dim); }
