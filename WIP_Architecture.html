@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WCM WIP Architecture v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #07111D;
+    --bg2:      #0B1928;
+    --panel:    #0F2035;
+    --border:   #1A3050;
+    --border2:  #254870;
+    --purple:   #A78BFA;
+    --snow:     #38BEFF;
+    --blue:     #60A5FA;
+    --teal:     #2DD4BF;
+    --gold:     #FCD34D;
+    --green:    #4ADE80;
+    --red:      #F87171;
+    --amber:    #FBB040;
+    --white:    #E8F1FA;
+    --dim:      #7A9BBC;
+    --faint:    #364E66;
+    --review-bg:#0A1E2A;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* subtle grid */
+  body::before {
+    content:''; position:fixed; inset:0; z-index:0;
+    background-image:
+      linear-gradient(rgba(26,48,80,.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,48,80,.3) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events:none;
+  }
+
+  .page {
+    position:relative; z-index:1;
+    max-width:1160px; margin:0 auto;
+    padding: 0 32px 72px;
+  }
+
+  /* ━━━━━━━━━━━━━━━ HEADER ━━━━━━━━━━━━━━━ */
+  header {
+    display:flex; justify-content:space-between; align-items:flex-end;
+    padding: 30px 0 22px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+    animation: fadeD .5s ease both;
+  }
+  .h-left { display:flex; flex-direction:column; gap:5px; }
+  .h-eyebrow {
+    font-family:'IBM Plex Mono',monospace; font-size:10px;
+    letter-spacing:.25em; color:var(--dim); text-transform:uppercase;
+  }
+  .h-title {
+    font-family:'Rajdhani',sans-serif; font-size:30px; font-weight:700;
+    color:var(--white); letter-spacing:.04em; line-height:1;
+  }
+  .h-sub {
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--faint);
+    margin-top:2px;
+  }
+  .h-right { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+  .pill {
+    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    letter-spacing:.18em; padding:4px 11px; border-radius:3px; text-transform:uppercase;
+  }
+  .pill-teal  { background:rgba(45,212,191,.15); color:var(--teal); border:1px solid rgba(45,212,191,.3); }
+  .pill-muted { background:rgba(26,48,80,.6);    color:var(--dim);  border:1px solid var(--border); }
+  .h-meta { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--faint); }
+
+  /* ━━━━━━━━━━━━━━━ PRINCIPLE ━━━━━━━━━━━━━━━ */
+  .principle {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--teal);
+    border-radius: 4px;
+    padding: 16px 22px;
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 18px;
+    animation: fadeD .5s .1s ease both;
+  }
+  .pr-tag {
+    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    letter-spacing:.22em; color:var(--teal); text-transform:uppercase; white-space:nowrap;
+  }
+  .pr-text { font-size:14px; line-height:1.6; color:var(--dim); }
+  .pr-text strong { color:var(--white); }
+
+  /* ━━━━━━━━━━━━━━━ LAYOUT ━━━━━━━━━━━━━━━ */
+  .layout { display:flex; gap:26px; align-items:flex-start; }
+  .flow   { flex:1; display:flex; flex-direction:column; }
+
+  /* ━━━━━━━━━━━━━━━ LAYER ROWS ━━━━━━━━━━━━━━━ */
+  .layer {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    overflow: hidden;
+    transition: border-color .2s, background .2s;
+  }
+  .layer:hover { background: var(--panel); border-color: var(--border2); }
+
+  /* stagger */
+  .layer { animation: fadeU .45s ease both; }
+  .layer:nth-child(1){animation-delay:.12s}
+  .layer:nth-child(2){animation-delay:.18s}
+  .layer:nth-child(3){animation-delay:.24s}
+  .layer:nth-child(4){animation-delay:.30s}
+  .layer:nth-child(5){animation-delay:.36s}
+  .layer:nth-child(6){animation-delay:.42s}
+  .layer:nth-child(7){animation-delay:.48s}
+
+  /* label strip */
+  .lstrip {
+    width:96px; flex-shrink:0;
+    background: rgba(10,20,35,.5);
+    border-right: 1px solid var(--border);
+    display:flex; flex-direction:column; justify-content:center;
+    padding: 14px 12px;
+    gap:4px;
+  }
+  .l-num {
+    font-family:'IBM Plex Mono',monospace; font-size:8px;
+    color:var(--faint); letter-spacing:.15em; text-transform:uppercase;
+  }
+  .l-name {
+    font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:700;
+    letter-spacing:.06em; line-height:1.2; text-transform:uppercase;
+  }
+
+  /* body */
+  .lbody {
+    flex:1; display:flex; align-items:center;
+    padding:16px 16px 16px 18px; gap:10px; flex-wrap:wrap;
+  }
+
+  /* ━━━━━━━━━━━━━━━ NODES ━━━━━━━━━━━━━━━ */
+  .node {
+    display:flex; flex-direction:column;
+    padding:12px 16px; border-radius:5px; border:1px solid;
+    gap:5px; cursor:default;
+    transition:transform .18s, box-shadow .2s;
+  }
+  .node:hover { transform:translateY(-2px); }
+
+  .n-title {
+    font-family:'Rajdhani',sans-serif; font-size:17px; font-weight:700;
+    letter-spacing:.04em; line-height:1.1;
+  }
+  .n-sub {
+    font-family:'IBM Plex Mono',monospace; font-size:10px;
+    color:var(--dim); line-height:1.5;
+  }
+  .n-tiny {
+    font-family:'IBM Plex Mono',monospace; font-size:9px;
+    color:var(--faint); line-height:1.4; margin-top:2px;
+  }
+
+  /* colour variants */
+  .nc-purple { background:rgba(167,139,250,.07); border-color:rgba(167,139,250,.3); }
+  .nc-purple .n-title { color:var(--purple); }
+  .nc-purple:hover { box-shadow:0 6px 28px rgba(167,139,250,.2); }
+
+  .nc-snow   { background:rgba(56,190,255,.07); border-color:rgba(56,190,255,.3); }
+  .nc-snow .n-title { color:var(--snow); }
+  .nc-snow:hover   { box-shadow:0 6px 28px rgba(56,190,255,.2); }
+
+  .nc-blue   { background:rgba(96,165,250,.07); border-color:rgba(96,165,250,.3); }
+  .nc-blue .n-title { color:var(--blue); }
+  .nc-blue:hover   { box-shadow:0 6px 28px rgba(96,165,250,.2); }
+
+  .nc-teal   { background:rgba(45,212,191,.07); border-color:rgba(45,212,191,.3); }
+  .nc-teal .n-title { color:var(--teal); }
+  .nc-teal:hover   { box-shadow:0 6px 28px rgba(45,212,191,.2); }
+
+  .nc-gold   { background:rgba(252,211,77,.07); border-color:rgba(252,211,77,.3); }
+  .nc-gold .n-title { color:var(--gold); }
+  .nc-gold:hover   { box-shadow:0 6px 28px rgba(252,211,77,.2); }
+
+  .nc-green  { background:rgba(74,222,128,.07); border-color:rgba(74,222,128,.3); }
+  .nc-green .n-title { color:var(--green); }
+  .nc-green:hover  { box-shadow:0 6px 28px rgba(74,222,128,.2); }
+
+  /* SNOWFLAKE special */
+  .sf-node {
+    background:rgba(56,190,255,.1); border:2px solid rgba(56,190,255,.55);
+    border-radius:6px; padding:18px 36px; text-align:center;
+    flex:1; max-width:540px;
+  }
+  .sf-node .sf-t {
+    font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700;
+    color:var(--snow); letter-spacing:.06em;
+  }
+  .sf-node .sf-s {
+    font-family:'IBM Plex Mono',monospace; font-size:10px;
+    color:var(--dim); margin-top:6px; line-height:1.5;
+  }
+
+  /* READ ONLY badge */
+  .ro {
+    display:inline-flex; align-items:center;
+    background:var(--red); color:#fff;
+    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    letter-spacing:.14em; padding:3px 9px; border-radius:3px;
+    flex-shrink:0; white-space:nowrap;
+  }
+
+  /* DLP badges */
+  .dlp {
+    display:inline-flex; align-items:center;
+    background:rgba(251,176,64,.12); color:var(--amber);
+    border:1px solid rgba(251,176,64,.35);
+    font-family:'IBM Plex Mono',monospace; font-size:9px;
+    padding:2px 9px; border-radius:3px; white-space:nowrap;
+  }
+
+  /* ━━━━━━━━━━━━━━━ ARROWS ━━━━━━━━━━━━━━━ */
+  /* single centered arrow */
+  .arr {
+    display:flex; justify-content:center; align-items:center;
+    height:36px; flex-shrink:0;
+  }
+  .arr-stem { width:3px; height:18px; border-radius:2px; }
+  .arr-tip  {
+    width:0; height:0;
+    border-left:9px solid transparent;
+    border-right:9px solid transparent;
+  }
+  .arr-tip.down { border-top:11px solid; }
+
+  /* ━━━━━━━━━━━━━━━ FORK ━━━━━━━━━━━━━━━ */
+  .fork-wrap {
+    position:relative; height:72px; flex-shrink:0;
+    display:flex; align-items:center;
+  }
+  /* SVG fork drawn inline */
+  .fork-svg { width:100%; height:72px; overflow:visible; }
+
+  /* ━━━━━━━━━━━━━━━ SPLIT ROWS ━━━━━━━━━━━━━━━ */
+  .split-body { flex:1; display:flex; }
+  .scol {
+    flex:1; display:flex; flex-direction:column;
+    padding:16px 14px 16px 18px; gap:10px;
+  }
+  .scol + .scol { border-left:1px dashed var(--border2); }
+  .scol-hdr {
+    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    letter-spacing:.2em; text-transform:uppercase; margin-bottom:2px;
+  }
+
+  /* split arrows — two side by side */
+  .split-arr {
+    display:flex; height:36px; flex-shrink:0;
+  }
+  .split-arr-half {
+    flex:1; display:flex; justify-content:center; align-items:center;
+  }
+
+  /* review row */
+  .layer-review { background:rgba(10,25,32,.9) !important; border-color:rgba(45,212,191,.3) !important; }
+  .layer-review:hover { border-color:rgba(45,212,191,.55) !important; }
+  .bypass-label {
+    font-family:'IBM Plex Mono',monospace; font-size:11px;
+    color:var(--faint); font-style:italic; align-self:center;
+  }
+
+  /* inner Airia→Claude arrow */
+  .inner-arr {
+    display:flex; flex-direction:column; align-items:flex-start;
+    padding-left:50px;
+  }
+  .inner-stem { width:2px; height:10px; background:var(--gold); }
+  .inner-tip  {
+    width:0; height:0;
+    border-left:7px solid transparent; border-right:7px solid transparent;
+    border-top:9px solid var(--gold);
+  }
+
+  /* ━━━━━━━━━━━━━━━ AUDIT SIDEBAR ━━━━━━━━━━━━━━━ */
+  .sidebar {
+    width:198px; flex-shrink:0;
+    position:sticky; top:20px;
+    animation: fadeL .55s .35s ease both;
+  }
+  .sb-head {
+    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
+    margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border);
+  }
+  .sb-box { border:1px solid; border-radius:4px; padding:12px 13px; margin-bottom:10px; }
+  .sb-a { border-color:rgba(74,222,128,.3); background:rgba(74,222,128,.04); }
+  .sb-b { border-color:rgba(248,113,113,.3); background:rgba(248,113,113,.04); }
+  .sb-title {
+    font-family:'Rajdhani',sans-serif; font-size:13px; font-weight:700;
+    letter-spacing:.05em; margin-bottom:8px;
+  }
+  .sb-a .sb-title { color:var(--green); }
+  .sb-b .sb-title { color:var(--red); }
+  .sb-item {
+    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim);
+    line-height:1.65; padding-left:9px; border-left:2px solid; margin-bottom:3px;
+  }
+  .sb-a .sb-item { border-color:var(--green); }
+  .sb-b .sb-item { border-color:var(--red); }
+  .sb-warn {
+    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--red);
+    background:rgba(248,113,113,.07); border:1px solid rgba(248,113,113,.2);
+    border-radius:3px; padding:7px 9px; margin-top:7px; line-height:1.55;
+  }
+  .sb-section { margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
+  .sb-dm-item {
+    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim);
+    line-height:1.65; padding-left:9px; border-left:2px solid var(--faint); margin-bottom:4px;
+  }
+  .sb-blocker {
+    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--red);
+    background:rgba(248,113,113,.07); border:1px solid rgba(248,113,113,.2);
+    border-radius:3px; padding:5px 8px; margin-bottom:5px; line-height:1.4;
+  }
+
+  /* ━━━━━━━━━━━━━━━ KEY BAR ━━━━━━━━━━━━━━━ */
+  .keybar {
+    display:flex; flex-wrap:wrap; gap:18px;
+    margin-top:28px; padding-top:18px; border-top:1px solid var(--border);
+    animation: fadeU .5s .58s ease both;
+  }
+  .ki { display:flex; align-items:center; gap:8px; }
+  .kd { width:11px; height:11px; border-radius:2px; flex-shrink:0; }
+  .kl { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--dim); }
+
+  /* ━━━━━━━━━━━━━━━ FOOTER ━━━━━━━━━━━━━━━ */
+  footer {
+    margin-top:36px; padding-top:14px; border-top:1px solid var(--border);
+    display:flex; justify-content:space-between; align-items:center;
+    animation: fadeU .5s .65s ease both;
+  }
+  .ft { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--faint); line-height:1.85; }
+
+  /* ━━━━━━━━━━━━━━━ ANIMS ━━━━━━━━━━━━━━━ */
+  @keyframes fadeD { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
+  @keyframes fadeU { from{opacity:0;transform:translateY(14px)}  to{opacity:1;transform:none} }
+  @keyframes fadeL { from{opacity:0;transform:translateX(14px)}  to{opacity:1;transform:none} }
+
+  /* utils */
+  .flex-row { display:flex; gap:9px; flex-wrap:wrap; align-items:center; }
+  .w100 { width:100%; }
+  .mtop { margin-top:4px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="h-left">
+      <span class="h-eyebrow">Westfield Capital Management</span>
+      <span class="h-title">WIP Architecture</span>
+      <span class="h-sub">Claude + WIP + Sigma — Technology Stack · Human review · Two-layer audit · DLP connectors</span>
+    </div>
+    <div class="h-right">
+      <span class="pill pill-teal">v4 · Active Sprint</span>
+      <span class="pill pill-muted">Confidential · Internal</span>
+      <span class="h-meta">Dee Silveira, CTO · March 2026</span>
+    </div>
+  </header>
+
+  <!-- PRINCIPLE -->
+  <div class="principle">
+    <span class="pr-tag">Key Principle</span>
+    <span class="pr-text">
+      <strong>Sigma and Claude both read Snowflake — neither writes back.</strong>
+      Claude outputs require human review before IC or PM action.
+      All activity logged: Layer A (Airia + Compliance API) · Layer B (Cortex XDR + Koi).
+    </span>
+  </div>
+
+  <div class="layout">
+  <div class="flow">
+
+    <!-- ═══════════════ LAYER 1: SOURCES ═══════════════ -->
+    <div class="layer">
+      <div class="lstrip">
+        <span class="l-num">Layer 01</span>
+        <span class="l-name" style="color:var(--purple)">Source<br>Systems</span>
+      </div>
+      <div class="lbody">
+        <div class="node nc-purple"><span class="n-title">Eze OMS</span><span class="n-sub">Order Mgmt</span></div>
+        <div class="node nc-purple"><span class="n-title">SS&C APX</span><span class="n-sub">Portfolio Acctg</span></div>
+        <div class="node nc-purple"><span class="n-title">FactSet</span><span class="n-sub">Market Data</span></div>
+        <div class="node nc-purple"><span class="n-title">Bloomberg</span><span class="n-sub">Terminal / MCP</span></div>
+        <div class="node nc-purple"><span class="n-title">Salesforce</span><span class="n-sub">CRM / Client</span></div>
+      </div>
+    </div>
+
+    <!-- arrow ↓ SNOW -->
+    <div class="arr">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="arr-stem" style="background:var(--snow);"></div>
+        <div class="arr-tip down" style="border-top-color:var(--snow);"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ LAYER 2: ETL ═══════════════ -->
+    <div class="layer">
+      <div class="lstrip">
+        <span class="l-num">Layer 02</span>
+        <span class="l-name" style="color:var(--snow)">ETL</span>
+      </div>
+      <div class="lbody">
+        <div class="node nc-snow" style="flex:1;max-width:680px;">
+          <span class="n-title">ETL Pipeline</span>
+          <span class="n-sub">Transformed views · RBAC scoping · Data quality validation · Mangesh / Juan / Alvin</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- arrow ↓ SNOW -->
+    <div class="arr">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="arr-stem" style="background:var(--snow);"></div>
+        <div class="arr-tip down" style="border-top-color:var(--snow);"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ LAYER 3: SNOWFLAKE ═══════════════ -->
+    <div class="layer">
+      <div class="lstrip">
+        <span class="l-num">Layer 03</span>
+        <span class="l-name" style="color:var(--snow)">Data<br>Warehouse</span>
+      </div>
+      <div class="lbody" style="justify-content:center;">
+        <div class="sf-node">
+          <div class="sf-t">❄&nbsp; SNOWFLAKE</div>
+          <div class="sf-s">Single governed data warehouse · RBAC view scoping · Dedicated AI virtual warehouse</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ FORK: TWO PATHS ═══════════════ -->
+    <div class="fork-wrap">
+      <svg class="fork-svg" viewBox="0 0 900 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- stem down from Snowflake -->
+        <line x1="450" y1="0" x2="450" y2="24" stroke="#38BEFF" stroke-width="3"/>
+        <circle cx="450" cy="24" r="5" fill="#38BEFF"/>
+        <!-- horizontal bar -->
+        <line x1="230" y1="24" x2="670" y2="24" stroke="#38BEFF" stroke-width="2.5"/>
+        <!-- left leg to Sigma -->
+        <line x1="230" y1="24" x2="230" y2="50" stroke="#60A5FA" stroke-width="3"/>
+        <polygon points="220,50 240,50 230,62" fill="#60A5FA"/>
+        <!-- right leg to Claude -->
+        <line x1="670" y1="24" x2="670" y2="50" stroke="#2DD4BF" stroke-width="3"/>
+        <polygon points="660,50 680,50 670,62" fill="#2DD4BF"/>
+        <!-- left label -->
+        <text x="100" y="44" font-family="IBM Plex Mono, monospace" font-size="13" fill="#60A5FA" letter-spacing="1">Direct BI connection</text>
+        <!-- right label — right-aligned area -->
+        <text x="680" y="44" font-family="IBM Plex Mono, monospace" font-size="13" fill="#2DD4BF" letter-spacing="1">Via Airia MCP governance</text>
+      </svg>
+      <!-- READ ONLY badges absolutely over the SVG -->
+      <div style="position:absolute;top:38px;left:calc(25.5% - 42px);">
+        <span class="ro">READ ONLY</span>
+      </div>
+      <div style="position:absolute;top:38px;right:calc(23.5% - 42px);">
+        <span class="ro">READ ONLY</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════ LAYER 5: INTELLIGENCE ═══════════════ -->
+    <div class="layer" style="min-height:158px;">
+      <div class="lstrip" style="align-self:flex-start;padding-top:18px;">
+        <span class="l-num">Layer 05</span>
+        <span class="l-name" style="color:var(--dim)">Intelligence<br>Layer</span>
+      </div>
+      <div class="split-body">
+        <div class="scol">
+          <span class="scol-hdr" style="color:var(--blue)">← Sigma Path</span>
+          <div class="node nc-blue" style="max-width:250px;">
+            <span class="n-title">SIGMA</span>
+            <span class="n-sub">Governed analytics layer</span>
+            <span class="n-sub">Business user self-service</span>
+            <span class="n-sub">No SQL · No data exports</span>
+          </div>
+        </div>
+        <div class="scol">
+          <span class="scol-hdr" style="color:var(--teal)">Claude Path →</span>
+          <div class="node nc-gold">
+            <span class="n-title">AIRIA — MCP Governance Gateway</span>
+            <span class="n-sub">RBAC enforcement · Tool scoping · Audit log → Cortex SIEM</span>
+            <div class="flex-row mtop">
+              <span class="dlp">DLP: Box</span>
+              <span class="dlp">DLP: M365</span>
+            </div>
+          </div>
+          <!-- inner arrow Airia → Claude -->
+          <div class="inner-arr">
+            <div class="inner-stem"></div>
+            <div class="inner-tip"></div>
+          </div>
+          <div class="node nc-teal">
+            <span class="n-title">CLAUDE ANALYST AGENT</span>
+            <span class="n-sub">Attribution · IC prep · Stop/Loss · Portfolio construction · Scenario analysis · Pattern recognition</span>
+            <span class="n-tiny">AWS Bedrock · Zero Data Retention · 65 seats Enterprise + 5–6 Premium (Claude Code)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- split arrows ↓ -->
+    <div class="split-arr">
+      <div class="split-arr-half">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="arr-stem" style="background:var(--blue);"></div>
+          <div class="arr-tip down" style="border-top-color:var(--blue);"></div>
+        </div>
+      </div>
+      <div class="split-arr-half">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="arr-stem" style="background:var(--teal);"></div>
+          <div class="arr-tip down" style="border-top-color:var(--teal);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ LAYER 6: OUTPUTS ═══════════════ -->
+    <div class="layer" style="min-height:110px;">
+      <div class="lstrip" style="align-self:flex-start;padding-top:18px;">
+        <span class="l-num">Layer 06</span>
+        <span class="l-name" style="color:var(--green)">Outputs</span>
+      </div>
+      <div class="split-body">
+        <div class="scol">
+          <span class="scol-hdr" style="color:var(--blue)">Sigma Outputs — fixed format, governed, reproducible</span>
+          <div class="flex-row">
+            <div class="node nc-blue" style="flex:1;min-width:100px;">
+              <span class="n-title">Compliance Reports</span>
+              <span class="n-sub">Standard performance · Regulatory</span>
+            </div>
+            <div class="node nc-blue" style="flex:1;min-width:100px;">
+              <span class="n-title">WIP Dashboards</span>
+              <span class="n-sub">Portfolio metrics · Client-ready</span>
+            </div>
+            <div class="node nc-blue" style="flex:1;min-width:100px;">
+              <span class="n-title">Ops Dashboards</span>
+              <span class="n-sub">Healthcare · Eze · Fixed-format</span>
+            </div>
+          </div>
+        </div>
+        <div class="scol">
+          <span class="scol-hdr" style="color:var(--teal)">Claude Outputs — feeds human review before delivery</span>
+          <div class="flex-row">
+            <div class="node nc-teal" style="flex:1;min-width:100px;">
+              <span class="n-title">IC Preparation</span>
+              <span class="n-sub">Attribution narrative · Scenario analysis</span>
+            </div>
+            <div class="node nc-teal" style="flex:1;min-width:100px;">
+              <span class="n-title">Stop / Loss</span>
+              <span class="n-sub">IC workflow · Reasoning layer</span>
+            </div>
+            <div class="node nc-teal" style="flex:1;min-width:100px;">
+              <span class="n-title">Portfolio Analysis</span>
+              <span class="n-sub">Construction review · Pattern recognition</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- split arrows ↓ (Sigma = no gate label; Claude = arrow) -->
+    <div class="split-arr">
+      <div class="split-arr-half">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);font-style:italic;">no review gate (fixed format, governed)</span>
+      </div>
+      <div class="split-arr-half">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="arr-stem" style="background:var(--teal);"></div>
+          <div class="arr-tip down" style="border-top-color:var(--teal);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ LAYER 7: HUMAN REVIEW ═══════════════ -->
+    <div class="layer layer-review" style="min-height:84px;">
+      <div class="lstrip" style="border-color:rgba(45,212,191,.25); align-self:flex-start; padding-top:18px;">
+        <span class="l-num">Layer 07</span>
+        <span class="l-name" style="color:var(--teal)">Human<br>Review</span>
+      </div>
+      <div class="split-body">
+        <div class="scol" style="justify-content:center; border-right:1px dashed var(--border2);">
+          <span class="bypass-label">Sigma bypasses — fixed format, no review gate</span>
+        </div>
+        <div class="scol" style="justify-content:center;">
+          <div class="node nc-teal" style="border-width:1.5px;">
+            <span class="n-title">Human Review Checkpoint</span>
+            <span class="n-sub">Analyst reviews before IC presentation or PM action · Named reviewer required per AUP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- split arrows ↓ -->
+    <div class="split-arr">
+      <div class="split-arr-half">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="arr-stem" style="background:var(--blue);"></div>
+          <div class="arr-tip down" style="border-top-color:var(--blue);"></div>
+        </div>
+      </div>
+      <div class="split-arr-half">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="arr-stem" style="background:var(--teal);"></div>
+          <div class="arr-tip down" style="border-top-color:var(--teal);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ LAYER 8: DELIVERY ═══════════════ -->
+    <div class="layer">
+      <div class="lstrip">
+        <span class="l-num">Layer 08</span>
+        <span class="l-name" style="color:var(--green)">Delivery</span>
+      </div>
+      <div class="split-body">
+        <div class="scol" style="flex-direction:row;flex-wrap:wrap;align-items:center;gap:9px;padding-top:16px;padding-bottom:16px;">
+          <div class="node nc-green"><span class="n-title">Compliance · Ops · WIP Dashboards</span></div>
+        </div>
+        <div class="scol" style="flex-direction:row;flex-wrap:wrap;align-items:center;gap:9px;padding-top:16px;padding-bottom:16px;">
+          <div class="node nc-green"><span class="n-title">IC Presentation</span></div>
+          <div class="node nc-green"><span class="n-title">PM Action</span></div>
+          <div class="node nc-green"><span class="n-title">Stop/Loss Decision</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEY BAR -->
+    <div class="keybar">
+      <div class="ki"><div class="kd" style="background:var(--purple)"></div><span class="kl">Source Systems</span></div>
+      <div class="ki"><div class="kd" style="background:var(--snow)"></div><span class="kl">Snowflake / ETL</span></div>
+      <div class="ki"><div class="kd" style="background:var(--blue)"></div><span class="kl">Sigma path</span></div>
+      <div class="ki"><div class="kd" style="background:var(--teal)"></div><span class="kl">Claude path</span></div>
+      <div class="ki"><div class="kd" style="background:var(--gold)"></div><span class="kl">Airia governance</span></div>
+      <div class="ki"><div class="kd" style="background:var(--amber)"></div><span class="kl">DLP badges</span></div>
+      <div class="ki"><div class="kd" style="background:var(--green)"></div><span class="kl">Delivery</span></div>
+      <div class="ki"><div class="kd" style="background:var(--red)"></div><span class="kl">Read Only enforcement</span></div>
+    </div>
+
+  </div><!-- /flow -->
+
+  <!-- ═══════════════ AUDIT SIDEBAR ═══════════════ -->
+  <div class="sidebar">
+    <div class="sb-head">Audit Coverage</div>
+
+    <div class="sb-box sb-a">
+      <div class="sb-title">Layer A — Application</div>
+      <div class="sb-item">Anthropic Compliance API</div>
+      <div class="sb-item">Airia full req/resp logs</div>
+      <div class="sb-item">DLP — Box + M365</div>
+      <div class="sb-item">Cortex SIEM (Airia feed)</div>
+    </div>
+
+    <div class="sb-box sb-b">
+      <div class="sb-title">Layer B — Endpoint</div>
+      <div class="sb-item">Cortex XDR — deployed</div>
+      <div class="sb-item">Koi — roadmap, TBD</div>
+      <div class="sb-item">Desktop tools blocked</div>
+      <div class="sb-warn">⚠ Koi not yet shipped. Desktop tools off-limits for client data until Koi or Anthropic audit coverage ships.</div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-head">Deployment Model</div>
+      <div class="sb-dm-item">Enterprise · 65 seats · Web + Projects + Connectors · Okta SSO</div>
+      <div class="sb-dm-item">Premium · 5–6 seats · Claude Code · MCP dev</div>
+      <div class="sb-dm-item">API · AWS Bedrock · Zero Data Retention</div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-head">Open Blockers</div>
+      <div class="sb-blocker">AUP not signed</div>
+      <div class="sb-blocker">Snowflake RBAC not scoped</div>
+      <div class="sb-blocker">Airia SOC 2 unconfirmed</div>
+    </div>
+  </div>
+
+  </div><!-- /layout -->
+
+  <footer>
+    <div class="ft">Westfield Capital Management · Confidential · Internal Use Only<br>Prepared by Dee Silveira, CTO · March 2026</div>
+    <div class="ft" style="text-align:right;">Technology Strategy · Claude AI Deployment<br>v4 — Human review layer · Two-layer audit · DLP badges</div>
+  </footer>
+
+</div>
+</body>
+</html>
