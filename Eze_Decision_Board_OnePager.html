@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Infrastructure Strategy: Eze Upgrade Decision</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap');
+  :root {
+    --navy: #0F2340; --navy2: #162B4D; --gold: #B08D57; --gold-light: #C9A96E;
+    --offwhite: #F7F5F0; --cream: #FAF8F5; --white: #FFFFFF;
+    --slate: #4A5568; --slate-light: #718096; --charcoal: #2D3748;
+    --green: #1B6B42; --green-bg: #E8F5EE; --red: #8B2020; --red-bg: #FDF2F2;
+    --amber: #92400E; --amber-bg: #FFFBEB; --blue-bg: #EBF0F7;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Inter', 'Helvetica Neue', sans-serif;
+    background: var(--white); color: var(--charcoal);
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  @page { size: 11in 8.5in; margin: 0; }
+
+  /* ═══ HEADER ═══ */
+  .gold-bar { height: 5px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+  .header {
+    background: var(--navy); padding: 18px 40px 15px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .h-tag {
+    font-family: 'Inter'; font-size: 8.5px; font-weight: 700; color: var(--gold);
+    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px;
+  }
+  .h-title {
+    font-family: 'EB Garamond', serif; font-size: 27px; font-weight: 600;
+    color: var(--white); letter-spacing: 0.3px; line-height: 1.15;
+  }
+  .h-right { text-align: right; }
+  .h-date { font-size: 9.5px; color: var(--gold); font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+  .h-conf { font-size: 8.5px; color: #64748B; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
+  .h-firm { font-family: 'EB Garamond', serif; font-size: 15px; color: var(--gold-light); font-weight: 500; letter-spacing: 0.5px; margin-top: 4px; }
+
+  /* ═══ BODY ═══ */
+  .body { padding: 16px 40px 12px; }
+
+  /* ═══ STAT STRIP ═══ */
+  .stats { display: flex; gap: 0; margin-bottom: 14px; border: 1.5px solid #D4C5A0; border-radius: 5px; overflow: hidden; }
+  .stat {
+    flex: 1; padding: 14px 16px; text-align: center;
+    border-right: 1.5px solid #D4C5A0; position: relative;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-family: 'EB Garamond', serif; font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 3px; }
+  .stat-label { font-size: 8.5px; font-weight: 700; color: var(--slate); letter-spacing: 1.2px; text-transform: uppercase; }
+  .stat-sub { font-size: 8px; color: var(--slate-light); margin-top: 3px; line-height: 1.3; }
+
+  /* ═══ RECOMMENDATION BAR ═══ */
+  .reco {
+    background: var(--offwhite); border-left: 5px solid var(--gold); padding: 12px 20px;
+    margin-bottom: 14px;
+  }
+  .reco-tag { font-size: 8px; font-weight: 700; color: var(--gold); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 4px; }
+  .reco-text { font-size: 11px; color: var(--charcoal); line-height: 1.55; }
+  .reco-text b { color: var(--navy); }
+
+  /* ═══ SECTION LABEL ═══ */
+  .sec {
+    font-size: 8.5px; font-weight: 700; color: var(--gold); letter-spacing: 2.5px;
+    text-transform: uppercase; margin-bottom: 8px; padding-bottom: 5px;
+    border-bottom: 1.5px solid #D4C5A0;
+  }
+
+  /* ═══ GRID ═══ */
+  .grid { display: flex; gap: 20px; margin-bottom: 14px; }
+  .gcol { flex: 1; }
+
+  /* ═══ TIMELINE ═══ */
+  .tl { display: flex; gap: 0; margin-bottom: 14px; }
+  .tl-item {
+    flex: 1; padding: 10px 12px; border: 1px solid #E2E8F0; text-align: center;
+    position: relative;
+  }
+  .tl-item:not(:last-child)::after {
+    content: '\25B6'; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
+    font-size: 12px; color: var(--gold); z-index: 2;
+  }
+  .tl-yr { font-size: 11px; font-weight: 800; margin-bottom: 3px; }
+  .tl-tag { font-size: 7.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+  .tl-desc { font-size: 9px; color: var(--slate); line-height: 1.4; }
+  .tl-badge { font-size: 8px; font-weight: 800; letter-spacing: 0.5px; margin-top: 6px; padding: 3px 8px; border-radius: 3px; display: inline-block; }
+
+  /* ═══ CASE POINTS ═══ */
+  .case-item { margin-bottom: 8px; }
+  .case-title { font-size: 10px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+  .case-body { font-size: 9px; color: var(--slate); line-height: 1.45; }
+
+  /* ═══ BULLETS ═══ */
+  .bl { font-size: 9px; color: var(--slate); line-height: 1.4; margin: 3px 0; padding-left: 11px; position: relative; }
+  .bl::before { content: '\2022'; position: absolute; left: 0; font-weight: 700; }
+  .bl.red::before { color: var(--red); } .bl.green::before { color: var(--green); }
+  .bl.navy::before { color: var(--navy); }
+  .cat-head { font-size: 8.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-top: 8px; margin-bottom: 4px; }
+
+  /* ═══ RISKS ═══ */
+  .risk { margin-bottom: 7px; }
+  .risk-title { font-size: 9.5px; font-weight: 700; color: var(--navy); }
+  .risk-body { font-size: 8.5px; color: var(--slate); line-height: 1.4; }
+  .risk-icon { color: var(--amber); font-size: 10px; }
+
+  /* ═══ STEPS ═══ */
+  .steps { display: flex; gap: 0; margin-bottom: 10px; }
+  .step {
+    flex: 1; padding: 10px 14px; background: var(--offwhite); border: 1px solid #E2E8F0;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '\25B6'; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
+    font-size: 12px; color: var(--gold); z-index: 2;
+  }
+  .step-num { font-size: 7.5px; font-weight: 800; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; }
+  .step-title { font-size: 11px; font-weight: 700; color: var(--navy); margin: 3px 0; }
+  .step-desc { font-size: 9px; color: var(--slate); line-height: 1.4; }
+  .step-time { font-size: 8px; font-weight: 700; letter-spacing: 0.5px; margin-top: 4px; }
+
+  /* ═══ CONTINGENCY ═══ */
+  .contingency {
+    padding: 8px 20px; font-size: 9px; color: var(--slate);
+    font-style: italic; border-top: 1.5px solid #D4C5A0; line-height: 1.45;
+  }
+  .contingency b { font-style: normal; color: var(--navy); }
+
+  /* ═══ FOOTER ═══ */
+  .footer {
+    background: var(--navy); padding: 7px 40px; display: flex; justify-content: space-between;
+    align-items: center;
+  }
+  .footer-left { font-size: 7.5px; color: #64748B; letter-spacing: 0.5px; }
+  .footer-right { font-size: 7.5px; color: var(--gold); font-weight: 600; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="gold-bar"></div>
+
+<div class="header">
+  <div>
+    <div class="h-tag">Decision Memorandum — Operating Risk Management Committee</div>
+    <div class="h-title">Eze Platform Migration: Pause Upgrade, Consolidate Into SS&C PaaS</div>
+  </div>
+  <div class="h-right">
+    <div class="h-firm">Westfield Capital Management</div>
+    <div class="h-date">March 2026</div>
+    <div class="h-conf">Board Confidential</div>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" style="color:var(--red)">$300K<span style="font-size:16px">/yr</span></div>
+      <div class="stat-label">Thrive (Current)</div>
+      <div class="stat-sub">Managed cage, DRaaS, Citrix hosting</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--green)">$74K<span style="font-size:16px">/yr</span></div>
+      <div class="stat-label">SS&C PaaS (Proposed)</div>
+      <div class="stat-sub">Eze hosted, Enhanced DR, Citrix, SSO</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--navy)">$591K–$1.1M</div>
+      <div class="stat-label">5-Year Net Savings</div>
+      <div class="stat-sub">Including parallel run transition costs</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--gold)">75%</div>
+      <div class="stat-label">Infrastructure Reduction</div>
+      <div class="stat-sub">Residual: AD + minimal colocation</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--slate)">2–3 yrs</div>
+      <div class="stat-label">OMS Evaluation Runway</div>
+      <div class="stat-sub">Eze vs. Enfusion / Charles River</div>
+    </div>
+  </div>
+
+  <div class="reco">
+    <div class="reco-tag">Recommendation</div>
+    <div class="reco-text">
+      Pause the Eze upgrade currently in UAT and perform it <b>as part of</b> the SS&C PaaS migration — which can begin UAT in weeks.
+      This consolidates Eze, FIX connectivity, and disaster recovery into a single vendor-managed platform, avoids a third consecutive infrastructure migration in three years,
+      and replaces an untested contractual DR SLA with Enhanced DR built into the service.
+    </div>
+  </div>
+
+  <div class="sec">The Problem: Three Migrations in Three Years</div>
+  <div class="tl">
+    <div class="tl-item" style="background:#F8FAFC">
+      <div class="tl-yr" style="color:var(--slate)">2025</div>
+      <div class="tl-tag" style="color:var(--slate)">Completed</div>
+      <div class="tl-desc">Lateral migration from Markley / Nutanix to Thrive managed cage</div>
+      <div class="tl-badge" style="background:#E2E8F0;color:var(--slate)">Migration #1</div>
+    </div>
+    <div class="tl-item" style="background:var(--red-bg)">
+      <div class="tl-yr" style="color:var(--red)">2026 Current Plan</div>
+      <div class="tl-tag" style="color:var(--red)">In UAT — Stalled 5+ Weeks</div>
+      <div class="tl-desc">Eze version upgrade on Thrive — April go-live blocked by Thrive UAT failures</div>
+      <div class="tl-badge" style="background:#FECACA;color:var(--red)">Migration #2 ← Pause This</div>
+    </div>
+    <div class="tl-item" style="background:var(--blue-bg)">
+      <div class="tl-yr" style="color:var(--navy)">2026 Proposed</div>
+      <div class="tl-tag" style="color:var(--navy)">Start Now</div>
+      <div class="tl-desc">Migrate Eze + FIX connectivity to SS&C PaaS (upgrade included). UAT begins in weeks.</div>
+      <div class="tl-badge" style="background:#BFDBFE;color:var(--navy)">Migration #2 (Combined)</div>
+    </div>
+    <div class="tl-item" style="background:var(--green-bg)">
+      <div class="tl-yr" style="color:var(--green)">2027–28</div>
+      <div class="tl-tag" style="color:var(--green)">Future</div>
+      <div class="tl-desc">OMS platform evaluation when capacity allows (Eze vs. alternatives)</div>
+      <div class="tl-badge" style="background:#BBF7D0;color:var(--green)">Evaluate When Ready</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="gcol" style="flex:1.15">
+      <div class="sec">The Case for Pausing</div>
+      <div class="case-item">
+        <div class="case-title">Three migrations in three years is tactical churn.</div>
+        <div class="case-body">Thrive in 2025, Eze upgrade on Thrive in 2026, then migrate that same Eze off Thrive. Each one costs staff time, UAT, cutover risk. The upgrade is building on a foundation we're about to replace.</div>
+      </div>
+      <div class="case-item">
+        <div class="case-title">The upgrade should happen as part of PaaS, not before it.</div>
+        <div class="case-body">SS&C stands up a fresh Eze instance for PaaS — deploying the current version, not our four-year-old one. The upgrade is included. UAT can begin in weeks.</div>
+      </div>
+      <div class="case-item">
+        <div class="case-title">Thrive can't deliver a working UAT environment.</div>
+        <div class="case-body">5+ weeks blocked. Citrix sessions disconnect, servers had 2 CPUs hitting 100%, SentinelOne/FSLogix misconfigured. Multiple "resolutions" haven't fixed it.</div>
+      </div>
+      <div class="case-item">
+        <div class="case-title">Our current DR has never been tested.</div>
+        <div class="case-body">Thrive's RTO/RPO is a contractual SLA we've never exercised. SS&C PaaS includes Enhanced DR — tested, maintained, and owned by the vendor who built the application.</div>
+      </div>
+      <div class="case-item">
+        <div class="case-title">FIX connectivity moves too — eliminating triangulation.</div>
+        <div class="case-body">Bloomberg ZFP and broker FIX sessions migrate into SS&C's cloud. Thrive residual shrinks to AD and colo only. Cost escalation ($292K→$441K) becomes avoidable.</div>
+      </div>
+      <div class="case-item">
+        <div class="case-title">Capacity is the constraint.</div>
+        <div class="case-body">A three-person team carries AI governance, BeyondTrust remediation, and Thrive contract planning. Q2 on a throwaway upgrade is not the right use of limited resources.</div>
+      </div>
+    </div>
+
+    <div class="gcol" style="flex:0.85">
+      <div class="sec">What Changes</div>
+      <div class="cat-head" style="color:var(--red)">Stops</div>
+      <div class="bl red">April go-live on Thrive</div>
+      <div class="bl red">UAT testing for standalone upgrade</div>
+      <div class="bl red">Staff time on Thrive-bound work</div>
+
+      <div class="cat-head" style="color:var(--green)">Continues</div>
+      <div class="bl green">Current Eze runs as-is (supported through transition)</div>
+      <div class="bl green">SS&C PaaS planning and contract negotiation</div>
+      <div class="bl green">Thrive non-renewal notice (no-regret move)</div>
+
+      <div class="cat-head" style="color:var(--navy)">Starts</div>
+      <div class="bl navy">Confirm with SS&C that upgrade is part of PaaS; begin UAT</div>
+      <div class="bl navy">Migrate FIX connectivity (Bloomberg ZFP, broker sessions) to SS&C cloud</div>
+      <div class="bl navy">PaaS migration as single infrastructure project for H2 2026</div>
+      <div class="bl navy">Redirect freed capacity to AI initiative and incident remediation</div>
+    </div>
+
+    <div class="gcol" style="flex:1">
+      <div class="sec">Risks & Dependencies</div>
+      <div class="risk">
+        <div class="risk-title"><span class="risk-icon">▲</span> SS&C must confirm upgrade is included in PaaS.</div>
+        <div class="risk-body">If required as prerequisite, pause becomes delay. Mitigation: confirm with Jacob Cooper before ORMC.</div>
+      </div>
+      <div class="risk">
+        <div class="risk-title"><span class="risk-icon">▲</span> Running 4-year-old Eze version during transition.</div>
+        <div class="risk-body">Confirm current version remains supported. No known compliance exposure, but should be documented.</div>
+      </div>
+      <div class="risk">
+        <div class="risk-title"><span class="risk-icon">▲</span> Thrive UAT work is sunk cost.</div>
+        <div class="risk-body">Test plans and validation scripts transfer. Infra-specific work (Citrix config, server setup) does not.</div>
+      </div>
+      <div class="risk">
+        <div class="risk-title"><span class="risk-icon">▲</span> FIX connectivity migration is a go-live gate.</div>
+        <div class="risk-body">Bloomberg ZFP and broker FIX sessions must be validated in SS&C's cloud before cutover. Plan for parallel testing.</div>
+      </div>
+      <div class="risk">
+        <div class="risk-title"><span class="risk-icon">▲</span> DR transition timing.</div>
+        <div class="risk-body">Current Thrive DRaaS remains in place until SS&C Enhanced DR is validated. No gap in coverage during transition.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Proposed Sequence</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">Step 1</div>
+      <div class="step-title">File Thrive Non-Renewal</div>
+      <div class="step-desc">Preserve optionality. 37-month auto-renewal means notice must go now to prevent lock-in.</div>
+      <div class="step-time" style="color:var(--red)">Immediate</div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 2</div>
+      <div class="step-title">Begin PaaS UAT</div>
+      <div class="step-desc">Start UAT with SS&C in weeks. Confirm upgrade and FIX connectivity are included in onboarding. Lock pricing.</div>
+      <div class="step-time" style="color:var(--navy)">April 2026</div>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 3</div>
+      <div class="step-title">Execute Combined Migration</div>
+      <div class="step-desc">Upgrade Eze + migrate FIX + activate Enhanced DR as a single project. One cutover, one UAT cycle.</div>
+      <div class="step-time" style="color:var(--green)">Q2–Q3 2026</div>
+    </div>
+  </div>
+
+  <div class="contingency">
+    <b>Contingency:</b> If SS&C cannot include the upgrade in PaaS onboarding, we revert to the current plan with no time lost — the Thrive UAT environment remains available.
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <b>OMS outlook:</b> PaaS buys 2–3 years to evaluate the OMS question. If Eze is the answer, we're on the optimal platform. If it's Enfusion or Charles River, those are cloud-native SaaS — a cleaner exit from PaaS than from a self-managed cage.
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-left">Westfield Capital Management  |  One Financial Center, Boston  |  Board Confidential — Not for Distribution</div>
+  <div class="footer-right">Prepared by Technology  |  March 2026</div>
+</div>
+<div class="gold-bar"></div>
+
+</body>
+</html>
