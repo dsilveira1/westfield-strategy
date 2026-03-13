@@ -144,8 +144,8 @@
 
 <div class="header">
   <div>
-    <div class="h-tag">Decision Memorandum — Operating Risk Management Committee</div>
-    <div class="h-title">Eze Platform Migration: Pause Upgrade, Consolidate Into SS&C PaaS</div>
+    <div class="h-tag">Technology Perspective — Operating Risk Management Committee</div>
+    <div class="h-title">Eze Platform Strategy: Consolidate Upgrade Into SS&C PaaS</div>
   </div>
   <div class="h-right">
     <div class="h-firm">Westfield Capital Management</div>
@@ -168,9 +168,9 @@
       <div class="stat-sub">Eze hosted, Enhanced DR, Citrix, SSO</div>
     </div>
     <div class="stat">
-      <div class="stat-num" style="color:var(--navy)">$591K–$1.1M</div>
+      <div class="stat-num" style="color:var(--navy)">$812K–$1.6M</div>
       <div class="stat-label">5-Year Net Savings</div>
-      <div class="stat-sub">Including parallel run transition costs</div>
+      <div class="stat-sub">Footprint reduction + PaaS steady state</div>
     </div>
     <div class="stat">
       <div class="stat-num" style="color:var(--gold)">75%</div>
@@ -185,11 +185,11 @@
   </div>
 
   <div class="reco">
-    <div class="reco-tag">Recommendation</div>
+    <div class="reco-tag">CTO Assessment</div>
     <div class="reco-text">
-      Pause the Eze upgrade currently in UAT and perform it <b>as part of</b> the SS&C PaaS migration — which can begin UAT in weeks.
-      This consolidates Eze, FIX connectivity, and disaster recovery into a single vendor-managed platform, avoids a third consecutive infrastructure migration in three years,
-      and replaces an untested contractual DR SLA with Enhanced DR built into the service.
+      The current Eze upgrade project should be folded into the SS&C PaaS migration rather than completed as a standalone effort on Thrive.
+      SS&C builds a new environment at the latest Eze version — our UAT becomes production. This consolidates Eze, FIX connectivity, and disaster recovery into a single vendor-managed platform, avoids a third consecutive infrastructure migration in three years,
+      and replaces a DR capability never exercised firm-wide with Enhanced DR built into the service. <b>Seeking ORMC input on whether to proceed in this direction.</b>
     </div>
   </div>
 
@@ -210,7 +210,7 @@
     <div class="tl-item" style="background:var(--blue-bg)">
       <div class="tl-yr" style="color:var(--navy)">2026 Proposed</div>
       <div class="tl-tag" style="color:var(--navy)">Start Now</div>
-      <div class="tl-desc">Migrate Eze + FIX connectivity to SS&C PaaS (upgrade included). UAT begins in weeks.</div>
+      <div class="tl-desc">Migrate Eze + FIX connectivity to SS&C PaaS. New environment built at latest version. UAT begins in weeks.</div>
       <div class="tl-badge" style="background:#BFDBFE;color:var(--navy)">Migration #2 (Combined)</div>
     </div>
     <div class="tl-item" style="background:var(--green-bg)">
@@ -230,15 +230,15 @@
       </div>
       <div class="case-item">
         <div class="case-title">The upgrade should happen as part of PaaS, not before it.</div>
-        <div class="case-body">SS&C stands up a fresh Eze instance for PaaS — deploying the current version, not our four-year-old one. The upgrade is included. UAT can begin in weeks.</div>
+        <div class="case-body">SS&C stands up a fresh Eze instance at the latest version for PaaS — the upgrade is inherent in how the platform works. Our UAT becomes production. No standalone upgrade needed.</div>
       </div>
       <div class="case-item">
         <div class="case-title">Thrive can't deliver a working UAT environment.</div>
         <div class="case-body">5+ weeks blocked. Citrix sessions disconnect, servers had 2 CPUs hitting 100%, SentinelOne/FSLogix misconfigured. Multiple "resolutions" haven't fixed it.</div>
       </div>
       <div class="case-item">
-        <div class="case-title">Our current DR has never been tested.</div>
-        <div class="case-body">Thrive's RTO/RPO is a contractual SLA we've never exercised. SS&C PaaS includes Enhanced DR — tested, maintained, and owned by the vendor who built the application.</div>
+        <div class="case-title">Our DR has never been exercised firm-wide.</div>
+        <div class="case-body">Annual testing is limited to the technology team — we've never declared a disaster or tested failover with trading, operations, and compliance participating. SS&C PaaS includes Enhanced DR managed by the vendor who built the application.</div>
       </div>
       <div class="case-item">
         <div class="case-title">FIX connectivity moves too — eliminating triangulation.</div>
@@ -260,10 +260,10 @@
       <div class="cat-head" style="color:var(--green)">Continues</div>
       <div class="bl green">Current Eze runs as-is (supported through transition)</div>
       <div class="bl green">SS&C PaaS planning and contract negotiation</div>
-      <div class="bl green">Thrive non-renewal notice (no-regret move)</div>
+      <div class="bl green">Thrive non-renewal notice filed (already submitted)</div>
 
       <div class="cat-head" style="color:var(--navy)">Starts</div>
-      <div class="bl navy">Confirm with SS&C that upgrade is part of PaaS; begin UAT</div>
+      <div class="bl navy">Begin SS&C PaaS UAT — new environment built at latest Eze version</div>
       <div class="bl navy">Migrate FIX connectivity (Bloomberg ZFP, broker sessions) to SS&C cloud</div>
       <div class="bl navy">PaaS migration as single infrastructure project for H2 2026</div>
       <div class="bl navy">Redirect freed capacity to AI initiative and incident remediation</div>
@@ -272,8 +272,8 @@
     <div class="gcol" style="flex:1">
       <div class="sec">Risks & Dependencies</div>
       <div class="risk">
-        <div class="risk-title"><span class="risk-icon">▲</span> SS&C must confirm upgrade is included in PaaS.</div>
-        <div class="risk-body">If required as prerequisite, pause becomes delay. Mitigation: confirm with Jacob Cooper before ORMC.</div>
+        <div class="risk-title"><span class="risk-icon">▲</span> PaaS contract terms and pricing must be finalized.</div>
+        <div class="risk-body">Current quote is $6,192/mo with 20% discount. Confirm discount duration, renewal terms, and scope (19 users, Enhanced DR, Citrix, SSO, SAPI).</div>
       </div>
       <div class="risk">
         <div class="risk-title"><span class="risk-icon">▲</span> Running 4-year-old Eze version during transition.</div>
@@ -296,30 +296,28 @@
 
   <div class="sec">Proposed Sequence</div>
   <div class="steps">
-    <div class="step">
-      <div class="step-num">Step 1</div>
-      <div class="step-title">File Thrive Non-Renewal</div>
-      <div class="step-desc">Preserve optionality. 37-month auto-renewal means notice must go now to prevent lock-in.</div>
-      <div class="step-time" style="color:var(--red)">Immediate</div>
+    <div class="step" style="background:#F0FDF4; border-color:#D1FAE5;">
+      <div class="step-num" style="color:var(--green)">Step 1 — Complete ✓</div>
+      <div class="step-title" style="color:var(--green)">Thrive Non-Renewal Filed</div>
+      <div class="step-desc">37-month auto-renewal notice submitted. Optionality preserved through contract expiry.</div>
+      <div class="step-time" style="color:var(--green)">Done — March 2026</div>
     </div>
     <div class="step">
       <div class="step-num">Step 2</div>
       <div class="step-title">Begin PaaS UAT</div>
-      <div class="step-desc">Start UAT with SS&C in weeks. Confirm upgrade and FIX connectivity are included in onboarding. Lock pricing.</div>
+      <div class="step-desc">Start UAT with SS&C in weeks. New environment built at latest Eze version. Finalize FIX connectivity scope and lock pricing.</div>
       <div class="step-time" style="color:var(--navy)">April 2026</div>
     </div>
     <div class="step">
       <div class="step-num">Step 3</div>
       <div class="step-title">Execute Combined Migration</div>
-      <div class="step-desc">Upgrade Eze + migrate FIX + activate Enhanced DR as a single project. One cutover, one UAT cycle.</div>
+      <div class="step-desc">Migrate to PaaS at latest Eze version + FIX connectivity + activate Enhanced DR. One cutover, one UAT cycle.</div>
       <div class="step-time" style="color:var(--green)">Q2–Q3 2026</div>
     </div>
   </div>
 
   <div class="contingency">
-    <b>Contingency:</b> If SS&C cannot include the upgrade in PaaS onboarding, we revert to the current plan with no time lost — the Thrive UAT environment remains available.
-    &nbsp;&nbsp;|&nbsp;&nbsp;
-    <b>OMS outlook:</b> PaaS buys 2–3 years to evaluate the OMS question. If Eze is the answer, we're on the optimal platform. If it's Enfusion or Charles River, those are cloud-native SaaS — a cleaner exit from PaaS than from a self-managed cage.
+    <b>OMS outlook:</b> PaaS buys 2–3 years to evaluate the OMS question on our timeline. If Eze is the answer, we're on the optimal platform. If it's Enfusion or Charles River, those are cloud-native SaaS — a cleaner exit from PaaS than from a self-managed cage.
   </div>
 
 </div>
