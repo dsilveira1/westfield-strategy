@@ -25,6 +25,21 @@
     --mono: 'Roboto Mono', monospace;
   }
 
+  [data-theme="dark"] {
+    --navy: #0B1120;
+    --navy-mid: #111B2E;
+    --navy-light: #172238;
+    --teal: #4DA8DA;
+    --teal-light: #7EC8E3;
+    --teal-dim: rgba(77,168,218,0.1);
+    --gold: #D4AF37;
+    --gold-dim: rgba(212,175,55,0.1);
+    --white: #E8ECF2;
+    --white-dim: rgba(232,236,242,0.6);
+    --white-faint: rgba(232,236,242,0.06);
+    --red: #FF6B6B;
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html { scroll-behavior: smooth; }
@@ -36,6 +51,7 @@
     font-weight: 400;
     line-height: 1.7;
     overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
   }
 
   /* ── NOISE TEXTURE OVERLAY ── */
@@ -522,6 +538,17 @@
     text-transform: uppercase;
   }
 
+  /* THEME TOGGLE */
+  .theme-toggle {
+    background: none; border: 1px solid rgba(27,37,65,0.08); cursor: pointer;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--white-dim); padding: 6px 14px; border-radius: 4px;
+    display: flex; align-items: center; gap: 8px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { color: var(--white); border-color: var(--teal); }
+  .theme-toggle-icon { font-size: 14px; line-height: 1; }
+
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -571,7 +598,13 @@
 
 <nav>
   <a class="nav-logo" href="../index.html">Westfield <span>Capital</span></a>
-  <a class="nav-back" href="../index.html">← Back to index</a>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <a class="nav-back" href="../index.html">← Back to index</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+      <span class="theme-toggle-icon" id="theme-icon">&#9790;</span>
+      <span id="theme-label">Dark</span>
+    </button>
+  </div>
 </nav>
 
 <!-- ── HERO ── -->
@@ -859,6 +892,34 @@
 </footer>
 
 <script>
+  // Theme toggle
+  (function() {
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const label = document.getElementById('theme-label');
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      icon.innerHTML = '&#9788;';
+      label.textContent = 'Light';
+    }
+    toggle.addEventListener('click', function() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        icon.innerHTML = '&#9790;';
+        label.textContent = 'Dark';
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        icon.innerHTML = '&#9788;';
+        label.textContent = 'Light';
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  })();
+
   // Scroll progress
   window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
