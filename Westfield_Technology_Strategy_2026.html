@@ -19,6 +19,31 @@
     --accent: #C9A84C;
   }
 
+  [data-theme="dark"] {
+    --navy: #0B1120;
+    --blue: #4DA8DA;
+    --mid: #7EC8E3;
+    --pale: #172238;
+    --border: #2A3A52;
+    --text: #E8ECF2;
+    --muted: rgba(232,236,242,0.6);
+    --white: #111B2E;
+    --rule: #1E2D42;
+    --accent: #D4AF37;
+  }
+
+  [data-theme="dark"] .sidebar { background: #080D18; }
+
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); cursor: pointer;
+    font-family: 'Roboto Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); padding: 6px 14px; border-radius: 4px;
+    display: flex; align-items: center; gap: 8px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { color: var(--text); border-color: var(--blue); }
+  .theme-toggle-icon { font-size: 14px; line-height: 1; }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html { scroll-behavior: smooth; }
@@ -30,6 +55,7 @@
     background: #f7f9fc;
     font-size: 15px;
     line-height: 1.75;
+    transition: background 0.3s ease, color 0.3s ease;
   }
 
   /* ── SIDEBAR NAV ── */
@@ -567,6 +593,11 @@
 <body>
 
 <!-- ── SIDEBAR ── -->
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" style="position:fixed;top:16px;right:24px;z-index:200;">
+  <span class="theme-toggle-icon" id="theme-icon">&#9790;</span>
+  <span id="theme-label">Dark</span>
+</button>
+
 <nav class="sidebar">
   <a class="sidebar-back" href="index.html">Strategy Index</a>
   <div class="sidebar-brand">
@@ -1003,6 +1034,34 @@
 </div><!-- /main -->
 
 <script>
+  // Theme toggle
+  (function() {
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const label = document.getElementById('theme-label');
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      icon.innerHTML = '&#9788;';
+      label.textContent = 'Light';
+    }
+    toggle.addEventListener('click', function() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        icon.innerHTML = '&#9790;';
+        label.textContent = 'Dark';
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        icon.innerHTML = '&#9788;';
+        label.textContent = 'Light';
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  })();
+
   // Active nav highlighting on scroll
   const sections = document.querySelectorAll('.section');
   const navLinks = document.querySelectorAll('.nav-list a');
