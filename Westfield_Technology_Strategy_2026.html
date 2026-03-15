@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Westfield Technology Strategy & Operating Model 2026 — Purpose, governance, CORE charter, domain leadership, rollout phases, and success metrics.">
 <title>Westfield Technology Strategy & Operating Model — 2026</title>
 <style>@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');</style>
 <style>
@@ -17,6 +18,8 @@
     --white:  #ffffff;
     --rule:   rgba(27,37,65,0.06);
     --accent: #C9A84C;
+    --red-warning: #c0392b;
+    --gold-alt: #8a6914;
   }
 
   [data-theme="dark"] {
@@ -30,6 +33,8 @@
     --white: #111B2E;
     --rule: rgba(255,255,255,0.06);
     --accent: #D4AF37;
+    --red-warning: #E85D4A;
+    --gold-alt: #D4AF37;
   }
 
   [data-theme="dark"] .sidebar { background: #0B1120; border-right-color: rgba(255,255,255,0.08); }
@@ -53,6 +58,7 @@
   }
   .theme-toggle:hover { color: var(--text); border-color: var(--blue); }
   .theme-toggle-icon { font-size: 14px; line-height: 1; }
+  *:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; border-radius: 2px; }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -391,7 +397,7 @@
     margin: 20px 0;
   }
 
-  .callout.warning { border-left-color: #c0392b; background: rgba(192,57,43,0.04); }
+  .callout.warning { border-left-color: var(--red-warning); background: rgba(192,57,43,0.04); }
   .callout.gate    { border-left-color: var(--accent); background: rgba(201,168,76,0.06); }
 
   .callout-label {
@@ -403,8 +409,8 @@
     margin-bottom: 10px;
   }
 
-  .callout.warning .callout-label { color: #c0392b; }
-  .callout.gate    .callout-label { color: #8a6914; }
+  .callout.warning .callout-label { color: var(--red-warning); }
+  .callout.gate    .callout-label { color: var(--gold-alt); }
 
   .callout p { margin-bottom: 8px; font-size: 14px; color: var(--text); }
   .callout p:last-child { margin-bottom: 0; }
@@ -647,7 +653,7 @@
 </nav>
 
 <!-- ── MAIN ── -->
-<div class="main">
+<main class="main">
 
   <!-- COVER -->
   <div class="cover">
@@ -1053,7 +1059,7 @@
     </div>
 
   </div><!-- /content -->
-</div><!-- /main -->
+</main>
 
 <script>
   // Theme toggle
